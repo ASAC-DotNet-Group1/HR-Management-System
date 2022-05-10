@@ -2,6 +2,7 @@
 
 We will create an HR System that has the basic functionality of any HR System which will allow the user to add or remove an employee from the system, view all employees and their basic information along with the ability to view the payroll for each employee, it also allows the user to submit a ticket for leave/overtime along with salary slips. Our project helps us save time so the employees have only to log in and view all the information they need, It dramatically improves reporting & analytics, and the fact that data only has to be entered into the system once has the added benefit of improving data accuracy. 
 
+<br><hr><br>
 
 ## Team Members:
 + Osama Alzaghal.
@@ -11,6 +12,33 @@ We will create an HR System that has the basic functionality of any HR System wh
 + Bashar Alrefae.
 + Yousef Qandeel.
 
+<br><hr><br>
+
+## Wireframes
+
+Attendance Page:
+![](./assets/attendance.png)
+
+
+Create New Employee Page:
+![](./assets/create_new_employee.png)
+
+Get Employee Page:
+![](assets/get_employee.png)
+
+Pay Roll Page:
+![](assets/pay_roll.png)
+
+Salary Slip Page:
+![](assets/salary_slip.png)
+
+Sign In Page:
+![](assets/sign_in.png)
+
+Submit Ticket Page:
+![](assets/submit-ticket.png)
+
+<br><hr><br>
 
 ## User Stories:
 
@@ -28,3 +56,6 @@ We will create an HR System that has the basic functionality of any HR System wh
 6. as a user you will have the option to raise a ticket for overtime or leaves.
 
 7. as an admin, you will have the option to delete an employee along with their data from the database
+
+
+<br><hr><br>
