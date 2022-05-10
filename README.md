@@ -12,3 +12,19 @@ We will create an HR System that has the basic functionality of any HR System wh
 + Yousef Qandeel.
 
 
+## User Stories:
+
+1. We want to go in the website and the landing page will be a page that asks me to log in with a email and password, it also has the option to create a new account
+
+
+2. As an admin, you can add a new employee to the system, it will ask to add an ID, full name, age, phone number, email, password, department and level
+
+3. When an admin is signed in, he will have the option to search for an employee by their ID and view all of their personal information.
+
+4. each employee have the option to view the salary slips of the employee
+
+5. we will have the option to review the attendence history of the employee
+
+6. as a user you will have the option to raise a ticket for overtime or leaves.
+
+7. as an admin, you will have the option to delete an employee along with their data from the database
