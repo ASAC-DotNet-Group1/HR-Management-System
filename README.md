@@ -16,26 +16,26 @@ We will create an HR System that has the basic functionality of any HR System wh
 
 ## Wireframes
 
-Attendance Page:
+### Attendance Page:
 ![](./assets/attendance.png)
 
 
-Create New Employee Page:
+### Create New Employee Page:
 ![](./assets/create_new_employee.png)
 
-Get Employee Page:
+### Get Employee Page:
 ![](assets/get_employee.png)
 
-Pay Roll Page:
+### Pay Roll Page:
 ![](assets/pay_roll.png)
 
-Salary Slip Page:
+### Salary Slip Page:
 ![](assets/salary_slip.png)
 
-Sign In Page:
+### Sign In Page:
 ![](assets/sign_in.png)
 
-Submit Ticket Page:
+### Submit Ticket Page:
 ![](assets/submit-ticket.png)
 
 <br><hr><br>
@@ -59,3 +59,17 @@ Submit Ticket Page:
 
 
 <br><hr><br>
+
+## Domain Model
+
+<br>
+
+![](./assets/domain-model.jpg)
+
+<br><hr><br>
+
+## Database Schema Diagram
+
+<br>
+
+![](./assets/schema.png)
