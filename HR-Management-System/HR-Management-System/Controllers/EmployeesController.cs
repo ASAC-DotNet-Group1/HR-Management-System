@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using HR_Management_System.Data;
 using HR_Management_System.Models;
+using HR_Management_System.Models.Interfaces;
 
 namespace HR_Management_System.Controllers
 {
@@ -14,25 +15,25 @@ namespace HR_Management_System.Controllers
     [ApiController]
     public class EmployeesController : ControllerBase
     {
-        private readonly HR_DbContext _context;
+        private readonly IEmployee _employee;
 
-        public EmployeesController(HR_DbContext context)
+        public EmployeesController(IEmployee employee)
         {
-            _context = context;
+            _employee = employee;
         }
 
         // GET: api/Employees
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Employee>>> GetEmployees()
         {
-            return await _context.Employees.ToListAsync();
+            return await _employee.GetEmployees();
         }
 
         // GET: api/Employees/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Employee>> GetEmployee(int id)
         {
-            var employee = await _context.Employees.FindAsync(id);
+            var employee = await _employee.GetEmployee(id);
 
             if (employee == null)
             {
@@ -52,15 +53,13 @@ namespace HR_Management_System.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(employee).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                await _employee.UpdateEmployee(id, employee);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!EmployeeExists(id))
+                if (await _employee.GetEmployee(id) == null)
                 {
                     return NotFound();
                 }
@@ -78,8 +77,7 @@ namespace HR_Management_System.Controllers
         [HttpPost]
         public async Task<ActionResult<Employee>> PostEmployee(Employee employee)
         {
-            _context.Employees.Add(employee);
-            await _context.SaveChangesAsync();
+            await _employee.AddEmployee(employee);
 
             return CreatedAtAction("GetEmployee", new { id = employee.ID }, employee);
         }
@@ -88,21 +86,18 @@ namespace HR_Management_System.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteEmployee(int id)
         {
-            var employee = await _context.Employees.FindAsync(id);
+            var employee = await _employee.GetEmployee(id);
+
             if (employee == null)
             {
                 return NotFound();
             }
 
-            _context.Employees.Remove(employee);
-            await _context.SaveChangesAsync();
+            await _employee.DeleteEmployee(id);
 
             return NoContent();
         }
 
-        private bool EmployeeExists(int id)
-        {
-            return _context.Employees.Any(e => e.ID == id);
-        }
+        
     }
 }

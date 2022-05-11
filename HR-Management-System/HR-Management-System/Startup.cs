@@ -32,7 +32,13 @@ namespace HR_Management_System
                 options.UseSqlServer(connectionString);
             });
             services.AddControllers();
+
             services.AddTransient<ITicket, TicketService>();
+
+            // ** Transients **
+            services.AddTransient<IDepartment, DepartmentService>();
+            services.AddTransient<IEmployee, EmployeeService>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
