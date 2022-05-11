@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using HR_Management_System.Data;
 using HR_Management_System.Models;
+using HR_Management_System.Models.Interfaces;
 
 namespace HR_Management_System.Controllers
 {
@@ -14,25 +15,25 @@ namespace HR_Management_System.Controllers
     [ApiController]
     public class TicketsController : ControllerBase
     {
-        private readonly HR_DbContext _context;
+        private readonly ITicket _ticket;
 
-        public TicketsController(HR_DbContext context)
+        public TicketsController(ITicket ticket)
         {
-            _context = context;
+            _ticket = ticket;
         }
 
         // GET: api/Tickets
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Ticket>>> GetTickets()
+        public async Task<ActionResult<List<Ticket>>> GetTickets()
         {
-            return await _context.Tickets.ToListAsync();
+            return await _ticket.GetTickets();
         }
 
         // GET: api/Tickets/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Ticket>> GetTicket(int id)
         {
-            var ticket = await _context.Tickets.FindAsync(id);
+            var ticket = await _ticket.GetTicket(id);
 
             if (ticket == null)
             {
@@ -52,25 +53,28 @@ namespace HR_Management_System.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(ticket).State = EntityState.Modified;
+            var modifiedTicket =  await _ticket.UpdateTicket(id,ticket);
+            return Ok(modifiedTicket);
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!TicketExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            //_ticket.Entry(ticket).State = EntityState.Modified;
 
-            return NoContent();
+            //try
+            //{
+            //    await _ticket._.UpdateStudent(id, h);
+            //}
+            //catch (DbUpdateConcurrencyException)
+            //{
+            //    if (!TicketExists(id))
+            //    {
+            //        return NotFound();
+            //    }
+            //    else
+            //    {
+            //        throw;
+            //    }
+            //}
+
+            // return NoContent();
         }
 
         // POST: api/Tickets
@@ -78,31 +82,29 @@ namespace HR_Management_System.Controllers
         [HttpPost]
         public async Task<ActionResult<Ticket>> PostTicket(Ticket ticket)
         {
-            _context.Tickets.Add(ticket);
-            await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetTicket", new { id = ticket.ID }, ticket);
+            Ticket newTicket = await _ticket.CreateTicket(ticket);
+            return Ok(newTicket);
+
+           
         }
 
         // DELETE: api/Tickets/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTicket(int id)
         {
-            var ticket = await _context.Tickets.FindAsync(id);
-            if (ticket == null)
+            try
             {
-                return NotFound();
+                await _ticket.DeleteTicket(id);
+                return NoContent();
             }
 
-            _context.Tickets.Remove(ticket);
-            await _context.SaveChangesAsync();
+            catch (Exception) { return NotFound(); }
+            
 
-            return NoContent();
+          
         }
 
-        private bool TicketExists(int id)
-        {
-            return _context.Tickets.Any(e => e.ID == id);
-        }
+        
     }
 }
