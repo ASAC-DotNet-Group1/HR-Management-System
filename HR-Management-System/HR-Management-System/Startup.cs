@@ -1,4 +1,6 @@
 using HR_Management_System.Data;
+using HR_Management_System.Models.Interfaces;
+using HR_Management_System.Models.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -30,6 +32,7 @@ namespace HR_Management_System
                 options.UseSqlServer(connectionString);
             });
             services.AddControllers();
+            services.AddTransient<ITicket, TicketService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
