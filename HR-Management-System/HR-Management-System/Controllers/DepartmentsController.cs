@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using HR_Management_System.Data;
 using HR_Management_System.Models;
+using HR_Management_System.Models.Interfaces;
 
 namespace HR_Management_System.Controllers
 {
@@ -14,25 +15,25 @@ namespace HR_Management_System.Controllers
     [ApiController]
     public class DepartmentsController : ControllerBase
     {
-        private readonly HR_DbContext _context;
+        private readonly IDepartment _department;
 
-        public DepartmentsController(HR_DbContext context)
+        public DepartmentsController(IDepartment department)
         {
-            _context = context;
+            _department = department;
         }
 
         // GET: api/Departments
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Department>>> GetDepartments()
         {
-            return await _context.Departments.ToListAsync();
+            return await _department.GetDepartments();
         }
 
         // GET: api/Departments/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Department>> GetDepartment(int id)
         {
-            var department = await _context.Departments.FindAsync(id);
+            var department = await _department.GetDepartment(id);
 
             if (department == null)
             {
@@ -52,15 +53,14 @@ namespace HR_Management_System.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(department).State = EntityState.Modified;
 
             try
             {
-                await _context.SaveChangesAsync();
+                await _department.UpdateDepartment(id, department);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!DepartmentExists(id))
+                if (await _department.GetDepartment(id) == null)
                 {
                     return NotFound();
                 }
@@ -78,8 +78,7 @@ namespace HR_Management_System.Controllers
         [HttpPost]
         public async Task<ActionResult<Department>> PostDepartment(Department department)
         {
-            _context.Departments.Add(department);
-            await _context.SaveChangesAsync();
+            await _department.AddDepartment(department);
 
             return CreatedAtAction("GetDepartment", new { id = department.ID }, department);
         }
@@ -88,21 +87,17 @@ namespace HR_Management_System.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteDepartment(int id)
         {
-            var department = await _context.Departments.FindAsync(id);
+            var department = await _department.GetDepartment(id);
+
             if (department == null)
             {
                 return NotFound();
             }
 
-            _context.Departments.Remove(department);
-            await _context.SaveChangesAsync();
+            await _department.DeleteDepartment(id);
 
             return NoContent();
         }
-
-        private bool DepartmentExists(int id)
-        {
-            return _context.Departments.Any(e => e.ID == id);
-        }
+       
     }
 }
