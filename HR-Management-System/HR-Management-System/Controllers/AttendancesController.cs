@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using HR_Management_System.Data;
 using HR_Management_System.Models;
 using HR_Management_System.Models.Interfaces;
+using HR_Management_System.Models.DTOs;
 
 namespace HR_Management_System.Controllers
 {
@@ -74,11 +75,10 @@ namespace HR_Management_System.Controllers
         // POST: api/Attendances
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Attendance>> PostAttendance(Attendance attendance)
+        public async Task<ActionResult<Attendance>> PostAttendance(AttendanceDTO attendance)
         {
             await _attendance.AddAttendance(attendance);
-
-            return CreatedAtAction("GetAttendance", new { id = attendance.ID }, attendance);
+            return Ok(attendance);
         }
 
         // DELETE: api/Attendances/5

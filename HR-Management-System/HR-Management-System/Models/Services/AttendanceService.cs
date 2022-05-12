@@ -1,4 +1,5 @@
 ﻿using HR_Management_System.Data;
+using HR_Management_System.Models.DTOs;
 using HR_Management_System.Models.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -15,8 +16,14 @@ namespace HR_Management_System.Models.Services
             _context = context;
         }
 
-        public async Task AddAttendance(Attendance attendance)
+        public async Task AddAttendance(AttendanceDTO attendancedto)
         {
+            Attendance attendance = new Attendance
+            {
+                EmployeeID = attendancedto.EmployeeID,
+                Present = attendancedto.Present,
+                Date = System.DateTime.Now.ToLocalTime()
+            };
             _context.Entry(attendance).State = EntityState.Added;
 
             await _context.SaveChangesAsync();
