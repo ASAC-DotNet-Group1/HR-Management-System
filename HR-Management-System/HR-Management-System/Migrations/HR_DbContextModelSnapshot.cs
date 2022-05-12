@@ -229,15 +229,10 @@ namespace HR_Management_System.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("DepartmentID")
-                        .HasColumnType("int");
-
                     b.Property<double>("Total")
                         .HasColumnType("float");
 
                     b.HasKey("EmployeeID", "Date");
-
-                    b.HasIndex("DepartmentID");
 
                     b.ToTable("SalarySlips");
                 });
@@ -345,19 +340,11 @@ namespace HR_Management_System.Migrations
 
             modelBuilder.Entity("HR_Management_System.Models.SalarySlip", b =>
                 {
-                    b.HasOne("HR_Management_System.Models.Department", "Department")
-                        .WithMany()
-                        .HasForeignKey("DepartmentID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("HR_Management_System.Models.Employee", "Employee")
                         .WithMany("SalarySlip")
                         .HasForeignKey("EmployeeID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Department");
 
                     b.Navigation("Employee");
                 });

@@ -68,24 +68,17 @@ namespace HR_Management_System.Migrations
                 {
                     EmployeeID = table.Column<int>(type: "int", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DepartmentID = table.Column<int>(type: "int", nullable: false),
                     Total = table.Column<double>(type: "float", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_SalarySlips", x => new { x.EmployeeID, x.Date });
                     table.ForeignKey(
-                        name: "FK_SalarySlips_Departments_DepartmentID",
-                        column: x => x.DepartmentID,
-                        principalTable: "Departments",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.NoAction);
-                    table.ForeignKey(
                         name: "FK_SalarySlips_Employees_EmployeeID",
                         column: x => x.EmployeeID,
                         principalTable: "Employees",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -213,11 +206,6 @@ namespace HR_Management_System.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Employees_DepartmentID",
                 table: "Employees",
-                column: "DepartmentID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_SalarySlips_DepartmentID",
-                table: "SalarySlips",
                 column: "DepartmentID");
 
             migrationBuilder.CreateIndex(
