@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using HR_Management_System.Models.DTOs;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace HR_Management_System.Models.Interfaces
@@ -9,7 +10,7 @@ namespace HR_Management_System.Models.Interfaces
 
         public Task<List<Attendance>> GetAttendances();
         
-        public Task AddAttendance(Attendance attendance);
+        public Task AddAttendance(AttendanceDTO attendance);
 
         public Task UpdateAttendance(int id, Attendance attendance);
 
