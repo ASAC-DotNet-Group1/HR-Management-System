@@ -24,7 +24,7 @@ namespace HR_Management_System.Controllers
 
         // GET: api/Departments
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Department>>> GetDepartments()
+        public async Task<ActionResult<List<Department>>> GetDepartments()
         {
             return await _department.GetDepartments();
         }
