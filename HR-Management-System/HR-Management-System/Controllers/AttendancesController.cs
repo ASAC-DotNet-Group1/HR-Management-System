@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using HR_Management_System.Data;
 using HR_Management_System.Models;
+using HR_Management_System.Models.Interfaces;
 
 namespace HR_Management_System.Controllers
 {
@@ -14,25 +15,25 @@ namespace HR_Management_System.Controllers
     [ApiController]
     public class AttendancesController : ControllerBase
     {
-        private readonly HR_DbContext _context;
+        private readonly IAttendance _attendance;
 
-        public AttendancesController(HR_DbContext context)
+        public AttendancesController(IAttendance attendance)
         {
-            _context = context;
+            _attendance = attendance;
         }
 
         // GET: api/Attendances
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Attendance>>> GetAttendances()
+        public async Task<ActionResult<List<Attendance>>> GetAttendances()
         {
-            return await _context.Attendances.ToListAsync();
+            return await _attendance.GetAttendances();
         }
 
         // GET: api/Attendances/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Attendance>> GetAttendance(int id)
         {
-            var attendance = await _context.Attendances.FindAsync(id);
+            var attendance = await _attendance.GetAttendance(id);
 
             if (attendance == null)
             {
@@ -51,16 +52,13 @@ namespace HR_Management_System.Controllers
             {
                 return BadRequest();
             }
-
-            _context.Entry(attendance).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                await _attendance.UpdateAttendance(id,attendance);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!AttendanceExists(id))
+                if (await _attendance.GetAttendance(id) == null)
                 {
                     return NotFound();
                 }
@@ -78,8 +76,7 @@ namespace HR_Management_System.Controllers
         [HttpPost]
         public async Task<ActionResult<Attendance>> PostAttendance(Attendance attendance)
         {
-            _context.Attendances.Add(attendance);
-            await _context.SaveChangesAsync();
+            await _attendance.AddAttendance(attendance);
 
             return CreatedAtAction("GetAttendance", new { id = attendance.ID }, attendance);
         }
@@ -88,21 +85,16 @@ namespace HR_Management_System.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAttendance(int id)
         {
-            var attendance = await _context.Attendances.FindAsync(id);
+            var attendance = await _attendance.GetAttendance(id);
             if (attendance == null)
             {
                 return NotFound();
             }
 
-            _context.Attendances.Remove(attendance);
-            await _context.SaveChangesAsync();
+            await _attendance.DeleteAttendance(id);
 
             return NoContent();
         }
 
-        private bool AttendanceExists(int id)
-        {
-            return _context.Attendances.Any(e => e.ID == id);
-        }
     }
 }

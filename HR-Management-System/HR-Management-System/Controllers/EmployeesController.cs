@@ -24,7 +24,7 @@ namespace HR_Management_System.Controllers
 
         // GET: api/Employees
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Employee>>> GetEmployees()
+        public async Task<ActionResult<List<Employee>>> GetEmployees()
         {
             return await _employee.GetEmployees();
         }
