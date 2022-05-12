@@ -12,7 +12,7 @@ namespace HR_Management_System.Models.DTOs
         public int DepartmentID { get; set; }
         public string Name { get; set; }
         public Level Level { get; set; }
-        public List<EmployeeAttendance> EmployeesAttendances { get; set; }
-        public List<SalarySlip> SalarySlip { get; set; }
+        public List<AttendanceDTO> Attendances { get; set; }
+        public List<SalarySlipDTO> SalarySlip { get; set; }
     }
 }
