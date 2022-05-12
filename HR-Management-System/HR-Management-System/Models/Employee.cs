@@ -23,6 +23,9 @@ namespace HR_Management_System.Models
         public string Email { get; set; }
         public string Password { get; set; }
         public Level Level { get; set; }
+        public List<Ticket> Ticket { get; set; }
+        public List<EmployeeAttendance> EmployeesAttendances { get; set; }
+        public List<SalarySlip> SalarySlip { get; set; }
     }
     
 }

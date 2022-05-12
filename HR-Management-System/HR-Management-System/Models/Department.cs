@@ -9,6 +9,7 @@ namespace HR_Management_System.Models
     {
         public int ID { get; set; }
         public string Name { get; set; }
-        public decimal BaseSalary { get; set; }
+        public double BaseSalary { get; set; }
+        public List<Employee> Employees { get; set; }
     }
 }
