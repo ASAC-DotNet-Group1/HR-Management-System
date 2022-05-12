@@ -25,13 +25,13 @@ namespace HR_Management_System.Data
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<Employee>().HasData(
-                new Employee { ID = 1 , Name = "Laith", Age = 21, Gender = "Male", DepartmentID = 1, Level = Level.Junior, Email = "Employee1@LTUC.com",    Password="1234", Phone="079" },
+                new Employee { ID = 1, Name = "Laith", Age = 21, Gender = "Male", DepartmentID = 1, Level = Level.Junior, Email = "Employee1@LTUC.com", Password = "1234", Phone = "079" },
                 new Employee { ID = 2, Name = "Osama", Age = 22, Gender = "Other", DepartmentID = 2, Level = Level.MidSenior, Email = "Employee2@LTUC.com", Password = "1234", Phone = "079" },
                 new Employee { ID = 3, Name = "Shadi", Age = 24, Gender = "Male", DepartmentID = 3, Level = Level.Senior, Email = "Employee3@LTUC.com", Password = "1234", Phone = "079" }
             );
 
             modelBuilder.Entity<Department>().HasData(
-                new Department { ID = 1, Name = "IT", BaseSalary= 500 },
+                new Department { ID = 1, Name = "IT", BaseSalary = 500 },
                 new Department { ID = 2, Name = "Finance", BaseSalary = 400 },
                 new Department { ID = 3, Name = "Sales", BaseSalary = 300 }
                 );
@@ -43,7 +43,7 @@ namespace HR_Management_System.Data
                 );
 
             modelBuilder.Entity<Attendance>().HasData(
-                new Attendance { ID = 1, EmployeeID=1, Present=true, Date = new DateTime(2022, 6, 23)},
+                new Attendance { ID = 1, EmployeeID = 1, Present = true, Date = new DateTime(2022, 6, 23) },
                 new Attendance { ID = 2, EmployeeID = 1, Present = false, Date = new DateTime(2022, 6, 24) },
                 new Attendance { ID = 3, EmployeeID = 1, Present = true, Date = new DateTime(2022, 6, 25) },
                 new Attendance { ID = 4, EmployeeID = 2, Present = false, Date = new DateTime(2022, 6, 23) },

@@ -34,10 +34,11 @@ namespace HR_Management_System
             services.AddControllers();
 
             services.AddTransient<ITicket, TicketService>();
-
-            // ** Transients **
             services.AddTransient<IDepartment, DepartmentService>();
             services.AddTransient<IEmployee, EmployeeService>();
+            services.AddTransient<IAttendance, AttendanceService>();
+            services.AddTransient<ISalarySlip, SalarySlipService>();
+            services.AddControllers().AddNewtonsoftJson(opt => opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
         }
 

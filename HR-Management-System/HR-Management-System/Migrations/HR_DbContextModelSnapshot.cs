@@ -91,8 +91,8 @@ namespace HR_Management_System.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<decimal>("BaseSalary")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<double>("BaseSalary")
+                        .HasColumnType("float");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -105,19 +105,19 @@ namespace HR_Management_System.Migrations
                         new
                         {
                             ID = 1,
-                            BaseSalary = 500m,
+                            BaseSalary = 500.0,
                             Name = "IT"
                         },
                         new
                         {
                             ID = 2,
-                            BaseSalary = 400m,
+                            BaseSalary = 400.0,
                             Name = "Finance"
                         },
                         new
                         {
                             ID = 3,
-                            BaseSalary = 300m,
+                            BaseSalary = 300.0,
                             Name = "Sales"
                         });
                 });
@@ -154,6 +154,8 @@ namespace HR_Management_System.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("DepartmentID");
 
                     b.ToTable("Employees");
 
@@ -204,7 +206,17 @@ namespace HR_Management_System.Migrations
                     b.Property<int>("EmployeeID")
                         .HasColumnType("int");
 
+                    b.Property<DateTime?>("SalarySlipDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("SalarySlipEmployeeID")
+                        .HasColumnType("int");
+
                     b.HasKey("AttendanceID", "EmployeeID");
+
+                    b.HasIndex("EmployeeID");
+
+                    b.HasIndex("SalarySlipEmployeeID", "SalarySlipDate");
 
                     b.ToTable("EmployeeAttendances");
                 });
@@ -220,16 +232,12 @@ namespace HR_Management_System.Migrations
                     b.Property<int>("DepartmentID")
                         .HasColumnType("int");
 
-                    b.Property<int>("EmpAttendID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TicketID")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("Total")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<double>("Total")
+                        .HasColumnType("float");
 
                     b.HasKey("EmployeeID", "Date");
+
+                    b.HasIndex("DepartmentID");
 
                     b.ToTable("SalarySlips");
                 });
@@ -250,10 +258,26 @@ namespace HR_Management_System.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("EmployeeID")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("SalarySlipDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("SalarySlipEmployeeID")
+                        .HasColumnType("int");
+
                     b.Property<int>("Type")
                         .HasColumnType("int");
 
+                    b.Property<int>("emp_id")
+                        .HasColumnType("int");
+
                     b.HasKey("ID");
+
+                    b.HasIndex("EmployeeID");
+
+                    b.HasIndex("SalarySlipEmployeeID", "SalarySlipDate");
 
                     b.ToTable("Tickets");
 
@@ -264,7 +288,8 @@ namespace HR_Management_System.Migrations
                             Approval = true,
                             Comment = "Vacation",
                             Date = new DateTime(2022, 5, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Type = -10
+                            Type = -10,
+                            emp_id = 0
                         },
                         new
                         {
@@ -272,7 +297,8 @@ namespace HR_Management_System.Migrations
                             Approval = false,
                             Comment = "Car Loan",
                             Date = new DateTime(2022, 5, 23, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Type = 1000
+                            Type = 1000,
+                            emp_id = 0
                         },
                         new
                         {
@@ -280,8 +306,99 @@ namespace HR_Management_System.Migrations
                             Approval = true,
                             Comment = "Need more money",
                             Date = new DateTime(2022, 5, 23, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Type = 20
+                            Type = 20,
+                            emp_id = 0
                         });
+                });
+
+            modelBuilder.Entity("HR_Management_System.Models.Employee", b =>
+                {
+                    b.HasOne("HR_Management_System.Models.Department", null)
+                        .WithMany("Employees")
+                        .HasForeignKey("DepartmentID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("HR_Management_System.Models.EmployeeAttendance", b =>
+                {
+                    b.HasOne("HR_Management_System.Models.Attendance", "Attendance")
+                        .WithMany("EmployeeAttendance")
+                        .HasForeignKey("AttendanceID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HR_Management_System.Models.Employee", "Employee")
+                        .WithMany("EmployeesAttendances")
+                        .HasForeignKey("EmployeeID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HR_Management_System.Models.SalarySlip", null)
+                        .WithMany("EmployeeAttendance")
+                        .HasForeignKey("SalarySlipEmployeeID", "SalarySlipDate");
+
+                    b.Navigation("Attendance");
+
+                    b.Navigation("Employee");
+                });
+
+            modelBuilder.Entity("HR_Management_System.Models.SalarySlip", b =>
+                {
+                    b.HasOne("HR_Management_System.Models.Department", "Department")
+                        .WithMany()
+                        .HasForeignKey("DepartmentID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HR_Management_System.Models.Employee", "Employee")
+                        .WithMany("SalarySlip")
+                        .HasForeignKey("EmployeeID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Department");
+
+                    b.Navigation("Employee");
+                });
+
+            modelBuilder.Entity("HR_Management_System.Models.Ticket", b =>
+                {
+                    b.HasOne("HR_Management_System.Models.Employee", "Employee")
+                        .WithMany("Ticket")
+                        .HasForeignKey("EmployeeID");
+
+                    b.HasOne("HR_Management_System.Models.SalarySlip", null)
+                        .WithMany("Ticket")
+                        .HasForeignKey("SalarySlipEmployeeID", "SalarySlipDate");
+
+                    b.Navigation("Employee");
+                });
+
+            modelBuilder.Entity("HR_Management_System.Models.Attendance", b =>
+                {
+                    b.Navigation("EmployeeAttendance");
+                });
+
+            modelBuilder.Entity("HR_Management_System.Models.Department", b =>
+                {
+                    b.Navigation("Employees");
+                });
+
+            modelBuilder.Entity("HR_Management_System.Models.Employee", b =>
+                {
+                    b.Navigation("EmployeesAttendances");
+
+                    b.Navigation("SalarySlip");
+
+                    b.Navigation("Ticket");
+                });
+
+            modelBuilder.Entity("HR_Management_System.Models.SalarySlip", b =>
+                {
+                    b.Navigation("EmployeeAttendance");
+
+                    b.Navigation("Ticket");
                 });
 #pragma warning restore 612, 618
         }
