@@ -11,7 +11,7 @@ namespace HR_Management_System.Models.DTOs
         public DateTime Date { get; set; }
         public double Total { get; set; }
         public Employee Employee { get; set; }
-        public List<Ticket> Ticket { get; set; }
-        public List<EmployeeAttendance> EmployeeAttendance { get; set; }
+        public List<TicketDTO> Ticket { get; set; }
+        public List<AttendanceDTO> Attendances { get; set; }
     }
 }
