@@ -116,5 +116,23 @@ namespace HR_Management_System.Controllers
             return Ok();
         }
 
+
+      
+
+
+        [HttpGet("attendances/{id}")]
+        public async Task<List<AttendanceDTO>> GetAllAttendance(int id)
+        {
+            return await _employee.GetAllAttendance(id);
+        }
+
+
+        [HttpGet("shiftends/{id}")]
+        public async Task<List<ShiftEndDTO>> GetAllShiftEnds(int id)
+        {
+            return await _employee.GetAllShiftEnds(id);
+        }
+
+
     }
 }

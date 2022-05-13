@@ -14,52 +14,52 @@ namespace HR_Management_System.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AttendancesController : ControllerBase
+    public class ShiftEndsController : ControllerBase
     {
-        private readonly IAttendance _attendance;
+        private readonly IShiftEnd _ShiftEnd;
 
-        public AttendancesController(IAttendance attendance)
+        public ShiftEndsController(IShiftEnd ShiftEnd)
         {
-            _attendance = attendance;
+            _ShiftEnd = ShiftEnd;
         }
 
-        // GET: api/Attendances
+        // GET: api/ShiftEnds
         [HttpGet]
-        public async Task<ActionResult<List<AttendanceDTO>>> GetAttendances()
+        public async Task<ActionResult<List<ShiftEndDTO>>> GetShiftEnds()
         {
-            return await _attendance.GetAttendances();
+            return await _ShiftEnd.GetShiftEnds();
         }
 
-        // GET: api/Attendances/5
+        // GET: api/ShiftEnds/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Attendance>> GetAttendance(int id)
+        public async Task<ActionResult<ShiftEnd>> GetShiftEnd(int id)
         {
-            var attendance = await _attendance.GetAttendance(id);
+            var ShiftEnd = await _ShiftEnd.GetShiftEnd(id);
 
-            if (attendance == null)
+            if (ShiftEnd == null)
             {
                 return NotFound();
             }
 
-            return attendance;
+            return ShiftEnd;
         }
 
-        // PUT: api/Attendances/5
+        // PUT: api/ShiftEnds/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutAttendance(int id, Attendance attendance)
+        public async Task<IActionResult> PutShiftEnd(int id, ShiftEnd ShiftEnd)
         {
-            if (id != attendance.ID)
+            if (id != ShiftEnd.ID)
             {
                 return BadRequest();
             }
             try
             {
-                await _attendance.UpdateAttendance(id,attendance);
+                await _ShiftEnd.UpdateShiftEnd(id, ShiftEnd);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (await _attendance.GetAttendance(id) == null)
+                if (await _ShiftEnd.GetShiftEnd(id) == null)
                 {
                     return NotFound();
                 }
@@ -72,29 +72,31 @@ namespace HR_Management_System.Controllers
             return NoContent();
         }
 
-        // POST: api/Attendances
+        // POST: api/ShiftEnds
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Attendance>> PostAttendance(AttendanceDTO attendance)
+        public async Task<ActionResult<ShiftEnd>> PostShiftEnd(ShiftEndDTO ShiftEnd)
         {
-            await _attendance.AddAttendance(attendance);
-            return Ok(attendance);
+            await _ShiftEnd.AddShiftEnd(ShiftEnd);
+            return Ok(ShiftEnd);
         }
 
-        // DELETE: api/Attendances/5
+        // DELETE: api/ShiftEnds/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAttendance(int id)
+        public async Task<IActionResult> DeleteShiftEnd(int id)
         {
-            var attendance = await _attendance.GetAttendance(id);
-            if (attendance == null)
+            var ShiftEnd = await _ShiftEnd.GetShiftEnd(id);
+            if (ShiftEnd == null)
             {
                 return NotFound();
             }
 
-            await _attendance.DeleteAttendance(id);
+            await _ShiftEnd.DeleteShiftEnd(id);
 
             return NoContent();
         }
+
+        
 
     }
 }

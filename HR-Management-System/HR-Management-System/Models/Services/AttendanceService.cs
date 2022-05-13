@@ -3,6 +3,7 @@ using HR_Management_System.Models.DTOs;
 using HR_Management_System.Models.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace HR_Management_System.Models.Services
@@ -43,9 +44,20 @@ namespace HR_Management_System.Models.Services
             return await _context.Attendances.FindAsync(id);
         }
 
-        public async Task<List<Attendance>> GetAttendances()
+        /// <summary>
+        /// Return all attendances
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<AttendanceDTO>> GetAttendances()
         {
-            return await _context.Attendances.ToListAsync();
+
+            return await _context.Attendances.Select(x => new AttendanceDTO()
+            {
+                EmployeeID = x.EmployeeID,
+                Date = x.Date,
+                Present = x.Present
+            }).ToListAsync();
+
         }
 
         public async Task UpdateAttendance(int id, Attendance attendance)

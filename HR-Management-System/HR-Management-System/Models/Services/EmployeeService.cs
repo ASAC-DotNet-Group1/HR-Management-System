@@ -124,15 +124,15 @@ namespace HR_Management_System.Models.Services
             List<Ticket> tickets = _context.Tickets.Select(x => x)
                 .Where(x => x.emp_id == id)
                 .Where(x => x.Date.Month == Date.Month && x.Date.Day <= Date.Day).ToList(); // we use day prop in case some dumb like osama create a ticket with future Date
-            List<Attendance> attendances = _context.Attendances.Select(x =>x)
+            List<Attendance> attendances = _context.Attendances.Select(x => x)
                 .Where(x => x.EmployeeID == id)
                 .Where(x => x.Date.Month == Date.Month && x.Date.Day <= Date.Day)
                 .Where(x => x.Present == false).ToList();
             int totalTicket = 0;
             foreach (Ticket ticket in tickets) totalTicket += (int)ticket.Type;
-            int totalAttendance = attendances.Count*20;
+            int totalAttendance = attendances.Count * 20;
             return new SalarySlipDTO()
-            { 
+            {
                 Attendances = attendances.Select(x => new AttendanceDTO()
                 {
                     Date = x.Date,
@@ -142,7 +142,7 @@ namespace HR_Management_System.Models.Services
                 ).ToList(),
                 Date = Date,
                 Total = employee.Salary - totalAttendance + totalTicket,
-                Ticket = tickets.Select(x => new TicketDTO() 
+                Ticket = tickets.Select(x => new TicketDTO()
                 {
                     Approval = x.Approval,
                     Comment = x.Comment,
@@ -151,16 +151,16 @@ namespace HR_Management_System.Models.Services
                     Type = x.Type,
                 }).ToList(),
                 EmployeeID = id,
-                Employee = new EmployeeDTO() 
-                { 
+                Employee = new EmployeeDTO()
+                {
                     DepartmentID = employee.DepartmentID,
                     ID = employee.ID,
                     Level = employee.Level,
                     Name = employee.Name,
-                    
+
                 }
             };
-            
+
         }
         public async Task<DepartmentDTO> GetDepartmentForEmployee(int id)
         {
@@ -214,5 +214,44 @@ namespace HR_Management_System.Models.Services
 
         //}
 
+
+        /// <summary>
+        /// Get all attendances for a specific employee
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<List<AttendanceDTO>> GetAllAttendance(int id)
+        {
+
+            return await _context.Attendances.Select(x => new AttendanceDTO()
+            {
+                EmployeeID = x.EmployeeID,
+                Date = x.Date,
+                Present = x.Present
+            }).Where(x => x.EmployeeID == id).ToListAsync();
+        }
+
+
+
+        /// <summary>
+        /// Get all leaves for a specific employee
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<List<ShiftEndDTO>> GetAllShiftEnds(int id)
+        {
+
+            return await _context.ShiftEnds.Select(x => new ShiftEndDTO()
+            {
+                EmployeeID = x.EmployeeID,
+                Date = x.Date,
+                Left = x.Left
+            }).Where(x => x.EmployeeID == id).ToListAsync();
+        }
+
+
     }
+
 }
+
+
