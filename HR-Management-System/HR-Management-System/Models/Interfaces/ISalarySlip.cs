@@ -1,19 +1,21 @@
-﻿using System.Collections.Generic;
+﻿using HR_Management_System.Models.DTOs;
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace HR_Management_System.Models.Interfaces
 {
     public interface ISalarySlip
     {
-        public Task<SalarySlip> GetSalarySlip(int id);
+        public Task<SalarySlipDTO> GetSalarySlip(int id, int month);
 
-        public Task<List<SalarySlip>> GetSalarySlips();
+        public Task<List<SalarySlipDTO>> GetSalarySlips();
 
-        public Task AddSalarySlip(SalarySlip salarySlip);
+        public Task AddSalarySlip(int id);
 
         public Task UpdateSalarySlip(int id, SalarySlip salarySlip);
 
         public Task DeleteSalarySlip(int id);
+        public Task<SalarySlip> Find(int id);
     }
-
 }

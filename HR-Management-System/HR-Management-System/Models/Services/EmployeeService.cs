@@ -113,16 +113,8 @@ namespace HR_Management_System.Models.Services
         public async Task SetEmployeeToDepartment(int empId, int departmentId)
         {
             Employee employee = await _context.Employees.FirstOrDefaultAsync(x => x.ID == empId);
-            Department oldDepartment = await _context.Departments.FirstOrDefaultAsync(x => x.ID == employee.DepartmentID);
-            Department newDepartment = await _context.Departments.FirstOrDefaultAsync(x => x.ID == departmentId);
-            oldDepartment.Employees.Remove(employee);
             employee.DepartmentID = departmentId;
-            employee.Department = newDepartment;
             _context.Entry(employee).State = EntityState.Modified;
-            _context.Entry(oldDepartment).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-            newDepartment.Employees.Add(employee);
-            _context.Entry(newDepartment).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }
         public async Task<SalarySlipDTO> GetSalarySlip(int id)
@@ -222,6 +214,7 @@ namespace HR_Management_System.Models.Services
 
         //}
 
+
         /// <summary>
         /// Get all attendances for a specific employee
         /// </summary>
@@ -255,6 +248,7 @@ namespace HR_Management_System.Models.Services
                 Left = x.Left
             }).Where(x => x.EmployeeID == id).ToListAsync();
         }
+
 
     }
 
