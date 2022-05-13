@@ -131,7 +131,7 @@ namespace HR_Management_System.Models.Services
             DateTime Date = DateTime.Now.ToLocalTime();
             List<Ticket> tickets = _context.Tickets.Select(x => x)
                 .Where(x => x.emp_id == id)
-                .Where(x => x.Date.Month == Date.Month && x.Date.Day <= Date.Day).ToList();
+                .Where(x => x.Date.Month == Date.Month && x.Date.Day <= Date.Day).ToList(); // we use day prop in case some dumb like osama create a ticket with future Date
             List<Attendance> attendances = _context.Attendances.Select(x =>x)
                 .Where(x => x.EmployeeID == id)
                 .Where(x => x.Date.Month == Date.Month && x.Date.Day <= Date.Day)
@@ -149,7 +149,7 @@ namespace HR_Management_System.Models.Services
                 }
                 ).ToList(),
                 Date = Date,
-                Total = employee.Department.BaseSalary - totalAttendance + totalTicket,
+                Total = employee.Salary - totalAttendance + totalTicket,
                 Ticket = tickets.Select(x => new TicketDTO() 
                 {
                     Approval = x.Approval,
@@ -185,42 +185,42 @@ namespace HR_Management_System.Models.Services
                 }).ToList()
             };
         }
-        //public void starter ()
-        //{
-        //    Timer timer = new Timer(1000);
-        //    timer.AutoReset = true;
-        //    timer.Elapsed += new ElapsedEventHandler(CheckAttendance);
-        //    timer.Start();
-            
-
-        //}
-        //async void CheckAttendance(object sender, ElapsedEventArgs e)
-        //{
-        //    DateTime Time = DateTime.Now;
-        //    if (Time.Hour == 4 && Time.Minute == 17)
-        //    {
-        //        List<Employee> employees = await _context.Employees.ToListAsync();
-        //        foreach (Employee employee in employees)
-        //        {
-        //            if (employee.Attendances.Last().Date.Date != Time.Date)
-        //            {
-        //                Attendance attendance = new Attendance()
-        //                {
-        //                    Date = Time,
-        //                    Present = false,
-        //                    EmployeeID = employee.ID,
-        //                    Employee = employee,
-        //                };
-        //                employee.Attendances.Add(attendance);
-        //                _context.Entry(employee).State = EntityState.Modified;
-        //                _context.Entry(attendance).State = EntityState.Added;
-        //                await _context.SaveChangesAsync();
-        //            }
-        //        }
-        //    }
+        public void starter()
+        {
+            Timer timer = new Timer(1000);
+            timer.AutoReset = true;
+            timer.Elapsed += new ElapsedEventHandler(CheckAttendance);
+            timer.Start();
 
 
-        //}
+        }
+        async void CheckAttendance(object sender, ElapsedEventArgs e)
+        {
+            DateTime Time = DateTime.Now;
+            if (Time.Hour == 4 && Time.Minute == 17)
+            {
+                List<Employee> employees = await _context.Employees.ToListAsync();
+                foreach (Employee employee in employees)
+                {
+                    if (employee.Attendances.Last().Date.Date != Time.Date)
+                    {
+                        Attendance attendance = new Attendance()
+                        {
+                            Date = Time,
+                            Present = false,
+                            EmployeeID = employee.ID,
+                            Employee = employee,
+                        };
+                        employee.Attendances.Add(attendance);
+                        _context.Entry(employee).State = EntityState.Modified;
+                        _context.Entry(attendance).State = EntityState.Added;
+                        await _context.SaveChangesAsync();
+                    }
+                }
+            }
+
+
+        }
 
     }
 }

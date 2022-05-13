@@ -101,9 +101,6 @@ namespace HR_Management_System.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<double>("BaseSalary")
-                        .HasColumnType("float");
-
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
@@ -115,19 +112,16 @@ namespace HR_Management_System.Migrations
                         new
                         {
                             ID = 1,
-                            BaseSalary = 500.0,
                             Name = "IT"
                         },
                         new
                         {
                             ID = 2,
-                            BaseSalary = 400.0,
                             Name = "Finance"
                         },
                         new
                         {
                             ID = 3,
-                            BaseSalary = 300.0,
                             Name = "Sales"
                         });
                 });
@@ -163,6 +157,9 @@ namespace HR_Management_System.Migrations
                     b.Property<string>("Phone")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<double>("Salary")
+                        .HasColumnType("float");
+
                     b.HasKey("ID");
 
                     b.HasIndex("DepartmentID");
@@ -180,7 +177,8 @@ namespace HR_Management_System.Migrations
                             Level = 1,
                             Name = "Laith",
                             Password = "1234",
-                            Phone = "079"
+                            Phone = "079",
+                            Salary = 300.0
                         },
                         new
                         {
@@ -192,7 +190,8 @@ namespace HR_Management_System.Migrations
                             Level = 2,
                             Name = "Osama",
                             Password = "1234",
-                            Phone = "079"
+                            Phone = "079",
+                            Salary = 400.0
                         },
                         new
                         {
@@ -204,7 +203,8 @@ namespace HR_Management_System.Migrations
                             Level = 3,
                             Name = "Shadi",
                             Password = "1234",
-                            Phone = "079"
+                            Phone = "079",
+                            Salary = 500.0
                         });
                 });
 

@@ -18,6 +18,7 @@ namespace HR_Management_System.Models.Services
         }
         public async Task<Ticket> CreateTicket(Ticket ticket)
         {
+
             _context.Entry(ticket).State = EntityState.Added;
             await _context.SaveChangesAsync();
             return ticket;
