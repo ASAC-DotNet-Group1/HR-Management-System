@@ -21,5 +21,7 @@ namespace HR_Management_System.Models.Interfaces
 
         public Task<List<AttendanceDTO>> GetAllAttendance(int id);
 
+        public Task<List<ShiftEndDTO>> GetAllShiftEnds(int id);
+
     }
 }

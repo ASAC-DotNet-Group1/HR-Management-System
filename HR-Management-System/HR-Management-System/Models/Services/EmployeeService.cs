@@ -238,6 +238,24 @@ namespace HR_Management_System.Models.Services
             }).Where(x => x.EmployeeID == id).ToListAsync();
         }
 
+
+
+        /// <summary>
+        /// Get all leaves for a specific employee
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<List<ShiftEndDTO>> GetAllShiftEnds(int id)
+        {
+
+            return await _context.ShiftEnds.Select(x => new ShiftEndDTO()
+            {
+                EmployeeID = x.EmployeeID,
+                Date = x.Date,
+                Left = x.Left
+            }).Where(x => x.EmployeeID == id).ToListAsync();
+        }
+
     }
 
 }
