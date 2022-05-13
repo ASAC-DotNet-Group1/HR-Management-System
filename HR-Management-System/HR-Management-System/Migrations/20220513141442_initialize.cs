@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace HR_Management_System.Migrations
 {
-    public partial class initial : Migration
+    public partial class initialize : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,8 +13,7 @@ namespace HR_Management_System.Migrations
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    BaseSalary = table.Column<double>(type: "float", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -34,6 +33,7 @@ namespace HR_Management_System.Migrations
                     Phone = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Salary = table.Column<double>(type: "float", nullable: false),
                     Level = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -129,12 +129,12 @@ namespace HR_Management_System.Migrations
 
             migrationBuilder.InsertData(
                 table: "Departments",
-                columns: new[] { "ID", "BaseSalary", "Name" },
+                columns: new[] { "ID", "Name" },
                 values: new object[,]
                 {
-                    { 1, 500.0, "IT" },
-                    { 2, 400.0, "Finance" },
-                    { 3, 300.0, "Sales" }
+                    { 1, "IT" },
+                    { 2, "Finance" },
+                    { 3, "Sales" }
                 });
 
             migrationBuilder.InsertData(
@@ -149,18 +149,18 @@ namespace HR_Management_System.Migrations
 
             migrationBuilder.InsertData(
                 table: "Employees",
-                columns: new[] { "ID", "Age", "DepartmentID", "Email", "Gender", "Level", "Name", "Password", "Phone" },
-                values: new object[] { 1, 21, 1, "Employee1@LTUC.com", "Male", 1, "Laith", "1234", "079" });
+                columns: new[] { "ID", "Age", "DepartmentID", "Email", "Gender", "Level", "Name", "Password", "Phone", "Salary" },
+                values: new object[] { 1, 21, 1, "Employee1@LTUC.com", "Male", 1, "Laith", "1234", "079", 300.0 });
 
             migrationBuilder.InsertData(
                 table: "Employees",
-                columns: new[] { "ID", "Age", "DepartmentID", "Email", "Gender", "Level", "Name", "Password", "Phone" },
-                values: new object[] { 2, 22, 2, "Employee2@LTUC.com", "Other", 2, "Osama", "1234", "079" });
+                columns: new[] { "ID", "Age", "DepartmentID", "Email", "Gender", "Level", "Name", "Password", "Phone", "Salary" },
+                values: new object[] { 2, 22, 2, "Employee2@LTUC.com", "Other", 2, "Osama", "1234", "079", 400.0 });
 
             migrationBuilder.InsertData(
                 table: "Employees",
-                columns: new[] { "ID", "Age", "DepartmentID", "Email", "Gender", "Level", "Name", "Password", "Phone" },
-                values: new object[] { 3, 24, 3, "Employee3@LTUC.com", "Male", 3, "Shadi", "1234", "079" });
+                columns: new[] { "ID", "Age", "DepartmentID", "Email", "Gender", "Level", "Name", "Password", "Phone", "Salary" },
+                values: new object[] { 3, 24, 3, "Employee3@LTUC.com", "Male", 3, "Shadi", "1234", "079", 500.0 });
 
             migrationBuilder.InsertData(
                 table: "Attendances",
