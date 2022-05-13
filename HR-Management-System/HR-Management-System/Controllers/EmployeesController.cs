@@ -116,5 +116,11 @@ namespace HR_Management_System.Controllers
             return Ok();
         }
 
+        [HttpGet("attendances/{id}")]
+        public async Task<List<AttendanceDTO>> GetAllAttendance(int id)
+        {
+            return await _employee.GetAllAttendance(id);
+        }
+
     }
 }

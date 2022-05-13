@@ -25,7 +25,7 @@ namespace HR_Management_System.Controllers
 
         // GET: api/Attendances
         [HttpGet]
-        public async Task<ActionResult<List<Attendance>>> GetAttendances()
+        public async Task<ActionResult<List<AttendanceDTO>>> GetAttendances()
         {
             return await _attendance.GetAttendances();
         }

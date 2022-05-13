@@ -8,7 +8,7 @@ namespace HR_Management_System.Models.Interfaces
     {
         public Task<Attendance> GetAttendance(int id);
 
-        public Task<List<Attendance>> GetAttendances();
+        public Task<List<AttendanceDTO>> GetAttendances();
 
         public Task AddAttendance(AttendanceDTO attendance);
 
