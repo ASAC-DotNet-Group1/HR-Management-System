@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using HR_Management_System.Models.DTOs;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace HR_Management_System.Models.Interfaces
@@ -10,5 +11,6 @@ namespace HR_Management_System.Models.Interfaces
         Task<Ticket> GetTicket(int id);
         Task<Ticket> UpdateTicket(int id, Ticket ticket);
         Task DeleteTicket(int id);
+        Task<List<TicketDTO>> GetEmployeeTickets(int id);
     }
 }

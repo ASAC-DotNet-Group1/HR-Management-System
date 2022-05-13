@@ -4,9 +4,9 @@ namespace HR_Management_System.Models
 {
     public enum Type
     {
-        Loan = 1000,
-        Leave = -10,
-        Overtime = 20
+        Vacation,
+        Leave,
+        Overtime
     }
     public class Ticket
     {

@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using HR_Management_System.Data;
 using HR_Management_System.Models;
 using HR_Management_System.Models.Interfaces;
+using HR_Management_System.Models.DTOs;
 
 namespace HR_Management_System.Controllers
 {
@@ -26,7 +27,9 @@ namespace HR_Management_System.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Ticket>>> GetTickets()
         {
-            return await _ticket.GetTickets();
+            var tickets = await _ticket.GetTickets();
+            if (tickets == null) return NoContent();
+            return Ok(tickets);
         }
 
         // GET: api/Tickets/5
@@ -54,27 +57,8 @@ namespace HR_Management_System.Controllers
             }
 
             var modifiedTicket =  await _ticket.UpdateTicket(id,ticket);
+            if (modifiedTicket == null) return NotFound();
             return Ok(modifiedTicket);
-
-            //_ticket.Entry(ticket).State = EntityState.Modified;
-
-            //try
-            //{
-            //    await _ticket._.UpdateStudent(id, h);
-            //}
-            //catch (DbUpdateConcurrencyException)
-            //{
-            //    if (!TicketExists(id))
-            //    {
-            //        return NotFound();
-            //    }
-            //    else
-            //    {
-            //        throw;
-            //    }
-            //}
-
-            // return NoContent();
         }
 
         // POST: api/Tickets
@@ -82,11 +66,8 @@ namespace HR_Management_System.Controllers
         [HttpPost]
         public async Task<ActionResult<Ticket>> PostTicket(Ticket ticket)
         {
-
             Ticket newTicket = await _ticket.CreateTicket(ticket);
             return Ok(newTicket);
-
-           
         }
 
         // DELETE: api/Tickets/5
@@ -100,11 +81,21 @@ namespace HR_Management_System.Controllers
             }
 
             catch (Exception) { return NotFound(); }
-            
-
-          
+        }
+        // GET: api/Tickets/Employee/8
+        [HttpGet("Employee/{id}")]
+        public async Task<ActionResult<List<TicketDTO>>> GetEmployeeTickets(int id)
+        {
+            try
+            {
+                List <TicketDTO> employeetickets = await _ticket.GetEmployeeTickets(id);
+                return Ok(employeetickets);
+            }
+            catch(Exception e)
+            {
+                return BadRequest(e);
+            }
         }
 
-        
     }
 }
