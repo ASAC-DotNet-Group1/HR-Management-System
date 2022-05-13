@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace HR_Management_System.Models
 {
@@ -24,8 +21,9 @@ namespace HR_Management_System.Models
         public string Password { get; set; }
         public Level Level { get; set; }
         public List<Ticket> Ticket { get; set; }
-        public List<EmployeeAttendance> EmployeesAttendances { get; set; }
+        public List<Attendance> Attendances { get; set; }
         public List<SalarySlip> SalarySlip { get; set; }
+        public Department Department { get; set; }
     }
-    
+
 }

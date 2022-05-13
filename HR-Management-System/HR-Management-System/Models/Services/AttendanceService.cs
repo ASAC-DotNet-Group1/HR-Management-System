@@ -1,11 +1,8 @@
 ﻿using HR_Management_System.Data;
 using HR_Management_System.Models.DTOs;
 using HR_Management_System.Models.Interfaces;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace HR_Management_System.Models.Services
@@ -19,60 +16,36 @@ namespace HR_Management_System.Models.Services
             _context = context;
         }
 
-        public async Task<AttendanceDTO> AddAttendance(AttendanceDTO attendancedto)
+        public async Task AddAttendance(AttendanceDTO attendancedto)
         {
-            try
+            Attendance attendance = new Attendance
             {
-                Attendance attendance = new Attendance
-                {
-                    EmployeeID = attendancedto.EmployeeID,
-                    Present = attendancedto.Present,
-                    Date = System.DateTime.Now.ToLocalTime()
-                };
-                _context.Entry(attendance).State = EntityState.Added;
+                EmployeeID = attendancedto.EmployeeID,
+                Present = attendancedto.Present,
+                Date = System.DateTime.Now.ToLocalTime()
+            };
+            _context.Entry(attendance).State = EntityState.Added;
 
-                await _context.SaveChangesAsync();
-            }
-            catch (SqlException exception)
-            {
-                if (exception.Number == 2601) // Cannot insert duplicate key row in object error
-                {
-                    throw new Exception();
-                }
-            }
-            return attendancedto;
+            await _context.SaveChangesAsync();
         }
 
         public async Task DeleteAttendance(int id)
         {
-            var attendance = await _context.Attendances.FindAsync(id);
-            if (attendance == null) { throw new Exception("The attendance with this ID i snot available!"); }
+            Attendance attendance = await GetAttendance(id);
+
             _context.Entry(attendance).State = EntityState.Deleted;
 
             await _context.SaveChangesAsync();
         }
 
-        public async Task<AttendanceDTO> GetAttendance(int id)
+        public async Task<Attendance> GetAttendance(int id)
         {
-            var attendance =  await _context.Attendances.FindAsync(id);
-            if (attendance == null) { throw new Exception("The attendance with this ID i snot available!"); }
-            AttendanceDTO attendancedto = new AttendanceDTO
-            {
-                EmployeeID = attendance.EmployeeID,
-                Present = attendance.Present,
-                Date = attendance.Date
-            };
-            return attendancedto;
+            return await _context.Attendances.FindAsync(id);
         }
 
-        public async Task<List<AttendanceDTO>> GetAttendances()
+        public async Task<List<Attendance>> GetAttendances()
         {
-            return await _context.Attendances.Select(x => new AttendanceDTO
-            {
-                EmployeeID = x.EmployeeID,
-                Present = x.Present,
-                Date = System.DateTime.Now.ToLocalTime()
-            }).ToListAsync();
+            return await _context.Attendances.ToListAsync();
         }
 
         public async Task UpdateAttendance(int id, Attendance attendance)
@@ -81,6 +54,7 @@ namespace HR_Management_System.Models.Services
 
             await _context.SaveChangesAsync();
         }
-    }
         
+    }
+
 }

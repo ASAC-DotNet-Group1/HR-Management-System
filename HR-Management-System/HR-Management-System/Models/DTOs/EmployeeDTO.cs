@@ -1,8 +1,4 @@
-﻿
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace HR_Management_System.Models.DTOs
 {
@@ -14,5 +10,6 @@ namespace HR_Management_System.Models.DTOs
         public Level Level { get; set; }
         public List<AttendanceDTO> Attendances { get; set; }
         public List<SalarySlipDTO> SalarySlip { get; set; }
+        
     }
 }

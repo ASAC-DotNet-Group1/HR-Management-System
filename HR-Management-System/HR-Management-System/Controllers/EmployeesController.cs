@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using HR_Management_System.Data;
 using HR_Management_System.Models;
 using HR_Management_System.Models.Interfaces;
+using HR_Management_System.Models.DTOs;
 
 namespace HR_Management_System.Controllers
 {
@@ -24,14 +25,14 @@ namespace HR_Management_System.Controllers
 
         // GET: api/Employees
         [HttpGet]
-        public async Task<ActionResult<List<Employee>>> GetEmployees()
+        public async Task<ActionResult<List<EmployeeDTO>>> GetEmployees()
         {
             return await _employee.GetEmployees();
         }
 
         // GET: api/Employees/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Employee>> GetEmployee(int id)
+        public async Task<ActionResult<EmployeeDTO>> GetEmployee(int id)
         {
             var employee = await _employee.GetEmployee(id);
 
@@ -97,7 +98,23 @@ namespace HR_Management_System.Controllers
 
             return NoContent();
         }
+        [HttpGet("salarySlip/{id}")]
+        public async Task<SalarySlipDTO> GetSalarySlip(int id)
+        {
+            return await _employee.GetSalarySlip(id);
+        }
+        [HttpGet("dep/{id}")]
+        public async Task<DepartmentDTO> GetDepartmentForEmployee(int id)
+        {
+            return await _employee.GetDepartmentForEmployee(id);
+        }
+        [HttpPut("{empId}/{depId}")]
+        public async Task<IActionResult> SetEmployeeToDepartment(int empId, int depId)
+        {
+            await _employee.SetEmployeeToDepartment(empId, depId);
+            
+            return Ok();
+        }
 
-        
     }
 }

@@ -52,3 +52,13 @@ namespace HR_Management_System.Models.Services
 
     }
 }
+
+//SalarySlip salarySlip = new SalarySlip()
+//{
+//    Attendances = attendances,
+//    Ticket = tickets,
+//    Date = Date,
+//    Employee = employee,
+//    EmployeeID = employee.ID,
+//    Total = department.BaseSalary + totalAttendance + totalTicket
+//};
