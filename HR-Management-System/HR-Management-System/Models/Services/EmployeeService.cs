@@ -113,16 +113,8 @@ namespace HR_Management_System.Models.Services
         public async Task SetEmployeeToDepartment(int empId, int departmentId)
         {
             Employee employee = await _context.Employees.FirstOrDefaultAsync(x => x.ID == empId);
-            Department oldDepartment = await _context.Departments.FirstOrDefaultAsync(x => x.ID == employee.DepartmentID);
-            Department newDepartment = await _context.Departments.FirstOrDefaultAsync(x => x.ID == departmentId);
-            oldDepartment.Employees.Remove(employee);
             employee.DepartmentID = departmentId;
-            employee.Department = newDepartment;
             _context.Entry(employee).State = EntityState.Modified;
-            _context.Entry(oldDepartment).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-            newDepartment.Employees.Add(employee);
-            _context.Entry(newDepartment).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }
         public async Task<SalarySlipDTO> GetSalarySlip(int id)
@@ -185,42 +177,42 @@ namespace HR_Management_System.Models.Services
                 }).ToList()
             };
         }
-        public void starter()
-        {
-            Timer timer = new Timer(1000);
-            timer.AutoReset = true;
-            timer.Elapsed += new ElapsedEventHandler(CheckAttendance);
-            timer.Start();
+        //public void starter()
+        //{
+        //    Timer timer = new Timer(1000);
+        //    timer.AutoReset = true;
+        //    timer.Elapsed += new ElapsedEventHandler(CheckAttendance);
+        //    timer.Start();
 
 
-        }
-        async void CheckAttendance(object sender, ElapsedEventArgs e)
-        {
-            DateTime Time = DateTime.Now;
-            if (Time.Hour == 4 && Time.Minute == 17)
-            {
-                List<Employee> employees = await _context.Employees.ToListAsync();
-                foreach (Employee employee in employees)
-                {
-                    if (employee.Attendances.Last().Date.Date != Time.Date)
-                    {
-                        Attendance attendance = new Attendance()
-                        {
-                            Date = Time,
-                            Present = false,
-                            EmployeeID = employee.ID,
-                            Employee = employee,
-                        };
-                        employee.Attendances.Add(attendance);
-                        _context.Entry(employee).State = EntityState.Modified;
-                        _context.Entry(attendance).State = EntityState.Added;
-                        await _context.SaveChangesAsync();
-                    }
-                }
-            }
+        //}
+        //async void CheckAttendance(object sender, ElapsedEventArgs e)
+        //{
+        //    DateTime Time = DateTime.Now;
+        //    if (Time.Hour == 4 && Time.Minute == 17)
+        //    {
+        //        List<Employee> employees = await _context.Employees.ToListAsync();
+        //        foreach (Employee employee in employees)
+        //        {
+        //            if (employee.Attendances.Last().Date.Date != Time.Date)
+        //            {
+        //                Attendance attendance = new Attendance()
+        //                {
+        //                    Date = Time,
+        //                    Present = false,
+        //                    EmployeeID = employee.ID,
+        //                    Employee = employee,
+        //                };
+        //                employee.Attendances.Add(attendance);
+        //                _context.Entry(employee).State = EntityState.Modified;
+        //                _context.Entry(attendance).State = EntityState.Added;
+        //                await _context.SaveChangesAsync();
+        //            }
+        //        }
+        //    }
 
 
-        }
+        //}
 
     }
 }

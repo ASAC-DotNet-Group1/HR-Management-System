@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using HR_Management_System.Data;
 using HR_Management_System.Models;
 using HR_Management_System.Models.Interfaces;
+using HR_Management_System.Models.DTOs;
 
 namespace HR_Management_System.Controllers
 {
@@ -24,16 +25,16 @@ namespace HR_Management_System.Controllers
 
         // GET: api/SalarySlips
         [HttpGet]
-        public async Task<ActionResult<List<SalarySlip>>> GetSalarySlips()
+        public async Task<ActionResult<List<SalarySlipDTO>>> GetSalarySlips()
         {
             return await _salarySlip.GetSalarySlips();
         }
 
         // GET: api/SalarySlips/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<SalarySlip>> GetSalarySlip(int id)
+        [HttpGet("{id}/Month/{month}")]
+        public async Task<ActionResult<SalarySlipDTO>> GetSalarySlip(int id, int month)
         {
-            var salarySlip = await _salarySlip.GetSalarySlip(id);
+            var salarySlip = await _salarySlip.GetSalarySlip(id, month);
 
             if (salarySlip == null)
             {
@@ -59,7 +60,7 @@ namespace HR_Management_System.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (await _salarySlip.GetSalarySlip(id)==null)
+                if (await _salarySlip.Find(id)==null)
                 {
                     return NotFound();
                 }
@@ -74,13 +75,13 @@ namespace HR_Management_System.Controllers
 
         // POST: api/SalarySlips
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<SalarySlip>> PostSalarySlip(SalarySlip salarySlip)
+        [HttpPost ("{id}")]
+        public async Task<ActionResult<SalarySlip>> PostSalarySlip(int id)
         {
 
             try
             {
-                await _salarySlip.AddSalarySlip(salarySlip);
+                await _salarySlip.AddSalarySlip(id);
             }
             catch (DbUpdateException)
             {
@@ -89,14 +90,15 @@ namespace HR_Management_System.Controllers
 
             }
 
-            return CreatedAtAction("GetSalarySlip", new { id = salarySlip.EmployeeID }, salarySlip);
+            return Ok();
+
         }
 
         // DELETE: api/SalarySlips/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteSalarySlip(int id)
         {
-            var salarySlip = await _salarySlip.GetSalarySlip(id);
+            var salarySlip = await _salarySlip.Find(id);
             if (salarySlip == null)
             {
                 return NotFound();
@@ -106,7 +108,6 @@ namespace HR_Management_System.Controllers
 
             return NoContent();
         }
-
 
     }
 }
