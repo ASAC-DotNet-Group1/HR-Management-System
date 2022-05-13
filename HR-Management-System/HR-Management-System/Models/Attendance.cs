@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace HR_Management_System.Models
 {
@@ -11,6 +8,6 @@ namespace HR_Management_System.Models
         public int EmployeeID { get; set; }
         public bool Present { get; set; }
         public DateTime Date { get; set; }
-        public List<EmployeeAttendance> EmployeeAttendance { get; set; }
+        public Employee Employee { get; set; }
     }
 }

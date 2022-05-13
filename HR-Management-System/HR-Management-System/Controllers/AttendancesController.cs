@@ -25,23 +25,23 @@ namespace HR_Management_System.Controllers
 
         // GET: api/Attendances
         [HttpGet]
-        public async Task<ActionResult<List<AttendanceDTO>>> GetAttendances()
+        public async Task<ActionResult<List<Attendance>>> GetAttendances()
         {
             return await _attendance.GetAttendances();
         }
 
         // GET: api/Attendances/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<AttendanceDTO>> GetAttendance(int id)
+        public async Task<ActionResult<Attendance>> GetAttendance(int id)
         {
-            try
+            var attendance = await _attendance.GetAttendance(id);
+
+            if (attendance == null)
             {
-                return await _attendance.GetAttendance(id);
+                return NotFound();
             }
-            catch (Exception e)
-            {
-                return NotFound(e.Message);
-            }
+
+            return attendance;
         }
 
         // PUT: api/Attendances/5
@@ -75,17 +75,10 @@ namespace HR_Management_System.Controllers
         // POST: api/Attendances
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<AttendanceDTO>> PostAttendance(AttendanceDTO attendancedto)
+        public async Task<ActionResult<Attendance>> PostAttendance(AttendanceDTO attendance)
         {
-            try
-            {
-                await _attendance.AddAttendance(attendancedto);
-            }
-            catch (Exception e) 
-            { 
-                return BadRequest(e.Message);
-            }
-            return attendancedto;
+            await _attendance.AddAttendance(attendance);
+            return Ok(attendance);
         }
 
         // DELETE: api/Attendances/5
@@ -102,5 +95,6 @@ namespace HR_Management_System.Controllers
 
             return NoContent();
         }
+
     }
 }

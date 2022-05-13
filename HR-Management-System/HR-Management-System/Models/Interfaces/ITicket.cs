@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace HR_Management_System.Models.Interfaces
 {
-    public interface ITicket 
+    public interface ITicket
     {
         Task<Ticket> CreateTicket(Ticket ticket);
         Task<List<Ticket>> GetTickets();
