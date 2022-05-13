@@ -18,5 +18,8 @@ namespace HR_Management_System.Models.Interfaces
         public Task<SalarySlipDTO> GetSalarySlip(int id);
         public Task<DepartmentDTO> GetDepartmentForEmployee(int id);
         public  Task SetEmployeeToDepartment(int empId, int departmentId);
+
+        public Task<List<AttendanceDTO>> GetAllAttendance(int id);
+
     }
 }
