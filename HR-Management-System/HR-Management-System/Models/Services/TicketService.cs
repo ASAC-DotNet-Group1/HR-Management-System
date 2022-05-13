@@ -1,8 +1,10 @@
 ﻿using HR_Management_System.Data;
+using HR_Management_System.Models.DTOs;
 using HR_Management_System.Models.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 
@@ -18,7 +20,7 @@ namespace HR_Management_System.Models.Services
         }
         public async Task<Ticket> CreateTicket(Ticket ticket)
         {
-
+            ticket.Date = DateTime.Now.ToLocalTime();
             _context.Entry(ticket).State = EntityState.Added;
             await _context.SaveChangesAsync();
             return ticket;
@@ -53,5 +55,20 @@ namespace HR_Management_System.Models.Services
 
             await _context.SaveChangesAsync();
         }
+        public async Task<List<TicketDTO>> GetEmployeeTickets(int id)
+        {
+            Employee employee =  _context.Employees.Find(id);
+            return await _context.Tickets.Where(x => x.emp_id == id).Select(x => new TicketDTO
+            {
+                ID = x.ID,
+                EmployeeName = employee.Name,
+                Type = x.Type,
+                Date = x.Date,
+                Comment = x.Comment,
+                Approval = x.Approval,
+                Level = employee.Level.ToString()
+            }).ToListAsync();
+        }
+
     }
 }

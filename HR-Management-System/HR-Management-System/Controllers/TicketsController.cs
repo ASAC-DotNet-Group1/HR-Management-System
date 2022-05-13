@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using HR_Management_System.Data;
 using HR_Management_System.Models;
 using HR_Management_System.Models.Interfaces;
+using HR_Management_System.Models.DTOs;
 
 namespace HR_Management_System.Controllers
 {
@@ -104,7 +105,12 @@ namespace HR_Management_System.Controllers
 
           
         }
+        // GET: api/Tickets/Employee/8
+        [HttpGet("Employee/{id}")]
+        public async Task<List<TicketDTO>> GetEmployeeTickets(int id)
+        {
+            return await _ticket.GetEmployeeTickets(id);
+        }
 
-        
     }
 }
