@@ -32,24 +32,24 @@ namespace HR_Management_System.Data
             );
 
             modelBuilder.Entity<Department>().HasData(
-                new Department { ID = 1, Name = "IT",  },
+                new Department { ID = 1, Name = "IT", },
                 new Department { ID = 2, Name = "Finance", },
                 new Department { ID = 3, Name = "Sales", }
                 );
 
             modelBuilder.Entity<Ticket>().HasData(
-                new Ticket { ID = 1, emp_id = 2 , Approval = true, Comment = "Vacation", Date = new DateTime(2022, 5, 12), Type = Models.Type.Vacation },
-                new Ticket { ID = 2, emp_id = 2, Approval = false, Comment = "Car Loan", Date = new DateTime(2022, 5, 9), Type = Models.Type.Leave },
-                new Ticket { ID = 3, emp_id = 2, Approval = true, Comment = "Need more money", Date = new DateTime(2022, 5, 23), Type = Models.Type.Overtime }
+                new Ticket { ID = 1, emp_id = 2, Status = Models.Status.Approved, Comment = "Vacation", Date = new DateTime(2022, 5, 12), Type = Models.Type.Vacation },
+                new Ticket { ID = 2, emp_id = 2, Status = Models.Status.Denied, Comment = "Car Loan", Date = new DateTime(2022, 5, 9), Type = Models.Type.Leave },
+                new Ticket { ID = 3, emp_id = 2, Status = Models.Status.Approved, Comment = "Need more money", Date = new DateTime(2022, 5, 23), Type = Models.Type.Overtime }
                 );
 
             modelBuilder.Entity<Attendance>().HasData(
-                new Attendance { ID = 1, EmployeeID = 1, Present = true, Date = new DateTime(2022, 6, 23) },
-                new Attendance { ID = 2, EmployeeID = 1, Present = false, Date = new DateTime(2022, 6, 24) },
-                new Attendance { ID = 3, EmployeeID = 1, Present = true, Date = new DateTime(2022, 6, 25) },
-                new Attendance { ID = 4, EmployeeID = 2, Present = false, Date = new DateTime(2022, 5, 12) },
-                new Attendance { ID = 5, EmployeeID = 2, Present = true, Date = new DateTime(2022, 5, 10) },
-                new Attendance { ID = 6, EmployeeID = 2, Present = true, Date = new DateTime(2022, 5, 25) }
+                new Attendance { ID = 1, EmployeeID = 1, StartShift = true, StartDate = new DateTime(2022, 6, 23) },
+                new Attendance { ID = 2, EmployeeID = 1, StartShift = false, StartDate = new DateTime(2022, 6, 24) },
+                new Attendance { ID = 3, EmployeeID = 1, StartShift = true, StartDate = new DateTime(2022, 6, 25) },
+                new Attendance { ID = 4, EmployeeID = 2, StartShift = false, StartDate = new DateTime(2022, 5, 12) },
+                new Attendance { ID = 5, EmployeeID = 2, StartShift = true, StartDate = new DateTime(2022, 5, 10) },
+                new Attendance { ID = 6, EmployeeID = 2, StartShift = true, StartDate = new DateTime(2022, 5, 25) }
                 );
 
 

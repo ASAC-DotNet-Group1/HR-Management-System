@@ -26,13 +26,16 @@ namespace HR_Management_System.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("EmpName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("EmployeeID")
                         .HasColumnType("int");
 
-                    b.Property<bool>("Present")
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("EndShift")
                         .HasColumnType("bit");
 
                     b.Property<DateTime?>("SalarySlipDate")
@@ -40,6 +43,12 @@ namespace HR_Management_System.Migrations
 
                     b.Property<int?>("SalarySlipEmployeeID")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("StartShift")
+                        .HasColumnType("bit");
 
                     b.HasKey("ID");
 
@@ -53,44 +62,56 @@ namespace HR_Management_System.Migrations
                         new
                         {
                             ID = 1,
-                            Date = new DateTime(2022, 6, 23, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             EmployeeID = 1,
-                            Present = true
+                            EndDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndShift = false,
+                            StartDate = new DateTime(2022, 6, 23, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartShift = true
                         },
                         new
                         {
                             ID = 2,
-                            Date = new DateTime(2022, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             EmployeeID = 1,
-                            Present = false
+                            EndDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndShift = false,
+                            StartDate = new DateTime(2022, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartShift = false
                         },
                         new
                         {
                             ID = 3,
-                            Date = new DateTime(2022, 6, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             EmployeeID = 1,
-                            Present = true
+                            EndDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndShift = false,
+                            StartDate = new DateTime(2022, 6, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartShift = true
                         },
                         new
                         {
                             ID = 4,
-                            Date = new DateTime(2022, 5, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             EmployeeID = 2,
-                            Present = false
+                            EndDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndShift = false,
+                            StartDate = new DateTime(2022, 5, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartShift = false
                         },
                         new
                         {
                             ID = 5,
-                            Date = new DateTime(2022, 5, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             EmployeeID = 2,
-                            Present = true
+                            EndDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndShift = false,
+                            StartDate = new DateTime(2022, 5, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartShift = true
                         },
                         new
                         {
                             ID = 6,
-                            Date = new DateTime(2022, 5, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             EmployeeID = 2,
-                            Present = true
+                            EndDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndShift = false,
+                            StartDate = new DateTime(2022, 5, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartShift = true
                         });
                 });
 
@@ -298,14 +319,14 @@ namespace HR_Management_System.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool>("Approval")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Comment")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("EmpName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("EmployeeID")
                         .HasColumnType("int");
@@ -314,6 +335,9 @@ namespace HR_Management_System.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<int?>("SalarySlipEmployeeID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.Property<int>("Type")
@@ -334,27 +358,27 @@ namespace HR_Management_System.Migrations
                         new
                         {
                             ID = 1,
-                            Approval = true,
                             Comment = "Vacation",
                             Date = new DateTime(2022, 5, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Status = 1,
                             Type = 0,
                             emp_id = 2
                         },
                         new
                         {
                             ID = 2,
-                            Approval = false,
                             Comment = "Car Loan",
                             Date = new DateTime(2022, 5, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Status = 2,
                             Type = 1,
                             emp_id = 2
                         },
                         new
                         {
                             ID = 3,
-                            Approval = true,
                             Comment = "Need more money",
                             Date = new DateTime(2022, 5, 23, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Status = 1,
                             Type = 2,
                             emp_id = 2
                         });

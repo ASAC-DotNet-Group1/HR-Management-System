@@ -33,7 +33,7 @@ namespace HR_Management_System.Models.Services
         {
             var attendance = await _context.Attendances.FindAsync(id);
             if(attendance == null) { throw new Exception("Attendance was not found"); }
-            return await _context.Attendances.Where(x => x.ID == id).Select(x => new AttendanceDTO
+            return await _context.Attendances.Where(x => x.ID ==id).Select(x => new AttendanceDTO()
             {
                 EmployeeID = x.EmployeeID,
                 Name = x.Employee.Name,
@@ -60,16 +60,17 @@ namespace HR_Management_System.Models.Services
             }
         }
 
-        public async Task Arrival(AttendanceDTO attendancedto)
+        public async Task Arrival(int id)
         {
-            int empID = await _context.Employees.Where(x => x.ID == attendancedto.EmployeeID).Select(x => x.ID).FirstOrDefaultAsync();
-            if(empID != 0)
+            Employee employee = await _context.Employees.FindAsync(id);
+            if (employee != null)
             {
                 Attendance attendance = new Attendance
                 {
-                    EmployeeID = attendancedto.EmployeeID,
+                    EmpName = employee.Name,
+                    EmployeeID = id,
                     StartShift = true,
-                    StartDate = System.DateTime.Now.ToLocalTime()
+                    StartDate = DateTime.Now.ToLocalTime()
                 };
 
                 _context.Entry(attendance).State = EntityState.Added;

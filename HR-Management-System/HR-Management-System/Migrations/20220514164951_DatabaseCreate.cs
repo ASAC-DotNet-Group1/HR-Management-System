@@ -93,9 +93,12 @@ namespace HR_Management_System.Migrations
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    EmpName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     EmployeeID = table.Column<int>(type: "int", nullable: false),
-                    Present = table.Column<bool>(type: "bit", nullable: false),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    StartShift = table.Column<bool>(type: "bit", nullable: false),
+                    EndShift = table.Column<bool>(type: "bit", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     SalarySlipDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     SalarySlipEmployeeID = table.Column<int>(type: "int", nullable: true)
                 },
@@ -123,10 +126,11 @@ namespace HR_Management_System.Migrations
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     emp_id = table.Column<int>(type: "int", nullable: false),
+                    EmpName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Type = table.Column<int>(type: "int", nullable: false),
                     Comment = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Approval = table.Column<bool>(type: "bit", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
                     EmployeeID = table.Column<int>(type: "int", nullable: true),
                     SalarySlipDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     SalarySlipEmployeeID = table.Column<int>(type: "int", nullable: true)
@@ -160,12 +164,12 @@ namespace HR_Management_System.Migrations
 
             migrationBuilder.InsertData(
                 table: "Tickets",
-                columns: new[] { "ID", "Approval", "Comment", "Date", "EmployeeID", "SalarySlipDate", "SalarySlipEmployeeID", "Type", "emp_id" },
+                columns: new[] { "ID", "Comment", "Date", "EmpName", "EmployeeID", "SalarySlipDate", "SalarySlipEmployeeID", "Status", "Type", "emp_id" },
                 values: new object[,]
                 {
-                    { 1, true, "Vacation", new DateTime(2022, 5, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), null, null, null, 0, 2 },
-                    { 2, false, "Car Loan", new DateTime(2022, 5, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), null, null, null, 1, 2 },
-                    { 3, true, "Need more money", new DateTime(2022, 5, 23, 0, 0, 0, 0, DateTimeKind.Unspecified), null, null, null, 2, 2 }
+                    { 1, "Vacation", new DateTime(2022, 5, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), null, null, null, null, 1, 0, 2 },
+                    { 2, "Car Loan", new DateTime(2022, 5, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), null, null, null, null, 2, 1, 2 },
+                    { 3, "Need more money", new DateTime(2022, 5, 23, 0, 0, 0, 0, DateTimeKind.Unspecified), null, null, null, null, 1, 2, 2 }
                 });
 
             migrationBuilder.InsertData(
@@ -185,15 +189,15 @@ namespace HR_Management_System.Migrations
 
             migrationBuilder.InsertData(
                 table: "Attendances",
-                columns: new[] { "ID", "Date", "EmployeeID", "Present", "SalarySlipDate", "SalarySlipEmployeeID" },
+                columns: new[] { "ID", "EmpName", "EmployeeID", "EndDate", "EndShift", "SalarySlipDate", "SalarySlipEmployeeID", "StartDate", "StartShift" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2022, 6, 23, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, true, null, null },
-                    { 2, new DateTime(2022, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, false, null, null },
-                    { 3, new DateTime(2022, 6, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, true, null, null },
-                    { 4, new DateTime(2022, 5, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), 2, false, null, null },
-                    { 5, new DateTime(2022, 5, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), 2, true, null, null },
-                    { 6, new DateTime(2022, 5, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), 2, true, null, null }
+                    { 1, null, 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, null, null, new DateTime(2022, 6, 23, 0, 0, 0, 0, DateTimeKind.Unspecified), true },
+                    { 2, null, 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, null, null, new DateTime(2022, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified), false },
+                    { 3, null, 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, null, null, new DateTime(2022, 6, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), true },
+                    { 4, null, 2, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, null, null, new DateTime(2022, 5, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), false },
+                    { 5, null, 2, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, null, null, new DateTime(2022, 5, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), true },
+                    { 6, null, 2, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, null, null, new DateTime(2022, 5, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), true }
                 });
 
             migrationBuilder.InsertData(

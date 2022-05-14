@@ -44,7 +44,7 @@ namespace HR_Management_System.Models.Services
         {
             Ticket oldTicket = await GetTicket(id);
             if (oldTicket == null) return null;
-            oldTicket.Approval = ticket.Approval;
+            oldTicket.Status = ticket.Status;
             _context.Entry(oldTicket).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             return oldTicket;
@@ -65,12 +65,13 @@ namespace HR_Management_System.Models.Services
             return await _context.Tickets.Where(x => x.emp_id == id).Select(x => new TicketDTO
             {
                 ID = x.ID,
-                EmployeeName = employee.Name,
+                EmployeeName = x.EmpName,
                 Type = x.Type,
                 Date = x.Date,
                 Comment = x.Comment,
-                Approval = x.Approval,
+                Status = x.Status,
                 Level = employee.Level.ToString()
+                
             }).ToListAsync();
             
         }

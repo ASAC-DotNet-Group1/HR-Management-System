@@ -49,9 +49,10 @@ namespace HR_Management_System.Models.Services
                     Attendances = x.Attendances.Select(x => new AttendanceDTO
                     {
                         Name = x.Employee.Name,
-                        Date = x.Date,
+                        StartShift = x.StartDate,
                         EmployeeID = x.EmployeeID,
-                        Present = x.Present,
+                        EndShift = x.EndDate,
+                        
                     }).ToList(),
                     SalarySlips = x.SalarySlips.Select(x => new SalarySlipDTO
                     {
@@ -60,7 +61,7 @@ namespace HR_Management_System.Models.Services
                         Ticket = x.Ticket.Select(x => new TicketDTO
                         {
                             ID = x.ID,
-                            Approval = x.Approval,
+                            Status=x.Status,
                             Comment = x.Comment,
                             Date = x.Date,
                             Type = x.Type
@@ -82,9 +83,10 @@ namespace HR_Management_System.Models.Services
                     Level = x.Level,
                     Attendances = x.Attendances.Select(x => new AttendanceDTO
                     {
-                        Date = x.Date,
+                        StartShift = x.StartDate,
                         EmployeeID = x.EmployeeID,
-                        Present = x.Present,
+                        EndShift = x.EndDate,
+                        Name = x.EmpName,
                     }).ToList(),
                     SalarySlips = x.SalarySlips.Select(x => new SalarySlipDTO
                     {
@@ -93,10 +95,11 @@ namespace HR_Management_System.Models.Services
                         Ticket = x.Ticket.Select(x => new TicketDTO
                         {
                             ID = x.ID,
-                            Approval = x.Approval,
+                            Status = x.Status,
                             Comment = x.Comment,
                             Date = x.Date,
                             Type = x.Type
+                            
                         }).ToList(),
                         Total = x.Total,
                     }
@@ -126,8 +129,8 @@ namespace HR_Management_System.Models.Services
                 .Where(x => x.Date.Month == Date.Month && x.Date.Day <= Date.Day).ToList(); // we use day prop in case some dumb like osama create a ticket with future Date
             List<Attendance> attendances = _context.Attendances.Select(x => x)
                 .Where(x => x.EmployeeID == id)
-                .Where(x => x.Date.Month == Date.Month && x.Date.Day <= Date.Day)
-                .Where(x => x.Present == false).ToList();
+                .Where(x => x.StartDate.Month == Date.Month && x.StartDate.Day <= Date.Day)
+                .Where(x => x.StartShift == false).ToList();
             int totalTicket = 0;
             foreach (Ticket ticket in tickets) totalTicket += (int)ticket.Type;
             int totalAttendance = attendances.Count * 20;
@@ -135,16 +138,17 @@ namespace HR_Management_System.Models.Services
             {
                 Attendances = attendances.Select(x => new AttendanceDTO()
                 {
-                    Date = x.Date,
+                    StartShift = x.StartDate,
                     EmployeeID = x.EmployeeID,
-                    Present = x.Present,
+                    EndShift = x.EndDate,
+                    Name = x.EmpName
                 }
                 ).ToList(),
                 Date = Date,
                 Total = employee.Salary - totalAttendance + totalTicket,
                 Ticket = tickets.Select(x => new TicketDTO()
                 {
-                    Approval = x.Approval,
+                    Status = x.Status,
                     Comment = x.Comment,
                     Date = x.Date,
                     ID = x.ID,
@@ -226,8 +230,9 @@ namespace HR_Management_System.Models.Services
             return await _context.Attendances.Select(x => new AttendanceDTO()
             {
                 EmployeeID = x.EmployeeID,
-                Date = x.Date,
-                Present = x.Present
+                StartShift = x.StartDate,
+                EndShift = x.EndDate
+                
             }).Where(x => x.EmployeeID == id).ToListAsync();
         }
 

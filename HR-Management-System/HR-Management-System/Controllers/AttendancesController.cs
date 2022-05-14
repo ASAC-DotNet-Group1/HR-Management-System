@@ -68,13 +68,13 @@ namespace HR_Management_System.Controllers
 
         // POST: api/Attendances
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Attendance>> PostAttendance(AttendanceDTO attendance)
+        [HttpPost("Arrival/{id}")]
+        public async Task<ActionResult<Attendance>> Arrival(int id)
         {
             try
             {
-                await _attendance.AddAttendance(attendance);
-                return Ok(attendance);
+                await _attendance.Arrival(id);
+                return Ok();
             }
             catch(Exception e)
             {
