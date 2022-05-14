@@ -9,6 +9,7 @@ using HR_Management_System.Data;
 using HR_Management_System.Models;
 using HR_Management_System.Models.Interfaces;
 using HR_Management_System.Models.DTOs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HR_Management_System.Controllers
 {
@@ -23,6 +24,7 @@ namespace HR_Management_System.Controllers
             _ticket = ticket;
         }
 
+        [Authorize(Roles = "Admin , User")]
         // GET: api/Tickets
         [HttpGet]
         public async Task<ActionResult<List<Ticket>>> GetTickets()
@@ -32,6 +34,7 @@ namespace HR_Management_System.Controllers
             return Ok(tickets);
         }
 
+        [Authorize(Roles = "Admin , User")]
         // GET: api/Tickets/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Ticket>> GetTicket(int id)
@@ -46,6 +49,7 @@ namespace HR_Management_System.Controllers
             return ticket;
         }
 
+        [Authorize(Roles = "Admin")]
         // PUT: api/Tickets/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
@@ -61,6 +65,7 @@ namespace HR_Management_System.Controllers
             return Ok(modifiedTicket);
         }
 
+        [Authorize(Roles = "Admin")]
         // POST: api/Tickets
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
@@ -70,6 +75,7 @@ namespace HR_Management_System.Controllers
             return Ok(newTicket);
         }
 
+        [Authorize(Roles = "Admin")]
         // DELETE: api/Tickets/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTicket(int id)

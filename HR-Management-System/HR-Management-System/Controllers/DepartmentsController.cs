@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using HR_Management_System.Data;
 using HR_Management_System.Models;
 using HR_Management_System.Models.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HR_Management_System.Controllers
 {
@@ -22,6 +23,7 @@ namespace HR_Management_System.Controllers
             _department = department;
         }
 
+        [Authorize(Roles = "Admin , User")]
         // GET: api/Departments
         [HttpGet]
         public async Task<ActionResult<List<Department>>> GetDepartments()
@@ -29,6 +31,7 @@ namespace HR_Management_System.Controllers
             return await _department.GetDepartments();
         }
 
+        [Authorize(Roles = "Admin , User")]
         // GET: api/Departments/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Department>> GetDepartment(int id)
@@ -43,6 +46,7 @@ namespace HR_Management_System.Controllers
             return department;
         }
 
+        [Authorize(Roles = "Admin")]
         // PUT: api/Departments/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
@@ -73,6 +77,7 @@ namespace HR_Management_System.Controllers
             return NoContent();
         }
 
+        [Authorize(Roles = "Admin")]
         // POST: api/Departments
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
@@ -83,6 +88,7 @@ namespace HR_Management_System.Controllers
             return CreatedAtAction("GetDepartment", new { id = department.ID }, department);
         }
 
+        [Authorize(Roles = "Admin")]
         // DELETE: api/Departments/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteDepartment(int id)

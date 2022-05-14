@@ -9,6 +9,7 @@ using HR_Management_System.Data;
 using HR_Management_System.Models;
 using HR_Management_System.Models.Interfaces;
 using HR_Management_System.Models.DTOs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HR_Management_System.Controllers
 {
@@ -23,6 +24,7 @@ namespace HR_Management_System.Controllers
             _ShiftEnd = ShiftEnd;
         }
 
+        [Authorize(Roles = "Admin , User")]
         // GET: api/ShiftEnds
         [HttpGet]
         public async Task<ActionResult<List<ShiftEndDTO>>> GetShiftEnds()
@@ -30,6 +32,7 @@ namespace HR_Management_System.Controllers
             return await _ShiftEnd.GetShiftEnds();
         }
 
+        [Authorize(Roles = "Admin , User")]
         // GET: api/ShiftEnds/5
         [HttpGet("{id}")]
         public async Task<ActionResult<ShiftEnd>> GetShiftEnd(int id)
@@ -44,6 +47,7 @@ namespace HR_Management_System.Controllers
             return ShiftEnd;
         }
 
+        [Authorize(Roles = "Admin")]
         // PUT: api/ShiftEnds/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
@@ -72,6 +76,7 @@ namespace HR_Management_System.Controllers
             return NoContent();
         }
 
+        [Authorize(Roles = "Admin")]
         // POST: api/ShiftEnds
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
@@ -81,6 +86,7 @@ namespace HR_Management_System.Controllers
             return Ok(ShiftEnd);
         }
 
+        [Authorize(Roles = "Admin")]
         // DELETE: api/ShiftEnds/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteShiftEnd(int id)

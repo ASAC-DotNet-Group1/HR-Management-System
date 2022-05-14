@@ -11,6 +11,10 @@ using Microsoft.Extensions.Hosting;
 using System.Timers;
 using System;
 using Microsoft.OpenApi.Models;
+using HR_Management_System.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace HR_Management_System
 {
@@ -32,6 +36,26 @@ namespace HR_Management_System
                 options.UseSqlServer(connectionString);
             });
             services.AddControllers();
+            var key = " Test Key ";
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+
+            }).AddJwtBearer(x =>
+            {
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(key)),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+
+                };
+            });
+            services.AddSingleton<IJwtAuthenticationManager>(new JwtAuthenticationManager(key));
 
             services.AddTransient<ITicket, TicketService>();
             services.AddTransient<IDepartment, DepartmentService>();
@@ -63,6 +87,9 @@ namespace HR_Management_System
             }
 
             app.UseRouting();
+
+            app.UseAuthorization();
+            app.UseAuthentication();
 
             // Also for swagger.
             app.UseSwagger(opt =>

@@ -9,6 +9,7 @@ using HR_Management_System.Data;
 using HR_Management_System.Models;
 using HR_Management_System.Models.Interfaces;
 using HR_Management_System.Models.DTOs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HR_Management_System.Controllers
 {
@@ -23,6 +24,7 @@ namespace HR_Management_System.Controllers
             _attendance = attendance;
         }
 
+        [Authorize(Roles = "Admin , User")]
         // GET: api/Attendances
         [HttpGet]
         public async Task<ActionResult<List<AttendanceDTO>>> GetAttendances()
@@ -30,6 +32,7 @@ namespace HR_Management_System.Controllers
             return await _attendance.GetAttendances();
         }
 
+        [Authorize(Roles = "Admin , User")]
         // GET: api/Attendances/5
         [HttpGet("{id}")]
         public async Task<ActionResult<AttendanceDTO>> GetAttendance(int id)
@@ -45,6 +48,7 @@ namespace HR_Management_System.Controllers
             }    
         }
 
+        [Authorize(Roles = "Admin")]
         // PUT: api/Attendances/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
@@ -66,6 +70,7 @@ namespace HR_Management_System.Controllers
             return Content("Updated");
         }
 
+        [Authorize(Roles = "Admin")]
         // POST: api/Attendances
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost("Arrival/{id}")]
@@ -82,6 +87,7 @@ namespace HR_Management_System.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
         // DELETE: api/Attendances/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAttendance(int id)

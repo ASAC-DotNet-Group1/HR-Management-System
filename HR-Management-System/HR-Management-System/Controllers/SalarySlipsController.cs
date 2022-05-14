@@ -9,6 +9,7 @@ using HR_Management_System.Data;
 using HR_Management_System.Models;
 using HR_Management_System.Models.Interfaces;
 using HR_Management_System.Models.DTOs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HR_Management_System.Controllers
 {
@@ -23,6 +24,7 @@ namespace HR_Management_System.Controllers
             _salarySlip = salarySlip;
         }
 
+        [Authorize(Roles = "Admin , User")]
         // GET: api/SalarySlips
         [HttpGet]
         public async Task<ActionResult<List<SalarySlipDTO>>> GetSalarySlips()
@@ -30,6 +32,7 @@ namespace HR_Management_System.Controllers
             return await _salarySlip.GetSalarySlips();
         }
 
+        [Authorize(Roles = "Admin , User")]
         // GET: api/SalarySlips/5
         [HttpGet("{id}/Month/{month}")]
         public async Task<ActionResult<SalarySlipDTO>> GetSalarySlip(int id, int month)
@@ -44,6 +47,7 @@ namespace HR_Management_System.Controllers
             return salarySlip;
         }
 
+        [Authorize(Roles = "Admin")]
         // PUT: api/SalarySlips/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
@@ -73,6 +77,7 @@ namespace HR_Management_System.Controllers
             return NoContent();
         }
 
+        [Authorize(Roles = "Admin")]
         // POST: api/SalarySlips
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost ("{id}")]
@@ -94,6 +99,7 @@ namespace HR_Management_System.Controllers
 
         }
 
+        [Authorize(Roles = "Admin")]
         // DELETE: api/SalarySlips/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteSalarySlip(int id)

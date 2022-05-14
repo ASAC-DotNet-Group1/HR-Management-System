@@ -9,6 +9,7 @@ using HR_Management_System.Data;
 using HR_Management_System.Models;
 using HR_Management_System.Models.Interfaces;
 using HR_Management_System.Models.DTOs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HR_Management_System.Controllers
 {
@@ -23,6 +24,7 @@ namespace HR_Management_System.Controllers
             _employee = employee;
         }
 
+        [Authorize(Roles = "Admin , User")]
         // GET: api/Employees
         [HttpGet]
         public async Task<ActionResult<List<EmployeeDTO>>> GetEmployees()
@@ -30,6 +32,7 @@ namespace HR_Management_System.Controllers
             return await _employee.GetEmployees();
         }
 
+        [Authorize(Roles = "Admin , User")]
         // GET: api/Employees/5
         [HttpGet("{id}")]
         public async Task<ActionResult<EmployeeDTO>> GetEmployee(int id)
@@ -44,6 +47,7 @@ namespace HR_Management_System.Controllers
             return employee;
         }
 
+        [Authorize(Roles = "Admin")]
         // PUT: api/Employees/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
@@ -73,6 +77,7 @@ namespace HR_Management_System.Controllers
             return NoContent();
         }
 
+        [Authorize(Roles = "Admin")]
         // POST: api/Employees
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
@@ -83,6 +88,7 @@ namespace HR_Management_System.Controllers
             return CreatedAtAction("GetEmployee", new { id = employee.ID }, employee);
         }
 
+        [Authorize(Roles = "Admin")]
         // DELETE: api/Employees/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteEmployee(int id)
@@ -98,6 +104,7 @@ namespace HR_Management_System.Controllers
 
             return NoContent();
         }
+        [Authorize(Roles = "Admin , User")]
         [HttpGet("salarySlip/{id}")]
         public async Task<SalarySlipDTO> GetSalarySlip(int id)
         {
@@ -117,16 +124,16 @@ namespace HR_Management_System.Controllers
         }
 
 
-      
 
 
+        [Authorize(Roles = "Admin , User")]
         [HttpGet("attendances/{id}")]
         public async Task<List<AttendanceDTO>> GetAllAttendance(int id)
         {
             return await _employee.GetAllAttendance(id);
         }
 
-
+        [Authorize(Roles = "Admin , User")]
         [HttpGet("shiftends/{id}")]
         public async Task<List<ShiftEndDTO>> GetAllShiftEnds(int id)
         {
