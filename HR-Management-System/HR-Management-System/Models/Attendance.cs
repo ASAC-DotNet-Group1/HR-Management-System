@@ -6,8 +6,10 @@ namespace HR_Management_System.Models
     {
         public int ID { get; set; }
         public int EmployeeID { get; set; }
-        public bool Present { get; set; }
-        public DateTime Date { get; set; }
+        public bool StartShift { get; set; }
+        public bool EndShift { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
         public Employee Employee { get; set; }
-    }
+    } 
 }

@@ -24,8 +24,8 @@ namespace HR_Management_System.Models.Services
             {
                 EmployeeID = x.EmployeeID,
                 Name = x.Employee.Name,
-                Date = x.Date,
-                Present = x.Present
+                StartShift = x.StartDate,
+                EndShift = x.EndDate
             }).ToListAsync();
         }
 
@@ -37,8 +37,8 @@ namespace HR_Management_System.Models.Services
             {
                 EmployeeID = x.EmployeeID,
                 Name = x.Employee.Name,
-                Date = x.Date,
-                Present = x.Present
+                StartShift = x.StartDate,
+                EndShift = x.EndDate
 
             }).FirstOrDefaultAsync();
         }
@@ -49,7 +49,7 @@ namespace HR_Management_System.Models.Services
             
             if(oldAttendance != null)
             {
-                oldAttendance.Present = attendance.Present;
+                oldAttendance.StartShift = attendance.StartShift;
                 _context.Entry(oldAttendance).State = EntityState.Modified;
 
                 await _context.SaveChangesAsync();
@@ -60,7 +60,7 @@ namespace HR_Management_System.Models.Services
             }
         }
 
-        public async Task AddAttendance(AttendanceDTO attendancedto)
+        public async Task Arrival(AttendanceDTO attendancedto)
         {
             int empID = await _context.Employees.Where(x => x.ID == attendancedto.EmployeeID).Select(x => x.ID).FirstOrDefaultAsync();
             if(empID != 0)
@@ -68,8 +68,8 @@ namespace HR_Management_System.Models.Services
                 Attendance attendance = new Attendance
                 {
                     EmployeeID = attendancedto.EmployeeID,
-                    Present = true,
-                    Date = System.DateTime.Now.ToLocalTime()
+                    StartShift = true,
+                    StartDate = System.DateTime.Now.ToLocalTime()
                 };
 
                 _context.Entry(attendance).State = EntityState.Added;

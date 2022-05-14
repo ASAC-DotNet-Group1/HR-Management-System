@@ -8,6 +8,13 @@ namespace HR_Management_System.Models
         Leave,
         Overtime
     }
+
+    public enum Status
+    {
+        Pending,
+        Approved,
+        Denied
+    }
     public class Ticket
     {
         public int ID { get; set; }
@@ -15,7 +22,7 @@ namespace HR_Management_System.Models
         public Type Type { get; set; }
         public string Comment { get; set; }
         public DateTime Date { get; set; }
-        public bool Approval { get; set; }
+        public Status Status { get; set; }
         public Employee Employee { get; set; }
     }
 }

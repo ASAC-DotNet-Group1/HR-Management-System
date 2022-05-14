@@ -6,7 +6,7 @@ namespace HR_Management_System.Models.DTOs
     {
         public int EmployeeID { get; set; }
         public string Name { get; set; }
-        public DateTime Date { get; set; }
-        public bool Present { get; set; }
+        public DateTime StartShift { get; set; }
+        public DateTime EndShift { get; set; }
     }
 }
