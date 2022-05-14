@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace HR_Management_System.Migrations
 {
-    public partial class DatabaseCreate : Migration
+    public partial class initial87481642 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -171,12 +171,12 @@ namespace HR_Management_System.Migrations
                 columns: new[] { "ID", "EmpName", "EmployeeID", "EndDate", "EndShift", "SalarySlipDate", "SalarySlipEmployeeID", "StartDate", "StartShift" },
                 values: new object[,]
                 {
-                    { 1, null, 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, null, null, new DateTime(2022, 6, 23, 0, 0, 0, 0, DateTimeKind.Unspecified), true },
-                    { 2, null, 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, null, null, new DateTime(2022, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified), false },
-                    { 3, null, 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, null, null, new DateTime(2022, 6, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), true },
-                    { 4, null, 2, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, null, null, new DateTime(2022, 5, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), false },
-                    { 5, null, 2, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, null, null, new DateTime(2022, 5, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), true },
-                    { 6, null, 2, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, null, null, new DateTime(2022, 5, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), true }
+                    { 1, "Shadi Aslan", 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, null, null, new DateTime(2022, 6, 23, 0, 0, 0, 0, DateTimeKind.Unspecified), true },
+                    { 2, "Osama Alzaghal", 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, null, null, new DateTime(2022, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified), false },
+                    { 3, "Ahmad Masadeh", 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, null, null, new DateTime(2022, 6, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), true },
+                    { 4, "Laith Alamat", 2, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, null, null, new DateTime(2022, 5, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), false },
+                    { 5, "Johnson Johnson", 2, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, null, null, new DateTime(2022, 5, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), true },
+                    { 6, "Johnny Adam", 2, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, null, null, new DateTime(2022, 5, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), true }
                 });
 
             migrationBuilder.CreateIndex(

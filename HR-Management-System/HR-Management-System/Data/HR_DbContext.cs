@@ -42,12 +42,12 @@ namespace HR_Management_System.Data
                 );
 
             modelBuilder.Entity<Attendance>().HasData(
-                new Attendance { ID = 1, EmployeeID = 1, StartShift = true, StartDate = new DateTime(2022, 6, 23) },
-                new Attendance { ID = 2, EmployeeID = 1, StartShift = false, StartDate = new DateTime(2022, 6, 24) },
-                new Attendance { ID = 3, EmployeeID = 1, StartShift = true, StartDate = new DateTime(2022, 6, 25) },
-                new Attendance { ID = 4, EmployeeID = 2, StartShift = false, StartDate = new DateTime(2022, 5, 12) },
-                new Attendance { ID = 5, EmployeeID = 2, StartShift = true, StartDate = new DateTime(2022, 5, 10) },
-                new Attendance { ID = 6, EmployeeID = 2, StartShift = true, StartDate = new DateTime(2022, 5, 25) }
+                new Attendance { ID = 1, EmployeeID = 1, EmpName = "Shadi Aslan", StartShift = true, StartDate = new DateTime(2022, 6, 23) },
+                new Attendance { ID = 2, EmployeeID = 1, EmpName = "Osama Alzaghal", StartShift = false, StartDate = new DateTime(2022, 6, 24) },
+                new Attendance { ID = 3, EmployeeID = 1, EmpName = "Ahmad Masadeh", StartShift = true, StartDate = new DateTime(2022, 6, 25) },
+                new Attendance { ID = 4, EmployeeID = 2, EmpName = "Laith Alamat", StartShift = false, StartDate = new DateTime(2022, 5, 12) },
+                new Attendance { ID = 5, EmployeeID = 2, EmpName = "Johnson Johnson", StartShift = true, StartDate = new DateTime(2022, 5, 10) },
+                new Attendance { ID = 6, EmployeeID = 2, EmpName = "Johnny Adam", StartShift = true, StartDate = new DateTime(2022, 5, 25) }
                 );
 
 

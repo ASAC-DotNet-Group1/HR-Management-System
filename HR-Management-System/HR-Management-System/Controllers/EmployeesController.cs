@@ -117,9 +117,6 @@ namespace HR_Management_System.Controllers
         }
 
 
-      
-
-
         [HttpGet("attendances/{id}")]
         public async Task<List<AttendanceDTO>> GetAllAttendance(int id)
         {
@@ -127,7 +124,62 @@ namespace HR_Management_System.Controllers
         }
 
 
-        
+
+        //Date stuff
+
+
+        /// <summary>
+        /// Return attendances of all employees in a specific date
+        /// </summary>
+        /// <param name="year"></param>
+        /// <param name="month"></param>
+        /// <returns></returns>
+        [HttpGet("attendances/year/{year}/month/{month}")]
+        public async Task<ActionResult<List<AttendanceDTO>>> GetAllAttendancesInADate(int year, int month)
+        {
+            try
+            {
+                return await _employee.GetAllAttendancesInADate(year, month);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+        /// <summary>
+        /// Return attendances of a specific employee during a specific month of a specific year
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("attendances/employee/{id}/year/{year}/month/{month}")]
+        public async Task<ActionResult<List<AttendanceDTO>>> GetAllAttendancesInADateForEmployee(int id, int year, int month)
+        {
+            try
+            {
+                return await _employee.GetAllAttendancesInADateForEmployee(id, year, month);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     }

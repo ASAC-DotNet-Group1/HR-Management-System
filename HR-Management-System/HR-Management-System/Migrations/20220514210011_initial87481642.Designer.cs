@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HR_Management_System.Migrations
 {
     [DbContext(typeof(HR_DbContext))]
-    [Migration("20220514192658_DatabaseCreate")]
-    partial class DatabaseCreate
+    [Migration("20220514210011_initial87481642")]
+    partial class initial87481642
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -64,6 +64,7 @@ namespace HR_Management_System.Migrations
                         new
                         {
                             ID = 1,
+                            EmpName = "Shadi Aslan",
                             EmployeeID = 1,
                             EndDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             EndShift = false,
@@ -73,6 +74,7 @@ namespace HR_Management_System.Migrations
                         new
                         {
                             ID = 2,
+                            EmpName = "Osama Alzaghal",
                             EmployeeID = 1,
                             EndDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             EndShift = false,
@@ -82,6 +84,7 @@ namespace HR_Management_System.Migrations
                         new
                         {
                             ID = 3,
+                            EmpName = "Ahmad Masadeh",
                             EmployeeID = 1,
                             EndDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             EndShift = false,
@@ -91,6 +94,7 @@ namespace HR_Management_System.Migrations
                         new
                         {
                             ID = 4,
+                            EmpName = "Laith Alamat",
                             EmployeeID = 2,
                             EndDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             EndShift = false,
@@ -100,6 +104,7 @@ namespace HR_Management_System.Migrations
                         new
                         {
                             ID = 5,
+                            EmpName = "Johnson Johnson",
                             EmployeeID = 2,
                             EndDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             EndShift = false,
@@ -109,6 +114,7 @@ namespace HR_Management_System.Migrations
                         new
                         {
                             ID = 6,
+                            EmpName = "Johnny Adam",
                             EmployeeID = 2,
                             EndDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             EndShift = false,
