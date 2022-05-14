@@ -19,6 +19,7 @@ namespace HR_Management_System.Models
     {
         public int ID { get; set; }
         public int emp_id { get; set; }
+        public string EmpName { get; set; }
         public Type Type { get; set; }
         public string Comment { get; set; }
         public DateTime Date { get; set; }

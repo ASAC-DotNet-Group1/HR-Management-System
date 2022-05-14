@@ -27,7 +27,7 @@ namespace HR_Management_System.Models.Services
             DateTime dateTime = DateTime.Now;
             int totalAttendance = 0;
             int totalTickets = 0;
-            foreach( var attendance in attendances) if (!attendance.Present) totalAttendance++;
+            foreach( var attendance in attendances) if (!attendance.StartShift) totalAttendance++;
             foreach (var ticket in tickets) totalTickets += (int)ticket.Type;
             SalarySlip salarySlip = new SalarySlip()
             { 
@@ -66,17 +66,19 @@ namespace HR_Management_System.Models.Services
                 },
                 Attendances = attendances.Select(x => new AttendanceDTO()
                 {
-                    Date = x.Date,
+                    EndShift = x.EndDate,
                     EmployeeID = x.EmployeeID,
-                    Present = x.Present,
+                    StartShift = x.StartDate,
+                    Name = x.EmpName,
                 }).ToList(),
                 Ticket = tickets.Select(x => new TicketDTO()
                 {
                     ID = x.ID,
-                    Approval = x.Approval,
+                    Status = x.Status,
                     Comment = x.Comment,
                     Date = x.Date,
                     Type = x.Type,
+                    EmployeeName = x.EmpName,
                 }).ToList(),
                 Total = x.Total,
             }).FirstOrDefaultAsync(x => x.EmployeeID == id && x.Date.Month == month);
@@ -99,13 +101,15 @@ namespace HR_Management_System.Models.Services
                 },
                 Attendances = attendances.Select(x => new AttendanceDTO()
                 {
-                    Date = x.Date,
+                    StartShift = x.StartDate,
                     EmployeeID = x.EmployeeID,
-                    Present = x.Present,
+                    EndShift = x.EndDate,
+                    Name = x.EmpName
                 }).ToList(),
                 Ticket = tickets.Select(x => new TicketDTO()
                 {
-                    Approval = x.Approval,
+                    EmployeeName = x.EmpName,
+                    Status = x.Status,
                     Date = x.Date,
                     Type = x.Type,
                     Comment = x.Comment,
