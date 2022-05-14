@@ -183,6 +183,7 @@ namespace HR_Management_System.Models.Services
                 }).ToList()
             };
         }
+
         //public void starter()
         //{
         //    Timer timer = new Timer(1000);
@@ -238,23 +239,69 @@ namespace HR_Management_System.Models.Services
             }).Where(x => x.EmployeeID == id).ToListAsync();
         }
 
+        public async Task<List<AttendanceDTO>> GetAllAttendancesInADateForEmployee(int id, int year, int month)
+        {
+            //if month is inputted as 0, then give me the whole year
+            if (month == 0)
+            {
+                return await _context.Attendances.Select(x => new AttendanceDTO()
+                {
+                    Name = x.EmpName,
+                    EmployeeID = x.EmployeeID,
+                    StartShift = x.StartDate,
+                    EndShift= x.EndDate
+                }).Where(x => x.EmployeeID == id & x.StartShift.Year == year).ToListAsync();
+            }
 
+            else if (month > 12)
+            {
+                throw new Exception("Wrong input, only months between 1-12 are accepted");
+            }
 
-        /// <summary>
-        /// Get all leaves for a specific employee
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        //public async Task<List<ShiftEndDTO>> GetAllShiftEnds(int id)
-        //{
+            else
+            {
+                return await _context.Attendances.Select(x => new AttendanceDTO()
+                {
+                    Name = x.EmpName,
+                    EmployeeID = x.EmployeeID,
+                    StartShift = x.StartDate,
+                    EndShift = x.EndDate
+                }).Where(x => x.EmployeeID == id & x.StartShift.Year == year & x.StartShift.Month == month).ToListAsync();
+            }
+        }
 
-        //    return await _context.ShiftEnds.Select(x => new ShiftEndDTO()
-        //    {
-        //        EmployeeID = x.EmployeeID,
-        //        Date = x.Date,
-        //        Left = x.Left
-        //    }).Where(x => x.EmployeeID == id).ToListAsync();
-        //}
+        public async Task<List<AttendanceDTO>> GetAllAttendancesInADate(int year, int month)
+        {
+            //if month is inputted as 0, then give me the whole year
+            if (month == 0)
+            {
+                return await _context.Attendances.Select(x => new AttendanceDTO()
+                {
+                    Name = x.EmpName,
+                    EmployeeID = x.EmployeeID,
+                    StartShift = x.StartDate,
+                    EndShift = x.EndDate
+                }).Where(x => x.StartShift.Year == year).ToListAsync();
+            }
+
+            else if (month > 12 || month < 0)
+            {
+                throw new Exception("Wrong input, only months between 1-12 are accepted");
+            }
+
+            else
+            {
+                return await _context.Attendances.Select(x => new AttendanceDTO()
+                {
+                    Name = x.EmpName,
+                    EmployeeID = x.EmployeeID,
+                    StartShift = x.StartDate,
+                    EndShift = x.EndDate
+                }).Where(x => x.StartShift.Year == year & x.StartShift.Month == month).ToListAsync();
+            }
+        }
+
+        
 
 
     }

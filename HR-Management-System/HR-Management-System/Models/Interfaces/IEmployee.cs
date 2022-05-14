@@ -15,6 +15,13 @@ namespace HR_Management_System.Models.Interfaces
         public Task<DepartmentDTO> GetDepartmentForEmployee(int id);
         public  Task SetEmployeeToDepartment(int empId, int departmentId);
         public Task<List<AttendanceDTO>> GetAllAttendance(int id);
-        
+
+
+        // Date stuff
+        public Task<List<AttendanceDTO>> GetAllAttendancesInADateForEmployee(int id, int year, int month);
+
+        public Task<List<AttendanceDTO>> GetAllAttendancesInADate(int year, int month);
+
+
     }
 }
