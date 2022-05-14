@@ -21,8 +21,9 @@ namespace HR_Management_System.Models.Services
         {
             Attendance attendance = new Attendance
             {
-                EmployeeID = attendancedto.EmployeeID,
-                Present = attendancedto.Present,
+                EmployeeID = attendancedto.ID,
+
+                Present = true,
                 Date = System.DateTime.Now.ToLocalTime()
             };
             _context.Entry(attendance).State = EntityState.Added;
