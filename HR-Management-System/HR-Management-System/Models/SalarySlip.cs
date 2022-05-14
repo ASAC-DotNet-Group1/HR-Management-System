@@ -11,6 +11,5 @@ namespace HR_Management_System.Models
         public Employee Employee { get; set; }
         public List<Ticket> Ticket { get; set; }
         public List<Attendance> Attendances { get; set; }
-
     }
 }

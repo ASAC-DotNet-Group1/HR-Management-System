@@ -63,7 +63,7 @@ namespace HR_Management_System.Models.Services
                     ID = id,
                     Level = x.Employee.Level,
                     Name = x.Employee.Name,
-                    DepartmentID = x.Employee.DepartmentID,
+                    DepartmentName = x.Employee.Department.Name
                 },
                 Attendances = attendances.Select(x => new AttendanceDTO()
                 {
@@ -85,7 +85,7 @@ namespace HR_Management_System.Models.Services
 
         public async Task<List<SalarySlipDTO>> GetSalarySlips()
         {
-            List<Attendance>attendances = await _context.Attendances.ToListAsync();
+            List<Attendance> attendances = await _context.Attendances.ToListAsync();
             List<Ticket> tickets = await _context.Tickets.ToListAsync();
             return await _context.SalarySlips.Select(slip => new SalarySlipDTO()
             {
@@ -96,7 +96,7 @@ namespace HR_Management_System.Models.Services
                     ID = slip.Employee.ID,
                     Level = slip.Employee.Level,
                     Name = slip.Employee.Name,
-                    DepartmentID = slip.Employee.DepartmentID,
+                    DepartmentName = slip.Employee.Department.Name
                 },
                 Attendances = attendances.Select(x => new AttendanceDTO()
                 {
@@ -128,9 +128,5 @@ namespace HR_Management_System.Models.Services
         {
             return await _context.SalarySlips.FindAsync(id);
         }
-
-
     }
 }
-
-

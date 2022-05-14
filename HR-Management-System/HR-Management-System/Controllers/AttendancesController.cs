@@ -77,8 +77,16 @@ namespace HR_Management_System.Controllers
         [HttpPost]
         public async Task<ActionResult<Attendance>> PostAttendance(AttendanceDTO attendance)
         {
-            await _attendance.AddAttendance(attendance);
-            return Ok(attendance);
+            try
+            {
+                await _attendance.AddAttendance(attendance);
+                return Ok(attendance);
+            }
+            catch(Exception e)
+            {
+                return NotFound(e.Message);
+            }
+            
         }
 
         // DELETE: api/Attendances/5

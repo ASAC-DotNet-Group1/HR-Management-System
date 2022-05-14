@@ -2,6 +2,7 @@
 using HR_Management_System.Models.DTOs;
 using HR_Management_System.Models.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -19,16 +20,24 @@ namespace HR_Management_System.Models.Services
 
         public async Task AddAttendance(AttendanceDTO attendancedto)
         {
-            Attendance attendance = new Attendance
+            int empID = await _context.Employees.Where(x => x.ID == attendancedto.EmployeeID).Select(x => x.ID).FirstOrDefaultAsync();
+            if(empID != 0)
             {
-                EmployeeID = attendancedto.ID,
+                Attendance attendance = new Attendance
+                {
+                    EmployeeID = attendancedto.EmployeeID,
+                    Present = true,
+                    Date = System.DateTime.Now.ToLocalTime()
+                };
+                _context.Entry(attendance).State = EntityState.Added;
 
-                Present = true,
-                Date = System.DateTime.Now.ToLocalTime()
-            };
-            _context.Entry(attendance).State = EntityState.Added;
-
-            await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                throw new Exception("Employee was not found");
+            }
+            
         }
 
         public async Task DeleteAttendance(int id)

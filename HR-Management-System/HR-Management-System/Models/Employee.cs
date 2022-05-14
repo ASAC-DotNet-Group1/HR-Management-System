@@ -21,10 +21,9 @@ namespace HR_Management_System.Models
         public string Password { get; set; }
         public double Salary { get; set; }
         public Level Level { get; set; }
-        public List<Ticket> Ticket { get; set; }
+        public List<Ticket> Tickets { get; set; }
         public List<Attendance> Attendances { get; set; }
-        public List<SalarySlip> SalarySlip { get; set; }
+        public List<SalarySlip> SalarySlips { get; set; }
         public Department Department { get; set; }
     }
-
 }

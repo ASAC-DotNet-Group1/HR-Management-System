@@ -44,16 +44,17 @@ namespace HR_Management_System.Models.Services
                 .Select(x => new EmployeeDTO
                 {
                     ID = x.ID,
-                    DepartmentID = x.DepartmentID,
+                    DepartmentName = x.Department.Name,
                     Name = x.Name,
                     Level = x.Level,
                     Attendances = x.Attendances.Select(x => new AttendanceDTO
                     {
+                        Name = x.Employee.Name,
                         Date = x.Date,
                         EmployeeID = x.EmployeeID,
                         Present = x.Present,
                     }).ToList(),
-                    SalarySlip = x.SalarySlip.Select(x => new SalarySlipDTO
+                    SalarySlips = x.SalarySlips.Select(x => new SalarySlipDTO
                     {
                         Date = x.Date,
                         EmployeeID = x.EmployeeID,
@@ -77,7 +78,7 @@ namespace HR_Management_System.Models.Services
                 .Select(x => new EmployeeDTO
                 {
                     ID = x.ID,
-                    DepartmentID = x.DepartmentID,
+                    DepartmentName = x.Department.Name,
                     Name = x.Name,
                     Level = x.Level,
                     Attendances = x.Attendances.Select(x => new AttendanceDTO
@@ -86,7 +87,7 @@ namespace HR_Management_System.Models.Services
                         EmployeeID = x.EmployeeID,
                         Present = x.Present,
                     }).ToList(),
-                    SalarySlip = x.SalarySlip.Select(x => new SalarySlipDTO
+                    SalarySlips = x.SalarySlips.Select(x => new SalarySlipDTO
                     {
                         Date = x.Date,
                         EmployeeID = x.EmployeeID,
@@ -153,7 +154,7 @@ namespace HR_Management_System.Models.Services
                 EmployeeID = id,
                 Employee = new EmployeeDTO()
                 {
-                    DepartmentID = employee.DepartmentID,
+                    DepartmentName = employee.Department.Name,
                     ID = employee.ID,
                     Level = employee.Level,
                     Name = employee.Name,
@@ -173,7 +174,7 @@ namespace HR_Management_System.Models.Services
                 {
                     Name = x.Name,
                     Level = x.Level,
-                    DepartmentID = x.DepartmentID,
+                    DepartmentName = x.Department.Name,
                 }).ToList()
             };
         }
@@ -253,5 +254,3 @@ namespace HR_Management_System.Models.Services
     }
 
 }
-
-
