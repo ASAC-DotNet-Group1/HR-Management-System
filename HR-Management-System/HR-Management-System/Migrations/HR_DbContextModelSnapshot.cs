@@ -245,73 +245,6 @@ namespace HR_Management_System.Migrations
                     b.ToTable("SalarySlips");
                 });
 
-            modelBuilder.Entity("HR_Management_System.Models.ShiftEnd", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("EmployeeID")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("Left")
-                        .HasColumnType("bit");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("EmployeeID");
-
-                    b.ToTable("ShiftEnds");
-
-                    b.HasData(
-                        new
-                        {
-                            ID = 1,
-                            Date = new DateTime(2022, 6, 23, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            EmployeeID = 1,
-                            Left = true
-                        },
-                        new
-                        {
-                            ID = 2,
-                            Date = new DateTime(2022, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            EmployeeID = 1,
-                            Left = false
-                        },
-                        new
-                        {
-                            ID = 3,
-                            Date = new DateTime(2022, 6, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            EmployeeID = 1,
-                            Left = true
-                        },
-                        new
-                        {
-                            ID = 4,
-                            Date = new DateTime(2022, 5, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            EmployeeID = 2,
-                            Left = false
-                        },
-                        new
-                        {
-                            ID = 5,
-                            Date = new DateTime(2022, 5, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            EmployeeID = 2,
-                            Left = true
-                        },
-                        new
-                        {
-                            ID = 6,
-                            Date = new DateTime(2022, 5, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            EmployeeID = 2,
-                            Left = true
-                        });
-                });
-
             modelBuilder.Entity("HR_Management_System.Models.Ticket", b =>
                 {
                     b.Property<int>("ID")
@@ -414,17 +347,6 @@ namespace HR_Management_System.Migrations
                 {
                     b.HasOne("HR_Management_System.Models.Employee", "Employee")
                         .WithMany("SalarySlips")
-                        .HasForeignKey("EmployeeID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Employee");
-                });
-
-            modelBuilder.Entity("HR_Management_System.Models.ShiftEnd", b =>
-                {
-                    b.HasOne("HR_Management_System.Models.Employee", "Employee")
-                        .WithMany()
                         .HasForeignKey("EmployeeID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

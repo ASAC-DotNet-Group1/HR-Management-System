@@ -13,10 +13,12 @@ namespace HR_Management_System.Models.Services
     public class EmployeeService : IEmployee
     {
         private readonly HR_DbContext _context;
+        private readonly ISalarySlip _salarySlip;
 
-        public EmployeeService(HR_DbContext context)
+        public EmployeeService(HR_DbContext context, ISalarySlip salarySlip)
         {
             _context = context;
+            _salarySlip = salarySlip;
             //starter();
         }
 
@@ -122,18 +124,18 @@ namespace HR_Management_System.Models.Services
         }
         public async Task<SalarySlipDTO> GetSalarySlip(int id)
         {
-            Employee employee = await _context.Employees.FirstOrDefaultAsync(x => x.ID == id);
             DateTime Date = DateTime.Now.ToLocalTime();
+            Employee employee = await _context.Employees.FirstOrDefaultAsync(x => x.ID == id);
+
             List<Ticket> tickets = _context.Tickets.Select(x => x)
                 .Where(x => x.emp_id == id)
                 .Where(x => x.Date.Month == Date.Month && x.Date.Day <= Date.Day).ToList(); // we use day prop in case some dumb like osama create a ticket with future Date
+
             List<Attendance> attendances = _context.Attendances.Select(x => x)
                 .Where(x => x.EmployeeID == id)
                 .Where(x => x.StartDate.Month == Date.Month && x.StartDate.Day <= Date.Day)
                 .Where(x => x.StartShift == false).ToList();
-            int totalTicket = 0;
-            foreach (Ticket ticket in tickets) totalTicket += (int)ticket.Type;
-            int totalAttendance = attendances.Count * 20;
+
             return new SalarySlipDTO()
             {
                 Attendances = attendances.Select(x => new AttendanceDTO()
@@ -145,7 +147,7 @@ namespace HR_Management_System.Models.Services
                 }
                 ).ToList(),
                 Date = Date,
-                Total = employee.Salary - totalAttendance + totalTicket,
+                Total = _salarySlip.CalculateSalary(employee.Salary,attendances,tickets),
                 Ticket = tickets.Select(x => new TicketDTO()
                 {
                     Status = x.Status,
@@ -243,16 +245,16 @@ namespace HR_Management_System.Models.Services
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<List<ShiftEndDTO>> GetAllShiftEnds(int id)
-        {
+        //public async Task<List<ShiftEndDTO>> GetAllShiftEnds(int id)
+        //{
 
-            return await _context.ShiftEnds.Select(x => new ShiftEndDTO()
-            {
-                EmployeeID = x.EmployeeID,
-                Date = x.Date,
-                Left = x.Left
-            }).Where(x => x.EmployeeID == id).ToListAsync();
-        }
+        //    return await _context.ShiftEnds.Select(x => new ShiftEndDTO()
+        //    {
+        //        EmployeeID = x.EmployeeID,
+        //        Date = x.Date,
+        //        Left = x.Left
+        //    }).Where(x => x.EmployeeID == id).ToListAsync();
+        //}
 
 
     }

@@ -38,7 +38,7 @@ namespace HR_Management_System
             services.AddTransient<IEmployee, EmployeeService>();
             services.AddTransient<IAttendance, AttendanceService>();
             services.AddTransient<ISalarySlip, SalarySlipService>();
-            services.AddTransient<IShiftEnd, ShiftEndService>();
+
 
             services.AddControllers().AddNewtonsoftJson(opt => opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 

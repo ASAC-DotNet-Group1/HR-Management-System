@@ -14,8 +14,6 @@ namespace HR_Management_System.Data
         public DbSet<Employee> Employees { get; set; }
         public DbSet<SalarySlip> SalarySlips { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
-
-        public DbSet<ShiftEnd> ShiftEnds { get; set; }
         public HR_DbContext(DbContextOptions options) : base(options)
         {
 
@@ -52,16 +50,6 @@ namespace HR_Management_System.Data
                 new Attendance { ID = 6, EmployeeID = 2, StartShift = true, StartDate = new DateTime(2022, 5, 25) }
                 );
 
-
-
-            modelBuilder.Entity<ShiftEnd>().HasData(
-                new ShiftEnd { ID = 1, EmployeeID = 1, Left = true, Date = new DateTime(2022, 6, 23) },
-                new ShiftEnd { ID = 2, EmployeeID = 1, Left = false, Date = new DateTime(2022, 6, 24) },
-                new ShiftEnd { ID = 3, EmployeeID = 1, Left = true, Date = new DateTime(2022, 6, 25) },
-                new ShiftEnd { ID = 4, EmployeeID = 2, Left = false, Date = new DateTime(2022, 5, 12) },
-                new ShiftEnd { ID = 5, EmployeeID = 2, Left = true, Date = new DateTime(2022, 5, 10) },
-                new ShiftEnd { ID = 6, EmployeeID = 2, Left = true, Date = new DateTime(2022, 5, 25) }
-                );
 
 
             // Keys added for join tables.
