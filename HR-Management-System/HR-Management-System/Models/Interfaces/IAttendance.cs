@@ -6,14 +6,10 @@ namespace HR_Management_System.Models.Interfaces
 {
     public interface IAttendance
     {
-        public Task<Attendance> GetAttendance(int id);
-
+        public Task<AttendanceDTO> GetAttendance(int id);
         public Task<List<AttendanceDTO>> GetAttendances();
-
         public Task AddAttendance(AttendanceDTO attendance);
-
         public Task UpdateAttendance(int id, Attendance attendance);
-
         public Task DeleteAttendance(int id);
     }
 }

@@ -61,7 +61,7 @@ namespace HR_Management_System.Models.Services
         {
             
             Employee employee =  _context.Employees.Find(id);
-            if (employee == null) throw new Exception();
+            if (employee == null) { throw new Exception(); }
             return await _context.Tickets.Where(x => x.emp_id == id).Select(x => new TicketDTO
             {
                 ID = x.ID,

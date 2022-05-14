@@ -20,7 +20,6 @@ namespace HR_Management_System.Models.Services
 
 
         public async Task AddSalarySlip(int id )
-
         {
             Employee employee = await _context.Employees.FindAsync( id );
             var attendances =  await _context.Attendances.Where(x => x.EmployeeID == id).ToListAsync();
