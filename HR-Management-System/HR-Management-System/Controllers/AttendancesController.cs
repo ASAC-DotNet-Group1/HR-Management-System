@@ -32,16 +32,17 @@ namespace HR_Management_System.Controllers
 
         // GET: api/Attendances/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Attendance>> GetAttendance(int id)
+        public async Task<ActionResult<AttendanceDTO>> GetAttendance(int id)
         {
-            var attendance = await _attendance.GetAttendance(id);
-
-            if (attendance == null)
+            try
             {
-                return NotFound();
+                var attendance = await _attendance.GetAttendance(id);
+                return Ok(attendance);
             }
-
-            return attendance;
+            catch (Exception e)
+            {
+                return NotFound(e.Message);
+            }    
         }
 
         // PUT: api/Attendances/5
@@ -55,21 +56,14 @@ namespace HR_Management_System.Controllers
             }
             try
             {
-                await _attendance.UpdateAttendance(id,attendance);
+                await _attendance.UpdateAttendance(id, attendance);
             }
-            catch (DbUpdateConcurrencyException)
+            catch (Exception e)
             {
-                if (await _attendance.GetAttendance(id) == null)
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return NotFound(e.Message);
             }
 
-            return NoContent();
+            return Content("Updated");
         }
 
         // POST: api/Attendances
@@ -86,23 +80,21 @@ namespace HR_Management_System.Controllers
             {
                 return NotFound(e.Message);
             }
-            
         }
 
         // DELETE: api/Attendances/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAttendance(int id)
         {
-            var attendance = await _attendance.GetAttendance(id);
-            if (attendance == null)
+            try
             {
-                return NotFound();
+                await _attendance.DeleteAttendance(id);
+                return Ok("Deleted");
             }
-
-            await _attendance.DeleteAttendance(id);
-
-            return NoContent();
+            catch(Exception e)
+            {
+                return NotFound(e);
+            }
         }
-
     }
 }

@@ -20,7 +20,6 @@ namespace HR_Management_System.Models.Services
             //starter();
         }
 
-
         public async Task AddEmployee(Employee employee)
         {
             Department department = await _context.Departments.FindAsync(employee.DepartmentID);

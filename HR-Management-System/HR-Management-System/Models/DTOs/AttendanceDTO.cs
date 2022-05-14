@@ -8,6 +8,5 @@ namespace HR_Management_System.Models.DTOs
         public string Name { get; set; }
         public DateTime Date { get; set; }
         public bool Present { get; set; }
-
     }
 }
