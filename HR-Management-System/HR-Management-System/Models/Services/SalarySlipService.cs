@@ -17,23 +17,31 @@ namespace HR_Management_System.Models.Services
         {
             _context = context;
         }
-
+        public double CalculateSalary(double baseSalary,List<Attendance> attendances, List<Ticket> tickets)
+        {
+            double totalAttendance = 0;
+            double totalTickets = 0;
+            foreach (var attendance in attendances) if (!attendance.StartShift) totalAttendance--;
+            foreach (var ticket in tickets)
+            {
+                if (ticket.Type == Type.Leave) totalTickets -= baseSalary / 160;
+                else if (ticket.Type == Type.Overtime) totalTickets += baseSalary / 160 * 1.5;
+            };
+            return (totalAttendance * (baseSalary / 320)) + totalTickets;
+        }
 
         public async Task AddSalarySlip(int id )
         {
-            Employee employee = await _context.Employees.FindAsync( id );
-            var attendances =  await _context.Attendances.Where(x => x.EmployeeID == id).ToListAsync();
-            var tickets = await _context.Tickets.Where(x => x.emp_id == id).ToListAsync();
             DateTime dateTime = DateTime.Now;
-            int totalAttendance = 0;
-            int totalTickets = 0;
-            foreach( var attendance in attendances) if (!attendance.StartShift) totalAttendance++;
-            foreach (var ticket in tickets) totalTickets += (int)ticket.Type;
+            Employee employee = await _context.Employees.FindAsync( id );
+            List<Attendance> attendances =  await _context.Attendances.Where(x => x.EmployeeID == id && x.StartShift == true && x.StartDate.Month == dateTime.Month).ToListAsync();
+            List<Ticket> tickets = await _context.Tickets.Where(x => x.emp_id == id && x.Status == Status.Approved && x.Date.Month == dateTime.Month).ToListAsync();
+
             SalarySlip salarySlip = new SalarySlip()
-            { 
+            {
                 EmployeeID = id,
                 Date = dateTime,
-                Total = employee.Salary + totalTickets - totalAttendance
+                Total = CalculateSalary(employee.Salary, attendances, tickets)
             };
             _context.Entry(salarySlip).State = EntityState.Added;
 

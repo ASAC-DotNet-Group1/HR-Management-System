@@ -67,27 +67,6 @@ namespace HR_Management_System.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ShiftEnds",
-                columns: table => new
-                {
-                    ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    EmployeeID = table.Column<int>(type: "int", nullable: false),
-                    Left = table.Column<bool>(type: "bit", nullable: false),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ShiftEnds", x => x.ID);
-                    table.ForeignKey(
-                        name: "FK_ShiftEnds_Employees_EmployeeID",
-                        column: x => x.EmployeeID,
-                        principalTable: "Employees",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Attendances",
                 columns: table => new
                 {
@@ -200,19 +179,6 @@ namespace HR_Management_System.Migrations
                     { 6, null, 2, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, null, null, new DateTime(2022, 5, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), true }
                 });
 
-            migrationBuilder.InsertData(
-                table: "ShiftEnds",
-                columns: new[] { "ID", "Date", "EmployeeID", "Left" },
-                values: new object[,]
-                {
-                    { 1, new DateTime(2022, 6, 23, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, true },
-                    { 2, new DateTime(2022, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, false },
-                    { 3, new DateTime(2022, 6, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, true },
-                    { 4, new DateTime(2022, 5, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), 2, false },
-                    { 5, new DateTime(2022, 5, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), 2, true },
-                    { 6, new DateTime(2022, 5, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), 2, true }
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_Attendances_EmployeeID",
                 table: "Attendances",
@@ -229,11 +195,6 @@ namespace HR_Management_System.Migrations
                 column: "DepartmentID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ShiftEnds_EmployeeID",
-                table: "ShiftEnds",
-                column: "EmployeeID");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Tickets_EmployeeID",
                 table: "Tickets",
                 column: "EmployeeID");
@@ -248,9 +209,6 @@ namespace HR_Management_System.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Attendances");
-
-            migrationBuilder.DropTable(
-                name: "ShiftEnds");
 
             migrationBuilder.DropTable(
                 name: "Tickets");

@@ -127,11 +127,7 @@ namespace HR_Management_System.Controllers
         }
 
 
-        [HttpGet("shiftends/{id}")]
-        public async Task<List<ShiftEndDTO>> GetAllShiftEnds(int id)
-        {
-            return await _employee.GetAllShiftEnds(id);
-        }
+        
 
 
     }
