@@ -10,8 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Timers;
 using System;
-
-
+using Microsoft.OpenApi.Models;
 
 namespace HR_Management_System
 {
@@ -43,6 +42,16 @@ namespace HR_Management_System
 
             services.AddControllers().AddNewtonsoftJson(opt => opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
+            // Swagger added.
+            services.AddSwaggerGen(opt =>
+            {
+                opt.SwaggerDoc("V1", new OpenApiInfo()
+                {
+                    Title = "HR Management System",
+                    Version = "V1",
+                });
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -54,6 +63,18 @@ namespace HR_Management_System
             }
 
             app.UseRouting();
+
+            // Also for swagger.
+            app.UseSwagger(opt =>
+            {
+                opt.RouteTemplate = "/api/{documentName}/swagger.json";
+            });
+            app.UseSwaggerUI(opt =>
+            {
+                opt.SwaggerEndpoint("/api/V1/swagger.json", "HR Management System");
+                opt.RoutePrefix = "";
+            });
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

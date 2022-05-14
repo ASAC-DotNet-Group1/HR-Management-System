@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HR_Management_System.Migrations
 {
     [DbContext(typeof(HR_DbContext))]
-    [Migration("20220513183554_initial69")]
-    partial class initial69
+    [Migration("20220514110339_DatabaseCreate")]
+    partial class DatabaseCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -391,7 +391,7 @@ namespace HR_Management_System.Migrations
             modelBuilder.Entity("HR_Management_System.Models.SalarySlip", b =>
                 {
                     b.HasOne("HR_Management_System.Models.Employee", "Employee")
-                        .WithMany("SalarySlip")
+                        .WithMany("SalarySlips")
                         .HasForeignKey("EmployeeID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -413,7 +413,7 @@ namespace HR_Management_System.Migrations
             modelBuilder.Entity("HR_Management_System.Models.Ticket", b =>
                 {
                     b.HasOne("HR_Management_System.Models.Employee", "Employee")
-                        .WithMany("Ticket")
+                        .WithMany("Tickets")
                         .HasForeignKey("EmployeeID");
 
                     b.HasOne("HR_Management_System.Models.SalarySlip", null)
@@ -432,9 +432,9 @@ namespace HR_Management_System.Migrations
                 {
                     b.Navigation("Attendances");
 
-                    b.Navigation("SalarySlip");
+                    b.Navigation("SalarySlips");
 
-                    b.Navigation("Ticket");
+                    b.Navigation("Tickets");
                 });
 
             modelBuilder.Entity("HR_Management_System.Models.SalarySlip", b =>
