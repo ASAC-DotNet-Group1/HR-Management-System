@@ -50,6 +50,32 @@ namespace HR_Management_System.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Performances",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    EmployeeID = table.Column<int>(type: "int", nullable: false),
+                    Commitment = table.Column<int>(type: "int", nullable: false),
+                    Efficiency = table.Column<int>(type: "int", nullable: false),
+                    Communication = table.Column<int>(type: "int", nullable: false),
+                    TimeManagement = table.Column<int>(type: "int", nullable: false),
+                    QualityOfWork = table.Column<int>(type: "int", nullable: false),
+                    Overall = table.Column<double>(type: "float", nullable: false),
+                    PerformanceDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Performances", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_Performances_Employees_EmployeeID",
+                        column: x => x.EmployeeID,
+                        principalTable: "Employees",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "SalarySlips",
                 columns: table => new
                 {
@@ -106,15 +132,13 @@ namespace HR_Management_System.Migrations
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Emp_id = table.Column<int>(type: "int", nullable: false),
-                    EmpName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    EmployeeID = table.Column<int>(type: "int", nullable: false),
                     Type = table.Column<int>(type: "int", nullable: false),
-                    Total = table.Column<double>(type: "float", nullable: false),
-                    Amount = table.Column<int>(type: "int", nullable: false),
                     Comment = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Amount = table.Column<int>(type: "int", nullable: false),
+                    Total = table.Column<double>(type: "float", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
-                    EmployeeID = table.Column<int>(type: "int", nullable: true),
                     SalarySlipDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     SalarySlipEmployeeID = table.Column<int>(type: "int", nullable: true)
                 },
@@ -126,7 +150,7 @@ namespace HR_Management_System.Migrations
                         column: x => x.EmployeeID,
                         principalTable: "Employees",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Tickets_SalarySlips_SalarySlipEmployeeID_SalarySlipDate",
                         columns: x => new { x.SalarySlipEmployeeID, x.SalarySlipDate },
@@ -138,23 +162,17 @@ namespace HR_Management_System.Migrations
             migrationBuilder.InsertData(
                 table: "Departments",
                 columns: new[] { "ID", "Name" },
-                values: new object[,]
-                {
-                    { 1, "IT" },
-                    { 2, "Finance" },
-                    { 3, "Sales" }
-                });
+                values: new object[] { 1, "IT" });
 
             migrationBuilder.InsertData(
-                table: "Tickets",
-                columns: new[] { "ID", "Amount", "Comment", "Date", "EmpName", "Emp_id", "EmployeeID", "SalarySlipDate", "SalarySlipEmployeeID", "Status", "Total", "Type" },
-                values: new object[,]
-                {
-                    { 1, 2, "Vacation", new DateTime(2022, 5, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), "Shadi Aslan", 2, null, null, null, 1, -40.0, 0 },
-                    { 2, 2, "Car Loan", new DateTime(2022, 5, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "Shadi notAslan", 2, null, null, null, 2, 0.0, 1 },
-                    { 3, 2, "Need more money", new DateTime(2022, 5, 23, 0, 0, 0, 0, DateTimeKind.Unspecified), "Shadi Alzagal", 2, null, null, null, 1, 400.0, 2 },
-                    { 4, 2, "Need more and more money", new DateTime(2022, 5, 23, 0, 0, 0, 0, DateTimeKind.Unspecified), "Shadi Masadeh", 1, null, null, null, 1, 400.0, 2 }
-                });
+                table: "Departments",
+                columns: new[] { "ID", "Name" },
+                values: new object[] { 2, "Finance" });
+
+            migrationBuilder.InsertData(
+                table: "Departments",
+                columns: new[] { "ID", "Name" },
+                values: new object[] { 3, "Sales" });
 
             migrationBuilder.InsertData(
                 table: "Employees",
@@ -184,6 +202,22 @@ namespace HR_Management_System.Migrations
                     { 6, "Johnny Adam", 2, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, null, null, new DateTime(2022, 5, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), true }
                 });
 
+            migrationBuilder.InsertData(
+                table: "Performances",
+                columns: new[] { "ID", "Commitment", "Communication", "Efficiency", "EmployeeID", "Overall", "PerformanceDate", "QualityOfWork", "TimeManagement" },
+                values: new object[] { 1, 0, 0, 0, 2, 0.0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, 0 });
+
+            migrationBuilder.InsertData(
+                table: "Tickets",
+                columns: new[] { "ID", "Amount", "Comment", "Date", "EmployeeID", "SalarySlipDate", "SalarySlipEmployeeID", "Status", "Total", "Type" },
+                values: new object[,]
+                {
+                    { 4, 2, "Need more and more money", new DateTime(2022, 5, 23, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, null, null, 1, 400.0, 2 },
+                    { 1, 2, "Vacation", new DateTime(2022, 5, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), 2, null, null, 1, -40.0, 0 },
+                    { 2, 2, "Car Loan", new DateTime(2022, 5, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), 2, null, null, 2, 0.0, 1 },
+                    { 3, 2, "Need more money", new DateTime(2022, 5, 23, 0, 0, 0, 0, DateTimeKind.Unspecified), 2, null, null, 1, 400.0, 2 }
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Attendances_EmployeeID",
                 table: "Attendances",
@@ -200,6 +234,11 @@ namespace HR_Management_System.Migrations
                 column: "DepartmentID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Performances_EmployeeID",
+                table: "Performances",
+                column: "EmployeeID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Tickets_EmployeeID",
                 table: "Tickets",
                 column: "EmployeeID");
@@ -214,6 +253,9 @@ namespace HR_Management_System.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Attendances");
+
+            migrationBuilder.DropTable(
+                name: "Performances");
 
             migrationBuilder.DropTable(
                 name: "Tickets");

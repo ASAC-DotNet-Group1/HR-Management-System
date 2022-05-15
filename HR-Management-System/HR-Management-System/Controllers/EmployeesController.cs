@@ -76,11 +76,10 @@ namespace HR_Management_System.Controllers
         // POST: api/Employees
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Employee>> PostEmployee(Employee employee)
+        public async Task<ActionResult<EmployeeDTO>> PostEmployee(AddEmployeeDTO employee)
         {
-            await _employee.AddEmployee(employee);
+            return await _employee.AddEmployee(employee);
 
-            return CreatedAtAction("GetEmployee", new { id = employee.ID }, employee);
         }
 
         // DELETE: api/Employees/5
@@ -102,11 +101,6 @@ namespace HR_Management_System.Controllers
         public async Task<SalarySlipDTO> GetSalarySlip(int id)
         {
             return await _employee.GetSalarySlip(id);
-        }
-        [HttpGet("dep/{id}")]
-        public async Task<DepartmentDTO> GetDepartmentForEmployee(int id)
-        {
-            return await _employee.GetDepartmentForEmployee(id);
         }
         [HttpPut("{empId}/{depId}")]
         public async Task<IActionResult> SetEmployeeToDepartment(int empId, int depId)

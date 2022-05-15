@@ -113,10 +113,11 @@ namespace HR_Management_System.Controllers
         }
         //GET:
         //Get Reports for department
-        [HttpDelete("Performance/Department/{id}")]
-        public async Task<ActionResult<List<PerformanceDTO>>> DepartmentReports(string name)
+        [HttpGet("Performance/Department/{id}")]
+
+        public async Task<ActionResult<List<PerformanceDTO>>> DepartmentReports(int id)
         {
-            var performances = await _performance.PerformanceReportsForDepartment(name);
+            var performances = await _performance.PerformanceReportsForDepartment(id);
             if (performances == null)
             {
                 return NotFound();

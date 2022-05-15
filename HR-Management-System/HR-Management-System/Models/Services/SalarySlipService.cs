@@ -21,7 +21,7 @@ namespace HR_Management_System.Models.Services
         {
             Employee employee = await _context.Employees.FindAsync(id);
             List<Attendance> attendances = await _context.Attendances.Where(x => x.EmployeeID == id && x.StartShift == false && x.StartDate.Month == dateTime.Month).ToListAsync();
-            List<Ticket> tickets = await _context.Tickets.Where(x => x.Emp_id == id && x.Status == Status.Approved && x.Date.Month == dateTime.Month).ToListAsync();
+            List<Ticket> tickets = await _context.Tickets.Where(x => x.EmployeeID == id && x.Status == Status.Approved && x.Date.Month == dateTime.Month).ToListAsync();
 
             double totalTickets = 0;
             foreach (Ticket ticket in tickets) totalTickets += ticket.Total;
@@ -56,7 +56,9 @@ namespace HR_Management_System.Models.Services
         public async Task<SalarySlipDTO> GetSalarySlip(int id , int month)
         {
             var attendances = await _context.Attendances.Where(x => x.EmployeeID == id && x.StartDate.Month == month).ToListAsync();
-            var tickets = await _context.Tickets.Where(x => x.Emp_id == id && x.Date.Month == month).ToListAsync();
+            var tickets = await _context.Tickets.Where(x => x.EmployeeID == id && x.Date.Month == month).ToListAsync();
+            Employee employee = await _context.Employees.FindAsync(id);
+            if (employee == null) throw new Exception("Unvalid Employee ID");
             return await _context.SalarySlips.Select(x => new SalarySlipDTO()
             {
                 Date = x.Date,
@@ -64,9 +66,9 @@ namespace HR_Management_System.Models.Services
                 Employee = new EmployeeDTO()
                 {
                     ID = id,
-                    Level = x.Employee.Level,
+                    Level = x.Employee.Level.ToString(),
                     Name = x.Employee.Name,
-                    DepartmentName = x.Employee.Department.Name
+                    DepartmentID = employee.DepartmentID,
                 },
                 Attendances = attendances.Select(x => new AttendanceDTO()
                 {
@@ -78,7 +80,7 @@ namespace HR_Management_System.Models.Services
                 Ticket = tickets.Select(x => new TicketDTO()
                 {
                     ID = x.ID,
-                    Status = x.Status,
+                    Status = x.Status.ToString(),
                     Comment = x.Comment,
                     Date = x.Date,
                     Type = x.Type.ToString(),
@@ -98,9 +100,9 @@ namespace HR_Management_System.Models.Services
                 Employee = new EmployeeDTO()
                 {
                     ID = slip.Employee.ID,
-                    Level = slip.Employee.Level,
+                    Level = slip.Employee.Level.ToString(),
                     Name = slip.Employee.Name,
-                    DepartmentName = slip.Employee.Department.Name
+                   DepartmentID = _context.Employees.FirstOrDefault(x => x.ID == slip.EmployeeID).DepartmentID
                 },
                 Total = slip.Total,
             }).ToListAsync();

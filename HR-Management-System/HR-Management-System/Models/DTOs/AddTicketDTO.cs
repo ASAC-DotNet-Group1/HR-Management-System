@@ -2,7 +2,7 @@
 {
     public class AddTicketDTO
     {
-        public int Emp_id { get; set; }
+        public int EmployeeID { get; set; }
         public Type Type { get; set; }
         public int Amount { get; set; }
         public string Comment { get; set; }

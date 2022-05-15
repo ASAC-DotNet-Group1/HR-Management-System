@@ -18,8 +18,7 @@ namespace HR_Management_System.Models
     public class Ticket
     {
         public int ID { get; set; }
-        public int Emp_id { get; set; }
-        public string EmpName { get; set; }
+        public int EmployeeID { get; set; }
         public Type Type { get; set; }
         public string Comment { get; set; }
         public int Amount { get; set; }

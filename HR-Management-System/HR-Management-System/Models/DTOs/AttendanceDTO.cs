@@ -8,5 +8,6 @@ namespace HR_Management_System.Models.DTOs
         public string Name { get; set; }
         public DateTime StartShift { get; set; }
         public DateTime EndShift { get; set; }
+        public Employee Employee { get; set; }
     }
 }
