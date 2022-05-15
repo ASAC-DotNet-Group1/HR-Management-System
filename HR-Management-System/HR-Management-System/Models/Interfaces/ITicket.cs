@@ -6,11 +6,13 @@ namespace HR_Management_System.Models.Interfaces
 {
     public interface ITicket
     {
-        Task<Ticket> CreateTicket(Ticket ticket);
-        Task<List<Ticket>> GetTickets();
-        Task<Ticket> GetTicket(int id);
-        Task<Ticket> UpdateTicket(int id, Ticket ticket);
+        Task<TicketDTO> CreateTicket(AddTicketDTO ticket);
+        Task<List<TicketDTO>> GetTickets();
+        Task<TicketDTO> GetTicket(int id);
+        Task<TicketDTO> Accept(int id);
+        Task<TicketDTO> Deny(int id);
         Task DeleteTicket(int id);
         Task<List<TicketDTO>> GetEmployeeTickets(int id);
+        
     }
 }

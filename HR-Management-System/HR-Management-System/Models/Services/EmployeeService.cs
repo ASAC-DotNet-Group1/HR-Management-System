@@ -19,7 +19,6 @@ namespace HR_Management_System.Models.Services
         {
             _context = context;
             _salarySlip = salarySlip;
-            //starter();
         }
 
         public async Task AddEmployee(Employee employee)
@@ -66,7 +65,7 @@ namespace HR_Management_System.Models.Services
                             Status=x.Status,
                             Comment = x.Comment,
                             Date = x.Date,
-                            Type = x.Type
+                            Type = x.Type.ToString()
                         }).ToList(),
                         Total = x.Total,
                     }
@@ -100,7 +99,7 @@ namespace HR_Management_System.Models.Services
                             Status = x.Status,
                             Comment = x.Comment,
                             Date = x.Date,
-                            Type = x.Type
+                            Type = x.Type.ToString(),
                             
                         }).ToList(),
                         Total = x.Total,
@@ -128,7 +127,7 @@ namespace HR_Management_System.Models.Services
             Employee employee = await _context.Employees.FirstOrDefaultAsync(x => x.ID == id);
 
             List<Ticket> tickets = _context.Tickets.Select(x => x)
-                .Where(x => x.emp_id == id)
+                .Where(x => x.Emp_id == id)
                 .Where(x => x.Date.Month == Date.Month && x.Date.Day <= Date.Day).ToList(); // we use day prop in case some dumb like osama create a ticket with future Date
 
             List<Attendance> attendances = _context.Attendances.Select(x => x)
@@ -136,6 +135,7 @@ namespace HR_Management_System.Models.Services
                 .Where(x => x.StartDate.Month == Date.Month && x.StartDate.Day <= Date.Day)
                 .Where(x => x.StartShift == false).ToList();
 
+            double total = await _salarySlip.CalculateSalary(employee.ID, Date);
             return new SalarySlipDTO()
             {
                 Attendances = attendances.Select(x => new AttendanceDTO()
@@ -147,14 +147,14 @@ namespace HR_Management_System.Models.Services
                 }
                 ).ToList(),
                 Date = Date,
-                Total = _salarySlip.CalculateSalary(employee.Salary,attendances,tickets),
+                Total = total,
                 Ticket = tickets.Select(x => new TicketDTO()
                 {
                     Status = x.Status,
                     Comment = x.Comment,
                     Date = x.Date,
                     ID = x.ID,
-                    Type = x.Type,
+                    Type = x.Type.ToString(),
                 }).ToList(),
                 EmployeeID = id,
                 Employee = new EmployeeDTO()
@@ -168,6 +168,7 @@ namespace HR_Management_System.Models.Services
             };
 
         }
+
         public async Task<DepartmentDTO> GetDepartmentForEmployee(int id)
         {
             Employee employee = await _context.Employees.FirstOrDefaultAsync(x => x.ID == id);
@@ -183,44 +184,6 @@ namespace HR_Management_System.Models.Services
                 }).ToList()
             };
         }
-
-        //public void starter()
-        //{
-        //    Timer timer = new Timer(1000);
-        //    timer.AutoReset = true;
-        //    timer.Elapsed += new ElapsedEventHandler(CheckAttendance);
-        //    timer.Start();
-
-
-        //}
-        //async void CheckAttendance(object sender, ElapsedEventArgs e)
-        //{
-        //    DateTime Time = DateTime.Now;
-        //    if (Time.Hour == 4 && Time.Minute == 17)
-        //    {
-        //        List<Employee> employees = await _context.Employees.ToListAsync();
-        //        foreach (Employee employee in employees)
-        //        {
-        //            if (employee.Attendances.Last().Date.Date != Time.Date)
-        //            {
-        //                Attendance attendance = new Attendance()
-        //                {
-        //                    Date = Time,
-        //                    Present = false,
-        //                    EmployeeID = employee.ID,
-        //                    Employee = employee,
-        //                };
-        //                employee.Attendances.Add(attendance);
-        //                _context.Entry(employee).State = EntityState.Modified;
-        //                _context.Entry(attendance).State = EntityState.Added;
-        //                await _context.SaveChangesAsync();
-        //            }
-        //        }
-        //    }
-
-
-        //}
-
 
         /// <summary>
         /// Get all attendances for a specific employee
@@ -301,7 +264,9 @@ namespace HR_Management_System.Models.Services
             }
         }
 
-       
+        
+
 
     }
+
 }

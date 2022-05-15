@@ -14,7 +14,6 @@ namespace HR_Management_System.Data
         public DbSet<Employee> Employees { get; set; }
         public DbSet<SalarySlip> SalarySlips { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
-        public DbSet<Performance> Performances { get; set; }
         public HR_DbContext(DbContextOptions options) : base(options)
         {
 
@@ -37,9 +36,10 @@ namespace HR_Management_System.Data
                 );
 
             modelBuilder.Entity<Ticket>().HasData(
-                new Ticket { ID = 1, emp_id = 2, Status = Models.Status.Approved, Comment = "Vacation", Date = new DateTime(2022, 5, 12), Type = Models.Type.Vacation },
-                new Ticket { ID = 2, emp_id = 2, Status = Models.Status.Denied, Comment = "Car Loan", Date = new DateTime(2022, 5, 9), Type = Models.Type.Leave },
-                new Ticket { ID = 3, emp_id = 2, Status = Models.Status.Approved, Comment = "Need more money", Date = new DateTime(2022, 5, 23), Type = Models.Type.Overtime }
+                new Ticket { ID = 1, Emp_id = 2, EmpName = "Shadi Aslan", Status = Models.Status.Approved, Comment = "Vacation",Amount = 2, Total = -40, Date = new DateTime(2022, 5, 12), Type = Models.Type.Vacation },
+                new Ticket { ID = 2, Emp_id = 2, EmpName = "Shadi notAslan", Status = Models.Status.Denied, Comment = "Car Loan", Amount = 2, Total = 0 ,Date = new DateTime(2022, 5, 9), Type = Models.Type.Leave },
+                new Ticket { ID = 3, Emp_id = 2, EmpName = "Shadi Alzagal", Status = Models.Status.Approved, Comment = "Need more money", Amount = 2, Total = 400, Date = new DateTime(2022, 5, 23), Type = Models.Type.Overtime },
+                new Ticket { ID = 4, Emp_id = 1, EmpName = "Shadi Masadeh", Status = Models.Status.Approved, Comment = "Need more and more money", Amount = 2,Total = 400, Date = new DateTime(2022, 5, 23), Type = Models.Type.Overtime }
                 );
 
             modelBuilder.Entity<Attendance>().HasData(
