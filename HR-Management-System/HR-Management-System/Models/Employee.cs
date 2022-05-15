@@ -25,5 +25,6 @@ namespace HR_Management_System.Models
         public List<Attendance> Attendances { get; set; }
         public List<SalarySlip> SalarySlips { get; set; }
         public Department Department { get; set; }
+        public List<Performance> Performances { get; set; }
     }
 }
