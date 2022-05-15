@@ -342,6 +342,41 @@ namespace HR_Management_System.Models.Services
                 Overall = x.Overall
             }).Where(x => x.Employee.DepartmentName == name).ToListAsync();
         }
+
+        public async Task<List<PerformanceDTO>> PerformanceReportsInSpecificMonth(int year, int month)
+        {
+            if (month == 0)
+            {
+                return await _context.Performances.Select(x => new PerformanceDTO()
+                {
+                    PerformanceDate = x.PerformanceDate,
+                    Attendance = x.Attendance,
+                    Communication = x.Communication,
+                    Effeciency = x.Effeciency,
+                    QualityOfWork = x.QualityOfWork,
+                    TimeManagement = x.TimeManagement,
+                    Overall = x.Overall
+                }).Where(x => x.PerformanceDate.Year == year).ToListAsync();
+            }
+            else if (month > 12 || month < 0)
+            {
+                throw new Exception("Wrong input, only months between 1-12 are accepted");
+            }
+            else
+            {
+                return await _context.Performances.Select(x => new PerformanceDTO()
+                {
+                    PerformanceDate = x.PerformanceDate,
+                    Attendance = x.Attendance,
+                    Communication = x.Communication,
+                    Effeciency = x.Effeciency,
+                    QualityOfWork = x.QualityOfWork,
+                    TimeManagement = x.TimeManagement,
+                    Overall = x.Overall
+                }).Where(x => x.PerformanceDate.Year == year && x.PerformanceDate.Month == month).ToListAsync();
+            }
+
+        }
     }
 
 }
