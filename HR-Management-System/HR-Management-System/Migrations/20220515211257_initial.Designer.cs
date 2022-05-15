@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HR_Management_System.Migrations
 {
     [DbContext(typeof(HR_DbContext))]
-    [Migration("20220515130725_initial")]
+    [Migration("20220515211257_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -249,6 +249,58 @@ namespace HR_Management_System.Migrations
                         });
                 });
 
+            modelBuilder.Entity("HR_Management_System.Models.Performance", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Commitment")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Communication")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Efficiency")
+                        .HasColumnType("int");
+
+                    b.Property<int>("EmployeeID")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Overall")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime>("PerformanceDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("QualityOfWork")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TimeManagement")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("EmployeeID");
+
+                    b.ToTable("Performances");
+
+                    b.HasData(
+                        new
+                        {
+                            ID = 1,
+                            Commitment = 0,
+                            Communication = 0,
+                            Efficiency = 0,
+                            EmployeeID = 2,
+                            Overall = 0.0,
+                            PerformanceDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            QualityOfWork = 0,
+                            TimeManagement = 0
+                        });
+                });
+
             modelBuilder.Entity("HR_Management_System.Models.SalarySlip", b =>
                 {
                     b.Property<int>("EmployeeID")
@@ -281,13 +333,7 @@ namespace HR_Management_System.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("EmpName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Emp_id")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("EmployeeID")
+                    b.Property<int>("EmployeeID")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("SalarySlipDate")
@@ -320,8 +366,7 @@ namespace HR_Management_System.Migrations
                             Amount = 2,
                             Comment = "Vacation",
                             Date = new DateTime(2022, 5, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            EmpName = "Shadi Aslan",
-                            Emp_id = 2,
+                            EmployeeID = 2,
                             Status = 1,
                             Total = -40.0,
                             Type = 0
@@ -332,8 +377,7 @@ namespace HR_Management_System.Migrations
                             Amount = 2,
                             Comment = "Car Loan",
                             Date = new DateTime(2022, 5, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            EmpName = "Shadi notAslan",
-                            Emp_id = 2,
+                            EmployeeID = 2,
                             Status = 2,
                             Total = 0.0,
                             Type = 1
@@ -344,8 +388,7 @@ namespace HR_Management_System.Migrations
                             Amount = 2,
                             Comment = "Need more money",
                             Date = new DateTime(2022, 5, 23, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            EmpName = "Shadi Alzagal",
-                            Emp_id = 2,
+                            EmployeeID = 2,
                             Status = 1,
                             Total = 400.0,
                             Type = 2
@@ -356,8 +399,7 @@ namespace HR_Management_System.Migrations
                             Amount = 2,
                             Comment = "Need more and more money",
                             Date = new DateTime(2022, 5, 23, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            EmpName = "Shadi Masadeh",
-                            Emp_id = 1,
+                            EmployeeID = 1,
                             Status = 1,
                             Total = 400.0,
                             Type = 2
@@ -390,6 +432,17 @@ namespace HR_Management_System.Migrations
                     b.Navigation("Department");
                 });
 
+            modelBuilder.Entity("HR_Management_System.Models.Performance", b =>
+                {
+                    b.HasOne("HR_Management_System.Models.Employee", "Employee")
+                        .WithMany("Performances")
+                        .HasForeignKey("EmployeeID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
+                });
+
             modelBuilder.Entity("HR_Management_System.Models.SalarySlip", b =>
                 {
                     b.HasOne("HR_Management_System.Models.Employee", "Employee")
@@ -405,7 +458,9 @@ namespace HR_Management_System.Migrations
                 {
                     b.HasOne("HR_Management_System.Models.Employee", "Employee")
                         .WithMany("Tickets")
-                        .HasForeignKey("EmployeeID");
+                        .HasForeignKey("EmployeeID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("HR_Management_System.Models.SalarySlip", null)
                         .WithMany("Ticket")
@@ -422,6 +477,8 @@ namespace HR_Management_System.Migrations
             modelBuilder.Entity("HR_Management_System.Models.Employee", b =>
                 {
                     b.Navigation("Attendances");
+
+                    b.Navigation("Performances");
 
                     b.Navigation("SalarySlips");
 

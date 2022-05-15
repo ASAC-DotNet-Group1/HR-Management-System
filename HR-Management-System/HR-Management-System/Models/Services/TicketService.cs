@@ -21,16 +21,16 @@ namespace HR_Management_System.Models.Services
         public async Task<TicketDTO> CreateTicket(AddTicketDTO newticket)
         {
             DateTime date = DateTime.Now.ToLocalTime();
-            Employee employee = await _context.Employees.FindAsync(newticket.Emp_id);
+            Employee employee = await _context.Employees.FindAsync(newticket.EmployeeID);
+            if (employee == null) throw new Exception("Unvalid Employee ID");
             Ticket ticket = new Ticket()
             {
                 Amount = newticket.Amount,
                 Comment = newticket.Comment,
                 Date = date,
-                EmpName = employee.Name,
                 Status = Status.Pending,
                 Type = newticket.Type,
-                Emp_id = newticket.Emp_id,
+                EmployeeID = newticket.EmployeeID,
             };
             _context.Entry(ticket).State = EntityState.Added;
             await _context.SaveChangesAsync();
@@ -40,7 +40,7 @@ namespace HR_Management_System.Models.Services
                 Date = ticket.Date,
                 EmployeeName = employee.Name,
                 ID = ticket.ID,
-                Status = ticket.Status,
+                Status = ticket.Status.ToString(),
                 Type = ticket.Type.ToString(),
             };
         }
@@ -104,8 +104,8 @@ namespace HR_Management_System.Models.Services
                 Comment = ticket.Comment,
                 Date = ticket.Date,
                 ID = ticket.ID,
-                EmployeeName = ticket.EmpName,
-                Status = ticket.Status,
+                EmployeeName = ticket.Employee.Name,
+                Status = ticket.Status.ToString(),
                 Type = ticket.Type.ToString()
             };
         }
@@ -119,8 +119,8 @@ namespace HR_Management_System.Models.Services
                 Comment = x.Comment,
                 Date = x.Date,
                 ID = x.ID,
-                EmployeeName = x.EmpName,
-                Status = x.Status,
+                EmployeeName = x.Employee.Name,
+                Status = x.Status.ToString(),
                 Type = x.Type.ToString()
             }).ToListAsync();
         }
@@ -136,17 +136,17 @@ namespace HR_Management_System.Models.Services
         }
         public async Task<List<TicketDTO>> GetEmployeeTickets(int id)
         {
-            
-            Employee employee =  _context.Employees.Find(id);
-            if (employee == null) { throw new Exception(); }
-            return await _context.Tickets.Where(x => x.Emp_id == id).Select(x => new TicketDTO
+
+            Employee employee = _context.Employees.Find(id);
+            if (employee == null) throw new Exception("Unvalid Employee ID");
+            return await _context.Tickets.Where(x => x.EmployeeID == id).Select(x => new TicketDTO
             {
                 ID = x.ID,
                 EmployeeName = employee.Name,
                 Type = x.Type.ToString(),
                 Date = x.Date,
                 Comment = x.Comment,
-                Status = x.Status,
+                Status = x.Status.ToString(),
                 
             }).ToListAsync();
             

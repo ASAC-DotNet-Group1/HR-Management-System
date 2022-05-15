@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Timers;
 
 namespace HR_Management_System.Models.Services
 {
@@ -21,18 +20,44 @@ namespace HR_Management_System.Models.Services
             _salarySlip = salarySlip;
         }
 
-        public async Task AddEmployee(Employee employee)
+        public async Task<EmployeeDTO> AddEmployee(AddEmployeeDTO newEmployee)
         {
-            Department department = await _context.Departments.FindAsync(employee.DepartmentID);
-            employee.Department = department;
+            Employee employee = new Employee
+            {
+                Name = newEmployee.Name,
+                DepartmentID = newEmployee.DepartmentID,
+                Age = newEmployee.Age,
+                Email = newEmployee.Email,
+                Gender = newEmployee.Gender,
+                Level = newEmployee.Level,
+                Password = newEmployee.Password,
+                Phone = newEmployee.Phone,
+                Salary = newEmployee.Salary,
+                LeaveCredit = 14,
+                VacationCredit = 14,
+            };
             _context.Entry(employee).State = EntityState.Added;
             await _context.SaveChangesAsync();
+            return new EmployeeDTO
+            {
+                ID = employee.ID,
+                Age = employee.Age,
+                DepartmentID = employee.DepartmentID,
+                Email = employee.Email,
+                Gender = employee.Gender,
+                LeaveCredit = employee.LeaveCredit,
+                Level = employee.Level.ToString(),
+                Name = employee.Name,
+                Phone = employee.Phone,
+                VacationCredit = employee.VacationCredit,
+                Department = employee.Department,
+            };
         }
 
         public async Task DeleteEmployee(int id)
         {
             Employee employee = await _context.Employees.FindAsync(id);
-
+            if (employee == null) throw new Exception("Unvalid Employee ID");
             _context.Entry(employee).State = EntityState.Deleted;
 
             await _context.SaveChangesAsync();
@@ -40,71 +65,42 @@ namespace HR_Management_System.Models.Services
 
         public async Task<EmployeeDTO> GetEmployee(int id)
         {
+            Employee employee = await _context.Employees.FindAsync(id);
+            if (employee == null) throw new Exception("Unvalid Employee ID");
             return await _context.Employees
                 .Select(x => new EmployeeDTO
                 {
                     ID = x.ID,
-                    DepartmentName = x.Department.Name,
+                    DepartmentID = x.DepartmentID,
                     Name = x.Name,
-                    Level = x.Level,
-                    Attendances = x.Attendances.Select(x => new AttendanceDTO
-                    {
-                        Name = x.Employee.Name,
-                        StartShift = x.StartDate,
-                        EmployeeID = x.EmployeeID,
-                        EndShift = x.EndDate,
-                        
-                    }).ToList(),
-                    SalarySlips = x.SalarySlips.Select(x => new SalarySlipDTO
-                    {
-                        Date = x.Date,
-                        EmployeeID = x.EmployeeID,
-                        Ticket = x.Ticket.Select(x => new TicketDTO
-                        {
-                            ID = x.ID,
-                            Status=x.Status,
-                            Comment = x.Comment,
-                            Date = x.Date,
-                            Type = x.Type.ToString()
-                        }).ToList(),
-                        Total = x.Total,
-                    }
-                    ).ToList(),
-                }).FirstOrDefaultAsync(x => x.ID == id);
+                    Level = x.Level.ToString(),
+                    Age = x.Age,
+                    Email = x.Email,
+                    Phone = x.Phone,
+                    Gender = x.Gender,
+                    LeaveCredit = x.LeaveCredit,
+                    VacationCredit = x.VacationCredit,
+                    Department = x.Department,
+                }).FirstAsync();
         }
 
         public async Task<List<EmployeeDTO>> GetEmployees()
         {
+
             return await _context.Employees
                 .Select(x => new EmployeeDTO
                 {
                     ID = x.ID,
-                    DepartmentName = x.Department.Name,
+                    DepartmentID = x.DepartmentID,
                     Name = x.Name,
-                    Level = x.Level,
-                    Attendances = x.Attendances.Select(x => new AttendanceDTO
-                    {
-                        StartShift = x.StartDate,
-                        EmployeeID = x.EmployeeID,
-                        EndShift = x.EndDate,
-                        Name = x.EmpName,
-                    }).ToList(),
-                    SalarySlips = x.SalarySlips.Select(x => new SalarySlipDTO
-                    {
-                        Date = x.Date,
-                        EmployeeID = x.EmployeeID,
-                        Ticket = x.Ticket.Select(x => new TicketDTO
-                        {
-                            ID = x.ID,
-                            Status = x.Status,
-                            Comment = x.Comment,
-                            Date = x.Date,
-                            Type = x.Type.ToString(),
-                            
-                        }).ToList(),
-                        Total = x.Total,
-                    }
-                    ).ToList(),
+                    Level = x.Level.ToString(),
+                    Age = x.Age,
+                    Email = x.Email,
+                    Phone = x.Phone,
+                    Gender = x.Gender,
+                    LeaveCredit = x.LeaveCredit,
+                    VacationCredit = x.VacationCredit,
+                    Department = x.Department
                 }).ToListAsync();
         }
 
@@ -116,7 +112,7 @@ namespace HR_Management_System.Models.Services
         }
         public async Task SetEmployeeToDepartment(int empId, int departmentId)
         {
-            Employee employee = await _context.Employees.FirstOrDefaultAsync(x => x.ID == empId);
+            Employee employee = await _context.Employees.FindAsync(empId);
             employee.DepartmentID = departmentId;
             _context.Entry(employee).State = EntityState.Modified;
             await _context.SaveChangesAsync();
@@ -124,13 +120,13 @@ namespace HR_Management_System.Models.Services
         public async Task<SalarySlipDTO> GetSalarySlip(int id)
         {
             DateTime Date = DateTime.Now.ToLocalTime();
-            Employee employee = await _context.Employees.FirstOrDefaultAsync(x => x.ID == id);
+            Employee employee = await _context.Employees.FindAsync(id);
 
-            List<Ticket> tickets = _context.Tickets.Select(x => x)
-                .Where(x => x.Emp_id == id)
+            List<Ticket> tickets = _context.Tickets
+                .Where(x => x.EmployeeID == id)
                 .Where(x => x.Date.Month == Date.Month && x.Date.Day <= Date.Day).ToList(); // we use day prop in case some dumb like osama create a ticket with future Date
 
-            List<Attendance> attendances = _context.Attendances.Select(x => x)
+            List<Attendance> attendances = _context.Attendances
                 .Where(x => x.EmployeeID == id)
                 .Where(x => x.StartDate.Month == Date.Month && x.StartDate.Day <= Date.Day)
                 .Where(x => x.StartShift == false).ToList();
@@ -138,6 +134,10 @@ namespace HR_Management_System.Models.Services
             double total = await _salarySlip.CalculateSalary(employee.ID, Date);
             return new SalarySlipDTO()
             {
+                EmployeeID = id,
+                Date = Date,
+                Total = total,
+
                 Attendances = attendances.Select(x => new AttendanceDTO()
                 {
                     StartShift = x.StartDate,
@@ -146,42 +146,15 @@ namespace HR_Management_System.Models.Services
                     Name = x.EmpName
                 }
                 ).ToList(),
-                Date = Date,
-                Total = total,
-                Ticket = tickets.Select(x => new TicketDTO()
+                Ticket = tickets.Where(x => x.Status == Status.Approved).Select(x => new TicketDTO()
                 {
-                    Status = x.Status,
+                    
+                    Status = x.Status.ToString(),
                     Comment = x.Comment,
                     Date = x.Date,
                     ID = x.ID,
                     Type = x.Type.ToString(),
                 }).ToList(),
-                EmployeeID = id,
-                Employee = new EmployeeDTO()
-                {
-                    DepartmentName = employee.Department.Name,
-                    ID = employee.ID,
-                    Level = employee.Level,
-                    Name = employee.Name,
-
-                }
-            };
-
-        }
-
-        public async Task<DepartmentDTO> GetDepartmentForEmployee(int id)
-        {
-            Employee employee = await _context.Employees.FirstOrDefaultAsync(x => x.ID == id);
-            Department department = await _context.Departments.FirstOrDefaultAsync(x => x.ID == employee.DepartmentID);
-            return new DepartmentDTO()
-            {
-                Name = department.Name,
-                Employees = department.Employees.Select(x => new EmployeeDTO()
-                {
-                    Name = x.Name,
-                    Level = x.Level,
-                    DepartmentName = x.Department.Name,
-                }).ToList()
             };
         }
 
@@ -192,19 +165,37 @@ namespace HR_Management_System.Models.Services
         /// <returns></returns>
         public async Task<List<AttendanceDTO>> GetAllAttendance(int id)
         {
-
-            return await _context.Attendances.Select(x => new AttendanceDTO()
+            Employee employee = await _context.Employees.FindAsync(id);
+            if (employee == null) throw new Exception("Unvalid Employee ID");
+            return await _context.Attendances.Where(x => x.EmployeeID == id).Select(x => new AttendanceDTO()
             {
                 EmployeeID = x.EmployeeID,
                 StartShift = x.StartDate,
                 EndShift = x.EndDate
-                
-            }).Where(x => x.EmployeeID == id).ToListAsync();
+
+            }).ToListAsync();
+        }
+        public async Task<List<TicketDTO>> GetAllTickets(int id)
+        {
+            Employee employee = await _context.Employees.FindAsync(id);
+            if (employee == null) throw new Exception("Unvalid Employee ID");
+            return await _context.Tickets.Where(x => x.EmployeeID == id).Select(x => new TicketDTO()
+            {
+                Comment = x.Comment,
+                Date = x.Date,
+                EmployeeName = employee.Name,
+                ID = x.ID,
+                Status = x.Status.ToString(),
+                Type = x.Type.ToString(),
+
+            }).ToListAsync();
         }
 
         public async Task<List<AttendanceDTO>> GetAllAttendancesInADateForEmployee(int id, int year, int month)
         {
             //if month is inputted as 0, then give me the whole year
+            Employee employee = await _context.Employees.FindAsync(id);
+            if (employee == null) throw new Exception("Unvalid Employee ID");
             if (month == 0)
             {
                 return await _context.Attendances.Select(x => new AttendanceDTO()
@@ -212,11 +203,11 @@ namespace HR_Management_System.Models.Services
                     Name = x.EmpName,
                     EmployeeID = x.EmployeeID,
                     StartShift = x.StartDate,
-                    EndShift= x.EndDate
+                    EndShift = x.EndDate,
                 }).Where(x => x.EmployeeID == id & x.StartShift.Year == year).ToListAsync();
             }
 
-            else if (month > 12)
+            else if (month > 12 && month < 0)
             {
                 throw new Exception("Wrong input, only months between 1-12 are accepted");
             }
@@ -243,11 +234,12 @@ namespace HR_Management_System.Models.Services
                     Name = x.EmpName,
                     EmployeeID = x.EmployeeID,
                     StartShift = x.StartDate,
-                    EndShift = x.EndDate
+                    EndShift = x.EndDate,
+                    Employee = x.Employee
                 }).Where(x => x.StartShift.Year == year).ToListAsync();
             }
 
-            else if (month > 12 || month < 0)
+            else if (month > 12 && month < 0)
             {
                 throw new Exception("Wrong input, only months between 1-12 are accepted");
             }
@@ -259,12 +251,13 @@ namespace HR_Management_System.Models.Services
                     Name = x.EmpName,
                     EmployeeID = x.EmployeeID,
                     StartShift = x.StartDate,
-                    EndShift = x.EndDate
+                    EndShift = x.EndDate,
+                    Employee = x.Employee
                 }).Where(x => x.StartShift.Year == year & x.StartShift.Month == month).ToListAsync();
             }
         }
 
-        
+
 
 
     }

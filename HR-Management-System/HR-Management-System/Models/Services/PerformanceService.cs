@@ -42,6 +42,7 @@ namespace HR_Management_System.Models.Services
         {
             return await _context.Performances.Select(x => new PerformanceDTO
             {
+                EmployeeName = x.Employee.Name,
                 PerformanceDate = x.PerformanceDate,
                 Commitment = x.Commitment,
                 Communication = x.Communication,
@@ -55,6 +56,7 @@ namespace HR_Management_System.Models.Services
         {
             return await _context.Performances.Select(x => new PerformanceDTO()
             {
+                EmployeeName = x.Employee.Name,
                 PerformanceDate = x.PerformanceDate,
                 Commitment = x.Commitment,
                 Communication = x.Communication,
@@ -69,6 +71,7 @@ namespace HR_Management_System.Models.Services
         {
             return await _context.Performances.Select(x => new PerformanceDTO()
             {
+                EmployeeName = x.Employee.Name,
                 PerformanceDate = x.PerformanceDate,
                 Commitment = x.Commitment,
                 Communication = x.Communication,
@@ -79,18 +82,19 @@ namespace HR_Management_System.Models.Services
             }).Where(x => x.Employee.ID == id).ToListAsync();
         }
 
-        public async Task<List<PerformanceDTO>> PerformanceReportsForDepartment(string name)
+        public async Task<List<PerformanceDTO>> PerformanceReportsForDepartment(int id)
         {
-            return await _context.Performances.Select(x => new PerformanceDTO()
+            return await _context.Performances.Where(x => x.Employee.DepartmentID == id).Select(x => new PerformanceDTO()
             {
+                EmployeeName = x.Employee.Name,
                 PerformanceDate = x.PerformanceDate,
                 Commitment = x.Commitment,
                 Communication = x.Communication,
                 Efficiency = x.Efficiency,
                 QualityOfWork = x.QualityOfWork,
                 TimeManagement = x.TimeManagement,
-                Overall = x.Overall
-            }).Where(x => x.Employee.DepartmentName == name).ToListAsync();
+                Overall = x.Overall,
+            }).ToListAsync();
         }
 
         public async Task<List<PerformanceDTO>> PerformanceReportsInSpecificMonth(int year, int month)
@@ -99,6 +103,7 @@ namespace HR_Management_System.Models.Services
             {
                 return await _context.Performances.Select(x => new PerformanceDTO()
                 {
+                    EmployeeName = x.Employee.Name,
                     PerformanceDate = x.PerformanceDate,
                     Commitment = x.Commitment,
                     Communication = x.Communication,
@@ -116,6 +121,7 @@ namespace HR_Management_System.Models.Services
             {
                 return await _context.Performances.Select(x => new PerformanceDTO()
                 {
+                    EmployeeName = x.Employee.Name,
                     PerformanceDate = x.PerformanceDate,
                     Commitment = x.Commitment,
                     Communication = x.Communication,
@@ -132,6 +138,7 @@ namespace HR_Management_System.Models.Services
             {
                 return await _context.Performances.Select(x => new PerformanceDTO()
                 {
+                    EmployeeName = x.Employee.Name,
                     PerformanceDate = x.PerformanceDate,
                     Commitment = x.Commitment,
                     Communication = x.Communication,
@@ -149,6 +156,7 @@ namespace HR_Management_System.Models.Services
             {
                 return await _context.Performances.Select(x => new PerformanceDTO()
                 {
+                    EmployeeName = x.Employee.Name,
                     PerformanceDate = x.PerformanceDate,
                     Commitment = x.Commitment,
                     Communication = x.Communication,

@@ -12,7 +12,7 @@ namespace HR_Management_System.Models.Interfaces
         public Task<PerformanceDTO> GetPerformanceReport(int id);
         public Task AddPerformance(Performance performance);
         public Task<List<PerformanceDTO>> EmployeePerformanceReports(int id);
-        public Task<List<PerformanceDTO>> PerformanceReportsForDepartment(string name);
+        public Task<List<PerformanceDTO>> PerformanceReportsForDepartment(int id);
         public Task<List<PerformanceDTO>> PerformanceReportsInSpecificMonth(int year, int month);
         public Task<List<PerformanceDTO>> PerformanceReportsForEmployeeInSpecificMonth(int id, int year, int month);
         public Task UpdatePerformance(int id, Performance performance);

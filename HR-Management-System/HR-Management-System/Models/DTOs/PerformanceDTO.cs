@@ -8,6 +8,7 @@ namespace HR_Management_System.Models.DTOs
     public class PerformanceDTO
     {
         public int ID { get; set; }
+        public string EmployeeName { get; set; }
         public int Commitment { get; set; }
         public int Efficiency { get; set; }
         public int Communication { get; set; }
