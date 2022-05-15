@@ -149,9 +149,26 @@ namespace HR_Management_System.Models.Services
         }
 
       
-        public Task UpdatePerformance(int id, Performance performance)
+        public async Task UpdatePerformance(int id, Performance performance)
         {
-            throw new NotImplementedException();
+            var oldPerformance = await _context.Performances.FindAsync(id);
+
+            if (oldPerformance != null)
+            {
+                oldPerformance.Commitment = performance.Commitment;
+                oldPerformance.Efficiency = performance.Efficiency;
+                oldPerformance.QualityOfWork = performance.QualityOfWork;
+                oldPerformance.TimeManagement = performance.TimeManagement;
+                oldPerformance.Communication = performance.Communication;
+
+                _context.Entry(oldPerformance).State = EntityState.Modified;
+
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                throw new Exception("Performance was not found");
+            }
         }
 
         public Task DeletePerformance(int id)
