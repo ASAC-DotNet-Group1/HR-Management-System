@@ -172,6 +172,9 @@ namespace HR_Management_System.Migrations
                     b.Property<string>("Gender")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("LeaveCredit")
+                        .HasColumnType("int");
+
                     b.Property<int>("Level")
                         .HasColumnType("int");
 
@@ -187,6 +190,9 @@ namespace HR_Management_System.Migrations
                     b.Property<double>("Salary")
                         .HasColumnType("float");
 
+                    b.Property<int>("VacationCredit")
+                        .HasColumnType("int");
+
                     b.HasKey("ID");
 
                     b.HasIndex("DepartmentID");
@@ -201,11 +207,13 @@ namespace HR_Management_System.Migrations
                             DepartmentID = 1,
                             Email = "Employee1@LTUC.com",
                             Gender = "Male",
+                            LeaveCredit = 0,
                             Level = 1,
                             Name = "Laith",
                             Password = "1234",
                             Phone = "079",
-                            Salary = 300.0
+                            Salary = 300.0,
+                            VacationCredit = 0
                         },
                         new
                         {
@@ -214,11 +222,13 @@ namespace HR_Management_System.Migrations
                             DepartmentID = 2,
                             Email = "Employee2@LTUC.com",
                             Gender = "Other",
+                            LeaveCredit = 0,
                             Level = 2,
                             Name = "Osama",
                             Password = "1234",
                             Phone = "079",
-                            Salary = 400.0
+                            Salary = 400.0,
+                            VacationCredit = 0
                         },
                         new
                         {
@@ -227,11 +237,13 @@ namespace HR_Management_System.Migrations
                             DepartmentID = 3,
                             Email = "Employee3@LTUC.com",
                             Gender = "Male",
+                            LeaveCredit = 0,
                             Level = 3,
                             Name = "Shadi",
                             Password = "1234",
                             Phone = "079",
-                            Salary = 500.0
+                            Salary = 500.0,
+                            VacationCredit = 0
                         });
                 });
 
@@ -258,6 +270,9 @@ namespace HR_Management_System.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("Amount")
+                        .HasColumnType("int");
+
                     b.Property<string>("Comment")
                         .HasColumnType("nvarchar(max)");
 
@@ -266,6 +281,9 @@ namespace HR_Management_System.Migrations
 
                     b.Property<string>("EmpName")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Emp_id")
+                        .HasColumnType("int");
 
                     b.Property<int?>("EmployeeID")
                         .HasColumnType("int");
@@ -279,10 +297,10 @@ namespace HR_Management_System.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
+                    b.Property<double>("Total")
+                        .HasColumnType("float");
 
-                    b.Property<int>("emp_id")
+                    b.Property<int>("Type")
                         .HasColumnType("int");
 
                     b.HasKey("ID");
@@ -297,29 +315,50 @@ namespace HR_Management_System.Migrations
                         new
                         {
                             ID = 1,
+                            Amount = 2,
                             Comment = "Vacation",
                             Date = new DateTime(2022, 5, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EmpName = "Shadi Aslan",
+                            Emp_id = 2,
                             Status = 1,
-                            Type = 0,
-                            emp_id = 2
+                            Total = -40.0,
+                            Type = 0
                         },
                         new
                         {
                             ID = 2,
+                            Amount = 2,
                             Comment = "Car Loan",
                             Date = new DateTime(2022, 5, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EmpName = "Shadi notAslan",
+                            Emp_id = 2,
                             Status = 2,
-                            Type = 1,
-                            emp_id = 2
+                            Total = 0.0,
+                            Type = 1
                         },
                         new
                         {
                             ID = 3,
+                            Amount = 2,
                             Comment = "Need more money",
                             Date = new DateTime(2022, 5, 23, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EmpName = "Shadi Alzagal",
+                            Emp_id = 2,
                             Status = 1,
-                            Type = 2,
-                            emp_id = 2
+                            Total = 400.0,
+                            Type = 2
+                        },
+                        new
+                        {
+                            ID = 4,
+                            Amount = 2,
+                            Comment = "Need more and more money",
+                            Date = new DateTime(2022, 5, 23, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EmpName = "Shadi Masadeh",
+                            Emp_id = 1,
+                            Status = 1,
+                            Total = 400.0,
+                            Type = 2
                         });
                 });
 

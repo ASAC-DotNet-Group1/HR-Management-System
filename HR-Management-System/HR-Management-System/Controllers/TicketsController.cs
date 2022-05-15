@@ -25,7 +25,7 @@ namespace HR_Management_System.Controllers
 
         // GET: api/Tickets
         [HttpGet]
-        public async Task<ActionResult<List<Ticket>>> GetTickets()
+        public async Task<ActionResult<List<TicketDTO>>> GetTickets()
         {
             var tickets = await _ticket.GetTickets();
             if (tickets == null) return NoContent();
@@ -34,7 +34,7 @@ namespace HR_Management_System.Controllers
 
         // GET: api/Tickets/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Ticket>> GetTicket(int id)
+        public async Task<ActionResult<TicketDTO>> GetTicket(int id)
         {
             var ticket = await _ticket.GetTicket(id);
 
@@ -48,25 +48,21 @@ namespace HR_Management_System.Controllers
 
         // PUT: api/Tickets/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutTicket(int id, Ticket ticket)
+        [HttpPut("Accept/{id}")]
+        public async Task<TicketDTO> Accept(int id)
         {
-            if (id != ticket.ID)
-            {
-                return BadRequest();
-            }
-
-            var modifiedTicket =  await _ticket.UpdateTicket(id,ticket);
-            if (modifiedTicket == null) return NotFound();
-            return Ok(modifiedTicket);
+            return await _ticket.Accept(id);
+        }
+        [HttpPut("Deny/{id}")]
+        public async Task<TicketDTO> Deny(int id)
+        {
+            return await _ticket.Deny(id);
         }
 
-        // POST: api/Tickets
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Ticket>> PostTicket(Ticket ticket)
+        public async Task<ActionResult<TicketDTO>> PostTicket(AddTicketDTO ticket)
         {
-            Ticket newTicket = await _ticket.CreateTicket(ticket);
+            TicketDTO newTicket = await _ticket.CreateTicket(ticket);
             return Ok(newTicket);
         }
 
@@ -96,6 +92,5 @@ namespace HR_Management_System.Controllers
                 return BadRequest(e);
             }
         }
-
     }
 }

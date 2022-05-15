@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace HR_Management_System.Migrations
 {
-    public partial class initial87481642 : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -34,7 +34,9 @@ namespace HR_Management_System.Migrations
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Salary = table.Column<double>(type: "float", nullable: false),
-                    Level = table.Column<int>(type: "int", nullable: false)
+                    Level = table.Column<int>(type: "int", nullable: false),
+                    LeaveCredit = table.Column<int>(type: "int", nullable: false),
+                    VacationCredit = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -104,9 +106,11 @@ namespace HR_Management_System.Migrations
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    emp_id = table.Column<int>(type: "int", nullable: false),
+                    Emp_id = table.Column<int>(type: "int", nullable: false),
                     EmpName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Type = table.Column<int>(type: "int", nullable: false),
+                    Total = table.Column<double>(type: "float", nullable: false),
+                    Amount = table.Column<int>(type: "int", nullable: false),
                     Comment = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
@@ -143,28 +147,29 @@ namespace HR_Management_System.Migrations
 
             migrationBuilder.InsertData(
                 table: "Tickets",
-                columns: new[] { "ID", "Comment", "Date", "EmpName", "EmployeeID", "SalarySlipDate", "SalarySlipEmployeeID", "Status", "Type", "emp_id" },
+                columns: new[] { "ID", "Amount", "Comment", "Date", "EmpName", "Emp_id", "EmployeeID", "SalarySlipDate", "SalarySlipEmployeeID", "Status", "Total", "Type" },
                 values: new object[,]
                 {
-                    { 1, "Vacation", new DateTime(2022, 5, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), null, null, null, null, 1, 0, 2 },
-                    { 2, "Car Loan", new DateTime(2022, 5, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), null, null, null, null, 2, 1, 2 },
-                    { 3, "Need more money", new DateTime(2022, 5, 23, 0, 0, 0, 0, DateTimeKind.Unspecified), null, null, null, null, 1, 2, 2 }
+                    { 1, 2, "Vacation", new DateTime(2022, 5, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), "Shadi Aslan", 2, null, null, null, 1, -40.0, 0 },
+                    { 2, 2, "Car Loan", new DateTime(2022, 5, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "Shadi notAslan", 2, null, null, null, 2, 0.0, 1 },
+                    { 3, 2, "Need more money", new DateTime(2022, 5, 23, 0, 0, 0, 0, DateTimeKind.Unspecified), "Shadi Alzagal", 2, null, null, null, 1, 400.0, 2 },
+                    { 4, 2, "Need more and more money", new DateTime(2022, 5, 23, 0, 0, 0, 0, DateTimeKind.Unspecified), "Shadi Masadeh", 1, null, null, null, 1, 400.0, 2 }
                 });
 
             migrationBuilder.InsertData(
                 table: "Employees",
-                columns: new[] { "ID", "Age", "DepartmentID", "Email", "Gender", "Level", "Name", "Password", "Phone", "Salary" },
-                values: new object[] { 1, 21, 1, "Employee1@LTUC.com", "Male", 1, "Laith", "1234", "079", 300.0 });
+                columns: new[] { "ID", "Age", "DepartmentID", "Email", "Gender", "LeaveCredit", "Level", "Name", "Password", "Phone", "Salary", "VacationCredit" },
+                values: new object[] { 1, 21, 1, "Employee1@LTUC.com", "Male", 0, 1, "Laith", "1234", "079", 300.0, 0 });
 
             migrationBuilder.InsertData(
                 table: "Employees",
-                columns: new[] { "ID", "Age", "DepartmentID", "Email", "Gender", "Level", "Name", "Password", "Phone", "Salary" },
-                values: new object[] { 2, 22, 2, "Employee2@LTUC.com", "Other", 2, "Osama", "1234", "079", 400.0 });
+                columns: new[] { "ID", "Age", "DepartmentID", "Email", "Gender", "LeaveCredit", "Level", "Name", "Password", "Phone", "Salary", "VacationCredit" },
+                values: new object[] { 2, 22, 2, "Employee2@LTUC.com", "Other", 0, 2, "Osama", "1234", "079", 400.0, 0 });
 
             migrationBuilder.InsertData(
                 table: "Employees",
-                columns: new[] { "ID", "Age", "DepartmentID", "Email", "Gender", "Level", "Name", "Password", "Phone", "Salary" },
-                values: new object[] { 3, 24, 3, "Employee3@LTUC.com", "Male", 3, "Shadi", "1234", "079", 500.0 });
+                columns: new[] { "ID", "Age", "DepartmentID", "Email", "Gender", "LeaveCredit", "Level", "Name", "Password", "Phone", "Salary", "VacationCredit" },
+                values: new object[] { 3, 24, 3, "Employee3@LTUC.com", "Male", 0, 3, "Shadi", "1234", "079", 500.0, 0 });
 
             migrationBuilder.InsertData(
                 table: "Attendances",

@@ -17,6 +17,6 @@ namespace HR_Management_System.Models.Interfaces
 
         public Task DeleteSalarySlip(int id);
         public Task<SalarySlip> Find(int id);
-        public double CalculateSalary(double baseSalary, List<Attendance> attendances, List<Ticket> tickets);
+        public Task<double> CalculateSalary(int id, DateTime dateTime);
     }
 }
