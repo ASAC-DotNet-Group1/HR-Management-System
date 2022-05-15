@@ -7,7 +7,7 @@ namespace HR_Management_System.Models.DTOs
 {
     public class PerformanceDTO
     {
-        public EmployeeDTO Employee { get; set; }
+        public int ID { get; set; }
         public int Attendance { get; set; }
         public int Effeciency { get; set; }
         public int Communication { get; set; }
@@ -15,5 +15,7 @@ namespace HR_Management_System.Models.DTOs
         public int QualityOfWork { get; set; }
         public int Overall { get; set; }
         public DateTime PerformanceDate { get; set; }
+        public EmployeeDTO Employee { get; set; }
     }
 }
+
