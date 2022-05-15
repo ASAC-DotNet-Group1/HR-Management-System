@@ -14,6 +14,7 @@ namespace HR_Management_System.Data
         public DbSet<Employee> Employees { get; set; }
         public DbSet<SalarySlip> SalarySlips { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
+        public DbSet<Performance> Performances { get; set; }
         public HR_DbContext(DbContextOptions options) : base(options)
         {
 
