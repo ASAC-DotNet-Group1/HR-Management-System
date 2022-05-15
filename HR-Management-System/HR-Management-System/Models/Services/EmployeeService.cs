@@ -328,6 +328,20 @@ namespace HR_Management_System.Models.Services
                 Overall = x.Overall
             }).Where(x => x.Employee.ID == id).ToListAsync();
         }
+
+        public async Task<List<PerformanceDTO>> PerformanceReportsForDepartment(string name)
+        {
+            return await _context.Performances.Select(x => new PerformanceDTO()
+            {
+                PerformanceDate = x.PerformanceDate,
+                Attendance = x.Attendance,
+                Communication = x.Communication,
+                Effeciency = x.Effeciency,
+                QualityOfWork = x.QualityOfWork,
+                TimeManagement = x.TimeManagement,
+                Overall = x.Overall
+            }).Where(x => x.Employee.DepartmentName == name).ToListAsync();
+        }
     }
 
 }
