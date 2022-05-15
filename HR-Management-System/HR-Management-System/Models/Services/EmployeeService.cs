@@ -315,7 +315,19 @@ namespace HR_Management_System.Models.Services
             }).ToListAsync();
         }
 
-
+        public async Task<List<PerformanceDTO>> EmployeePerformanceReports(int id)
+        {
+            return await _context.Performances.Select(x => new PerformanceDTO()
+            {
+                PerformanceDate = x.PerformanceDate,
+                Attendance = x.Attendance,
+                Communication = x.Communication,
+                Effeciency = x.Effeciency,
+                QualityOfWork = x.QualityOfWork,
+                TimeManagement = x.TimeManagement,
+                Overall = x.Overall
+            }).Where(x => x.Employee.ID == id).ToListAsync();
+        }
     }
 
 }
