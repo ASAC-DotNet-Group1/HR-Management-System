@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using HR_Management_System.Data;
 using HR_Management_System.Models;
+using HR_Management_System.Models.Interfaces;
+using HR_Management_System.Models.DTOs;
 
 namespace HR_Management_System.Controllers
 {
@@ -14,25 +16,25 @@ namespace HR_Management_System.Controllers
     [ApiController]
     public class PerformancesController : ControllerBase
     {
-        private readonly HR_DbContext _context;
+        private readonly IPerformance _performance;
 
-        public PerformancesController(HR_DbContext context)
+        public PerformancesController(IPerformance performance)
         {
-            _context = context;
+            _performance = performance;
         }
 
         // GET: api/Performances
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Performance>>> GetPerformances()
+        public async Task<ActionResult<List<PerformanceDTO>>> GetPerformances()
         {
-            return await _context.Performances.ToListAsync();
+            return await _performance.GetAllPerformanceReports();
         }
 
-        // GET: api/Performances/5
+        // GET: api/Employees/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Performance>> GetPerformance(int id)
+        public async Task<ActionResult<PerformanceDTO>> GetPerformance(int id)
         {
-            var performance = await _context.Performances.FindAsync(id);
+            var performance = await _performance.GetPerformanceReport(id);
 
             if (performance == null)
             {
@@ -40,6 +42,28 @@ namespace HR_Management_System.Controllers
             }
 
             return performance;
+        }
+
+        // POST: api/Performances
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost]
+        public async Task<ActionResult<Performance>> AddPerformance(Performance performance)
+        {
+            await _performance.AddPerformance(performance);
+            return CreatedAtAction("GetPerformance", new { id = performance.ID }, performance);
+        }
+        // GET: api/Performances/5
+        [HttpGet("Performance/employee/{id}")]
+        public async Task<ActionResult<List<PerformanceDTO>>> GetEmployeeReports(int id)
+        {
+            var performances = await _performance.EmployeePerformanceReports(id);
+
+            if (performances == null)
+            {
+                return NotFound();
+            }
+
+            return performances;
         }
 
         // PUT: api/Performances/5
@@ -52,15 +76,13 @@ namespace HR_Management_System.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(performance).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                await _performance.UpdatePerformance(id, performance);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!PerformanceExists(id))
+                if (await _performance.GetPerformanceReport(id) == null)
                 {
                     return NotFound();
                 }
@@ -73,36 +95,61 @@ namespace HR_Management_System.Controllers
             return NoContent();
         }
 
-        // POST: api/Performances
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Performance>> PostPerformance(Performance performance)
-        {
-            _context.Performances.Add(performance);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetPerformance", new { id = performance.ID }, performance);
-        }
 
         // DELETE: api/Performances/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePerformance(int id)
         {
-            var performance = await _context.Performances.FindAsync(id);
-            if (performance == null)
+            var employee = await _performance.GetPerformanceReport(id);
+
+            if (employee == null)
             {
                 return NotFound();
             }
 
-            _context.Performances.Remove(performance);
-            await _context.SaveChangesAsync();
+            await _performance.DeletePerformance(id);
 
-            return NoContent();
+            return NoContent(); 
+        }
+        //GET:
+        //Get Reports for department
+        [HttpDelete("Performance/Department/{id}")]
+        public async Task<ActionResult<List<PerformanceDTO>>> DepartmentReports(string name)
+        {
+            var performances = await _performance.PerformanceReportsForDepartment(name);
+            if (performances == null)
+            {
+                return NotFound();
+            }
+
+            return performances;
         }
 
-        private bool PerformanceExists(int id)
+        //GET:
+        //Get Reports for specific month
+        [HttpDelete("Performance/year/{year}/month/{month}")]
+        public async Task<ActionResult<List<PerformanceDTO>>> ReportsInMonth(int year, int month)
         {
-            return _context.Performances.Any(e => e.ID == id);
+            var performances = await _performance.PerformanceReportsInSpecificMonth( year,  month);
+            if (performances == null)
+            {
+                return NotFound();
+            }
+
+            return performances;
+        }
+        //GET:
+        //Get Reports for employee in specific month
+        [HttpDelete("Performance/employee/{id}/year/{year}/month/{month}")]
+        public async Task<ActionResult<List<PerformanceDTO>>> ReportsForEmployeeInMonth(int id, int year, int month)
+        {
+            var performances = await _performance.PerformanceReportsForEmployeeInSpecificMonth(id,year, month);
+            if (performances == null)
+            {
+                return NotFound();
+            }
+
+            return performances;
         }
     }
 }

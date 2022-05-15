@@ -38,7 +38,19 @@ namespace HR_Management_System.Models.Services
             }
             
         }
-
+        public async Task<PerformanceDTO> GetPerformanceReport(int id)
+        {
+            return await _context.Performances.Select(x => new PerformanceDTO
+            {
+                PerformanceDate = x.PerformanceDate,
+                Commitment = x.Commitment,
+                Communication = x.Communication,
+                Efficiency = x.Efficiency,
+                QualityOfWork = x.QualityOfWork,
+                TimeManagement = x.TimeManagement,
+                Overall = x.Overall
+            }).FirstOrDefaultAsync(x => x.ID == id);
+        }
         public async Task<List<PerformanceDTO>> GetAllPerformanceReports()
         {
             return await _context.Performances.Select(x => new PerformanceDTO()
