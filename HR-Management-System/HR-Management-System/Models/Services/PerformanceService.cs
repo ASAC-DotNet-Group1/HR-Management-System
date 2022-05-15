@@ -171,9 +171,16 @@ namespace HR_Management_System.Models.Services
             }
         }
 
-        public Task DeletePerformance(int id)
+        public async Task DeletePerformance(int id)
         {
-            throw new NotImplementedException();
+            Performance performance = await _context.Performances.FindAsync(id);
+
+            if (performance == null)
+            {
+                throw new Exception("Attendance was not found");
+            }
+            _context.Entry(performance).State = EntityState.Deleted;
+            await _context.SaveChangesAsync();
         }
     }
 }
