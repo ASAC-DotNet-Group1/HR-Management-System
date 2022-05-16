@@ -53,11 +53,16 @@ namespace HR_Management_System.Data
                 );
 
             modelBuilder.Entity<Performance>().HasData(
-                new Performance { ID = 1, EmployeeID = 2, }
+                new Performance { ID = 1, EmployeeID = 1, Commitment = 9, Communication = 9, Efficiency = 9, TimeManagement = 9, QualityOfWork = 9, Overall = 90, PerformanceDate = new DateTime(2022, 6, 23) },
+                new Performance { ID = 2, EmployeeID = 1, Commitment = 9, Communication = 9, Efficiency = 9, TimeManagement = 9, QualityOfWork = 9, Overall = 90, PerformanceDate = new DateTime(2022, 6, 23) },
+                new Performance { ID = 3, EmployeeID = 1, Commitment = 9, Communication = 9, Efficiency = 9, TimeManagement = 9, QualityOfWork = 9, Overall = 90, PerformanceDate = new DateTime(2022, 6, 23) },
+                new Performance { ID = 4, EmployeeID = 2, Commitment = 9, Communication = 9, Efficiency = 9, TimeManagement = 9, QualityOfWork = 9, Overall = 90, PerformanceDate = new DateTime(2022, 6, 23) },
+                new Performance { ID = 5, EmployeeID = 2, Commitment = 9, Communication = 9, Efficiency = 9, TimeManagement = 9, QualityOfWork = 9, Overall = 90, PerformanceDate = new DateTime(2022, 6, 23) },
+                new Performance { ID = 6, EmployeeID = 2, Commitment = 9, Communication = 9, Efficiency = 9, TimeManagement = 9, QualityOfWork = 9, Overall = 90, PerformanceDate = new DateTime(2022, 6, 23) }
                 );
 
-           // Keys added for join tables.
-           modelBuilder.Entity<SalarySlip>().HasKey(x => new { x.EmployeeID, x.Date });
+            // Keys added for join tables.
+            modelBuilder.Entity<SalarySlip>().HasKey(x => new { x.EmployeeID, x.Date });
 
         }
     }

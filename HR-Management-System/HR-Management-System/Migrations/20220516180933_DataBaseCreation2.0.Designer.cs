@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HR_Management_System.Migrations
 {
     [DbContext(typeof(HR_DbContext))]
-    [Migration("20220516153616_UpdateDatabase")]
-    partial class UpdateDatabase
+    [Migration("20220516180933_DataBaseCreation2.0")]
+    partial class DataBaseCreation20
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -290,14 +290,74 @@ namespace HR_Management_System.Migrations
                         new
                         {
                             ID = 1,
-                            Commitment = 0,
-                            Communication = 0,
-                            Efficiency = 0,
+                            Commitment = 9,
+                            Communication = 9,
+                            Efficiency = 9,
+                            EmployeeID = 1,
+                            Overall = 90.0,
+                            PerformanceDate = new DateTime(2022, 6, 23, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            QualityOfWork = 9,
+                            TimeManagement = 9
+                        },
+                        new
+                        {
+                            ID = 2,
+                            Commitment = 9,
+                            Communication = 9,
+                            Efficiency = 9,
+                            EmployeeID = 1,
+                            Overall = 90.0,
+                            PerformanceDate = new DateTime(2022, 6, 23, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            QualityOfWork = 9,
+                            TimeManagement = 9
+                        },
+                        new
+                        {
+                            ID = 3,
+                            Commitment = 9,
+                            Communication = 9,
+                            Efficiency = 9,
+                            EmployeeID = 1,
+                            Overall = 90.0,
+                            PerformanceDate = new DateTime(2022, 6, 23, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            QualityOfWork = 9,
+                            TimeManagement = 9
+                        },
+                        new
+                        {
+                            ID = 4,
+                            Commitment = 9,
+                            Communication = 9,
+                            Efficiency = 9,
                             EmployeeID = 2,
-                            Overall = 0.0,
-                            PerformanceDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            QualityOfWork = 0,
-                            TimeManagement = 0
+                            Overall = 90.0,
+                            PerformanceDate = new DateTime(2022, 6, 23, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            QualityOfWork = 9,
+                            TimeManagement = 9
+                        },
+                        new
+                        {
+                            ID = 5,
+                            Commitment = 9,
+                            Communication = 9,
+                            Efficiency = 9,
+                            EmployeeID = 2,
+                            Overall = 90.0,
+                            PerformanceDate = new DateTime(2022, 6, 23, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            QualityOfWork = 9,
+                            TimeManagement = 9
+                        },
+                        new
+                        {
+                            ID = 6,
+                            Commitment = 9,
+                            Communication = 9,
+                            Efficiency = 9,
+                            EmployeeID = 2,
+                            Overall = 90.0,
+                            PerformanceDate = new DateTime(2022, 6, 23, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            QualityOfWork = 9,
+                            TimeManagement = 9
                         });
                 });
 

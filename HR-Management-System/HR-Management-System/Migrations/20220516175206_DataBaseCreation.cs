@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace HR_Management_System.Migrations
 {
-    public partial class UpdateDatabase : Migration
+    public partial class DataBaseCreation : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -205,7 +205,15 @@ namespace HR_Management_System.Migrations
             migrationBuilder.InsertData(
                 table: "Performances",
                 columns: new[] { "ID", "Commitment", "Communication", "Efficiency", "EmployeeID", "Overall", "PerformanceDate", "QualityOfWork", "TimeManagement" },
-                values: new object[] { 1, 0, 0, 0, 2, 0.0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, 0 });
+                values: new object[,]
+                {
+                    { 1, 9, 9, 9, 1, 90.0, new DateTime(2022, 6, 23, 0, 0, 0, 0, DateTimeKind.Unspecified), 9, 9 },
+                    { 2, 9, 9, 9, 1, 90.0, new DateTime(2022, 6, 23, 0, 0, 0, 0, DateTimeKind.Unspecified), 9, 9 },
+                    { 3, 9, 9, 9, 1, 90.0, new DateTime(2022, 6, 23, 0, 0, 0, 0, DateTimeKind.Unspecified), 9, 9 },
+                    { 4, 9, 9, 9, 2, 90.0, new DateTime(2022, 6, 23, 0, 0, 0, 0, DateTimeKind.Unspecified), 9, 9 },
+                    { 5, 9, 9, 9, 2, 90.0, new DateTime(2022, 6, 23, 0, 0, 0, 0, DateTimeKind.Unspecified), 9, 9 },
+                    { 6, 9, 9, 9, 2, 90.0, new DateTime(2022, 6, 23, 0, 0, 0, 0, DateTimeKind.Unspecified), 9, 9 }
+                });
 
             migrationBuilder.InsertData(
                 table: "Tickets",
