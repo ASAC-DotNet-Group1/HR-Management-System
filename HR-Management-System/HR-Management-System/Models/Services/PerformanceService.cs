@@ -17,15 +17,20 @@ namespace HR_Management_System.Models.Services
         {
             _context = context;
         }
-
-        public async Task/*<PerformanceDTO>*/ AddPerformance(AddPerformanceDTO addPerformanceDTO)
+        double CalculatePerformance(Performance performance) 
         {
-            
-            if(addPerformanceDTO.Commitment >= 0 && addPerformanceDTO.Commitment<=10
-                && addPerformanceDTO.Efficiency >=0 && addPerformanceDTO.Efficiency<=10
-                && addPerformanceDTO.Communication >=0 && addPerformanceDTO.Communication<=10
-                && addPerformanceDTO.TimeManagement >=0 && addPerformanceDTO.TimeManagement<=10
-                && addPerformanceDTO.QualityOfWork >=0 && addPerformanceDTO.QualityOfWork<=10
+            return (performance.Commitment + performance.Efficiency +
+                    performance.Communication + performance.TimeManagement + performance.QualityOfWork) / 5 * 100 / 100;
+        }
+
+        public async Task<PerformanceDTO> AddPerformance(AddPerformanceDTO addPerformanceDTO)
+        {
+
+            if (addPerformanceDTO.Commitment >= 0 && addPerformanceDTO.Commitment <= 10
+                && addPerformanceDTO.Efficiency >= 0 && addPerformanceDTO.Efficiency <= 10
+                && addPerformanceDTO.Communication >= 0 && addPerformanceDTO.Communication <= 10
+                && addPerformanceDTO.TimeManagement >= 0 && addPerformanceDTO.TimeManagement <= 10
+                && addPerformanceDTO.QualityOfWork >= 0 && addPerformanceDTO.QualityOfWork <= 10
                 )
             {
                 DateTime dateTime = DateTime.Now.ToLocalTime();
@@ -39,25 +44,12 @@ namespace HR_Management_System.Models.Services
                     QualityOfWork = addPerformanceDTO.QualityOfWork,
                     TimeManagement = addPerformanceDTO.TimeManagement,
                 };
-                performance.Overall = (addPerformanceDTO.Commitment + addPerformanceDTO.Efficiency +
-                addPerformanceDTO.Communication + addPerformanceDTO.TimeManagement + addPerformanceDTO.QualityOfWork) / 5 *10;
+                performance.Overall = CalculatePerformance(performance);
+
                 _context.Entry(performance).State = EntityState.Added;
                 await _context.SaveChangesAsync();
 
-                // Needs fix. 
-
-                //performance = await _context.Performances.FirstOrDefaultAsync(x => x.EmployeeID == addPerformanceDTO.EmployeeID && x.PerformanceDate == dateTime);
-                //return new PerformanceDTO
-                //{
-                //    EmployeeID = performance.EmployeeID,
-                //    Commitment = performance.Commitment,
-                //    TimeManagement = performance.TimeManagement,
-                //    QualityOfWork = performance.QualityOfWork,
-                //    Communication = performance.Communication,
-                //    Efficiency = performance.Efficiency,
-                //    Overall = performance.Overall,
-                //    PerformanceDate = performance.PerformanceDate
-                //};
+                return await GetPerformanceReport(performance.ID);
             }
             else
             {
@@ -204,21 +196,38 @@ namespace HR_Management_System.Models.Services
         }
 
 
-        public async Task UpdatePerformance(int id, UpdatePerformanceDTO performance)
+        public async Task<PerformanceDTO> UpdatePerformance(int id, UpdatePerformanceDTO performance)
         {
             var oldPerformance = await _context.Performances.FindAsync(id);
 
             if (oldPerformance != null)
             {
-                oldPerformance.Commitment = performance.Commitment;
-                oldPerformance.Efficiency = performance.Efficiency;
-                oldPerformance.QualityOfWork = performance.QualityOfWork;
-                oldPerformance.TimeManagement = performance.TimeManagement;
-                oldPerformance.Communication = performance.Communication;
+                if (performance.Commitment >= 0 && performance.Commitment <= 10
+                && performance.Efficiency >= 0 && performance.Efficiency <= 10
+                && performance.Communication >= 0 && performance.Communication <= 10
+                && performance.TimeManagement >= 0 && performance.TimeManagement <= 10
+                && performance.QualityOfWork >= 0 && performance.QualityOfWork <= 10
+                )
+                {
+                    oldPerformance.Commitment = performance.Commitment;
+                    oldPerformance.Efficiency = performance.Efficiency;
+                    oldPerformance.QualityOfWork = performance.QualityOfWork;
+                    oldPerformance.TimeManagement = performance.TimeManagement;
+                    oldPerformance.Communication = performance.Communication;
+                    oldPerformance.Overall = CalculatePerformance(oldPerformance);
 
-                _context.Entry(oldPerformance).State = EntityState.Modified;
+                    
 
-                await _context.SaveChangesAsync();
+                    _context.Entry(oldPerformance).State = EntityState.Modified;
+
+                    await _context.SaveChangesAsync();
+                    return await GetPerformanceReport(oldPerformance.ID);
+                }
+
+                else
+                {
+                    throw new Exception("Please enter values between 0-10");
+                }
             }
             else
             {

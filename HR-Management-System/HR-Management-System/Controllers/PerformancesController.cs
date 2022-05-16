@@ -1,14 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+using HR_Management_System.Models.DTOs;
+using HR_Management_System.Models.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using HR_Management_System.Data;
-using HR_Management_System.Models;
-using HR_Management_System.Models.Interfaces;
-using HR_Management_System.Models.DTOs;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace HR_Management_System.Controllers
 {
@@ -43,14 +39,14 @@ namespace HR_Management_System.Controllers
         {
             try
             {
-                var performances =  await _performance.GetAllPerformanceReports();
-                if(performances == null)
+                var performances = await _performance.GetAllPerformanceReports();
+                if (performances == null)
                 {
                     return NotFound("There are no performance reports available right now");
                 }
                 return performances;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return NotFound(e.Message);
             }
@@ -59,11 +55,11 @@ namespace HR_Management_System.Controllers
         // POST: api/Performances
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task/*<ActionResult<PerformanceDTO>>*/ AddPerformance(AddPerformanceDTO performance)
+        public async Task<PerformanceDTO> AddPerformance(AddPerformanceDTO performance)
         {
-            // Note.
-            /*return*/ await _performance.AddPerformance(performance);
-            
+
+            return await _performance.AddPerformance(performance);
+
         }
 
         // GET: api/Performances/5
@@ -79,12 +75,12 @@ namespace HR_Management_System.Controllers
                 }
                 return performances;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return NotFound(e.Message);
             }
         }
-        
+
         //GET:
         //Get Reports for department
         [HttpGet("Performance/Department/{id}")]
@@ -100,7 +96,7 @@ namespace HR_Management_System.Controllers
                 }
                 return performances;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return NotFound(e.Message);
             }
@@ -140,7 +136,7 @@ namespace HR_Management_System.Controllers
                 }
                 return performances;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return NotFound(e.Message);
             }
@@ -149,29 +145,20 @@ namespace HR_Management_System.Controllers
         // PUT: api/Performances/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutPerformance(int id, UpdatePerformanceDTO performance)
+        public async Task<PerformanceDTO> PutPerformance(int id, UpdatePerformanceDTO performance)
         {
-            if (id != performance.ID)
-            {
-                return BadRequest();
-            }
+
             try
             {
-                await _performance.UpdatePerformance(id, performance);
+                return await _performance.UpdatePerformance(id, performance);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (await _performance.GetPerformanceReport(id) == null)
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                throw;
+
             }
 
-            return NoContent();
+
         }
 
         // DELETE: api/Performances/5
