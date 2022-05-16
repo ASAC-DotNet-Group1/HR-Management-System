@@ -25,9 +25,9 @@ namespace HR_Management_System.Data
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<Employee>().HasData(
-                new Employee { ID = 1, Name = "Laith", Age = 21, Gender = "Male", DepartmentID = 1, Salary = 300, Level = Level.Junior, Email = "Employee1@LTUC.com", Password = "1234", Phone = "079" },
-                new Employee { ID = 2, Name = "Osama", Age = 22, Gender = "Other", DepartmentID = 2, Salary = 400, Level = Level.MidSenior, Email = "Employee2@LTUC.com", Password = "1234", Phone = "079" },
-                new Employee { ID = 3, Name = "Shadi", Age = 24, Gender = "Male", DepartmentID = 3, Salary = 500, Level = Level.Senior, Email = "Employee3@LTUC.com", Password = "1234", Phone = "079" }
+                new Employee { ID = 1, Name = "Laith", Age = 21, Gender = "Male", DepartmentID = 1, Salary = 300, Level = Level.Junior, Email = "Employee1@LTUC.com", Password = "1234", Phone = "079", LeaveCredit = 14, VacationCredit = 14 },
+                new Employee { ID = 2, Name = "Osama", Age = 22, Gender = "Other", DepartmentID = 2, Salary = 400, Level = Level.MidSenior, Email = "Employee2@LTUC.com", Password = "1234", Phone = "079", LeaveCredit = 14, VacationCredit = 14 },
+                new Employee { ID = 3, Name = "Shadi", Age = 24, Gender = "Male", DepartmentID = 3, Salary = 500, Level = Level.Senior, Email = "Employee3@LTUC.com", Password = "1234", Phone = "079", LeaveCredit = 14, VacationCredit = 14 }
             );
 
             modelBuilder.Entity<Department>().HasData(

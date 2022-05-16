@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace HR_Management_System.Migrations
 {
-    public partial class initial : Migration
+    public partial class UpdateDatabase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -177,17 +177,17 @@ namespace HR_Management_System.Migrations
             migrationBuilder.InsertData(
                 table: "Employees",
                 columns: new[] { "ID", "Age", "DepartmentID", "Email", "Gender", "LeaveCredit", "Level", "Name", "Password", "Phone", "Salary", "VacationCredit" },
-                values: new object[] { 1, 21, 1, "Employee1@LTUC.com", "Male", 0, 1, "Laith", "1234", "079", 300.0, 0 });
+                values: new object[] { 1, 21, 1, "Employee1@LTUC.com", "Male", 14, 1, "Laith", "1234", "079", 300.0, 14 });
 
             migrationBuilder.InsertData(
                 table: "Employees",
                 columns: new[] { "ID", "Age", "DepartmentID", "Email", "Gender", "LeaveCredit", "Level", "Name", "Password", "Phone", "Salary", "VacationCredit" },
-                values: new object[] { 2, 22, 2, "Employee2@LTUC.com", "Other", 0, 2, "Osama", "1234", "079", 400.0, 0 });
+                values: new object[] { 2, 22, 2, "Employee2@LTUC.com", "Other", 14, 2, "Osama", "1234", "079", 400.0, 14 });
 
             migrationBuilder.InsertData(
                 table: "Employees",
                 columns: new[] { "ID", "Age", "DepartmentID", "Email", "Gender", "LeaveCredit", "Level", "Name", "Password", "Phone", "Salary", "VacationCredit" },
-                values: new object[] { 3, 24, 3, "Employee3@LTUC.com", "Male", 0, 3, "Shadi", "1234", "079", 500.0, 0 });
+                values: new object[] { 3, 24, 3, "Employee3@LTUC.com", "Male", 14, 3, "Shadi", "1234", "079", 500.0, 14 });
 
             migrationBuilder.InsertData(
                 table: "Attendances",

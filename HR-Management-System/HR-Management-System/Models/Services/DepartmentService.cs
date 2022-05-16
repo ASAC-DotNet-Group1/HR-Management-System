@@ -1,14 +1,16 @@
 ﻿using HR_Management_System.Data;
+using HR_Management_System.Models.DTOs;
 using HR_Management_System.Models.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace HR_Management_System.Models.Services
 {
     public class DepartmentService : IDepartment
     {
-
         private readonly HR_DbContext _context;
 
         public DepartmentService(HR_DbContext context)
@@ -16,38 +18,84 @@ namespace HR_Management_System.Models.Services
             _context = context;
         }
 
-
         public async Task AddDepartment(Department department)
         {
             _context.Entry(department).State = EntityState.Added;
-
             await _context.SaveChangesAsync();
-
         }
 
         public async Task DeleteDepartment(int id)
         {
-            Department department = await GetDepartment(id);
-
+            Department department = await _context.Departments.FindAsync(id);
+            if(department == null)
+            {
+                throw new Exception("Department was not found");
+            }
             _context.Entry(department).State = EntityState.Deleted;
-
             await _context.SaveChangesAsync();
         }
 
-        public async Task<Department> GetDepartment(int id)
+        public async Task<DepartmentDTO> GetDepartment(int id)
         {
-            return await _context.Departments.FindAsync(id);
+            Department department = await _context.Departments.FindAsync(id);
+
+            if(department == null)
+            {
+                throw new Exception("Department was not found");
+            }
+            return new DepartmentDTO
+            {
+                Name = department.Name,
+                Employees = await _context.Employees.Where(x => x.DepartmentID == id).Select(x => new EmployeeDTO
+                {
+                    ID = x.ID,
+                    Name = x.Name,
+                    Age = x.Age,
+                    DepartmentName = x.Department.Name,
+                    DepartmentID = x.DepartmentID,
+                    Email = x.Email,
+                    Gender = x.Gender,
+                    Level = x.Level.ToString(),
+                    LeaveCredit = x.LeaveCredit,
+                    Phone = x.Phone,
+                    VacationCredit = x.VacationCredit
+
+                }).ToListAsync()
+            };
         }
 
-        public async Task<List<Department>> GetDepartments()
+        public async Task<List<DepartmentDTO>> GetDepartments()
         {
-            return await _context.Departments.ToListAsync();
+            var departments = await _context.Departments.Select(x => new DepartmentDTO
+            {
+                Name = x.Name,
+                Employees = x.Employees.Select(x => new EmployeeDTO
+                {
+                    ID = x.ID,
+                    Name = x.Name,
+                    Age = x.Age,
+                    DepartmentName = x.Department.Name,
+                    DepartmentID = x.DepartmentID,
+                    Email = x.Email,
+                    Gender = x.Gender,
+                    Level = x.Level.ToString(),
+                    LeaveCredit = x.LeaveCredit,
+                    Phone = x.Phone,
+                    VacationCredit = x.VacationCredit
+                }).ToList()
+            }).ToListAsync();
+
+            if(departments == null)
+            {
+                throw new Exception("No departments found");
+            }
+
+            return departments;
         }
 
         public async Task UpdateDepartment(int id, Department department)
         {
             _context.Entry(department).State = EntityState.Modified;
-
             await _context.SaveChangesAsync();
         }
     }

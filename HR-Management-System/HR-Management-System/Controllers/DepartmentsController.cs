@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using HR_Management_System.Data;
 using HR_Management_System.Models;
 using HR_Management_System.Models.Interfaces;
+using HR_Management_System.Models.DTOs;
 
 namespace HR_Management_System.Controllers
 {
@@ -24,23 +25,30 @@ namespace HR_Management_System.Controllers
 
         // GET: api/Departments
         [HttpGet]
-        public async Task<ActionResult<List<Department>>> GetDepartments()
+        public async Task<ActionResult<List<DepartmentDTO>>> GetDepartments()
         {
-            return await _department.GetDepartments();
+            try
+            {
+                return await _department.GetDepartments();
+            }
+            catch (Exception e)
+            {
+                return NotFound(e.Message);
+            }
         }
 
         // GET: api/Departments/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Department>> GetDepartment(int id)
+        public async Task<ActionResult<DepartmentDTO>> GetDepartment(int id)
         {
-            var department = await _department.GetDepartment(id);
-
-            if (department == null)
+            try
             {
-                return NotFound();
+                return await _department.GetDepartment(id);
             }
-
-            return department;
+            catch(Exception e)
+            {
+                return NotFound(e.Message);
+            }
         }
 
         // PUT: api/Departments/5
@@ -87,17 +95,16 @@ namespace HR_Management_System.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteDepartment(int id)
         {
-            var department = await _department.GetDepartment(id);
-
-            if (department == null)
+            try
             {
-                return NotFound();
+                var department = await _department.GetDepartment(id);
+            }
+            catch(Exception e)
+            {
+                return NotFound(e.Message);
             }
 
-            await _department.DeleteDepartment(id);
-
-            return NoContent();
+            return Ok("Deleted");
         }
-       
     }
 }
