@@ -28,7 +28,7 @@ namespace HR_Management_System.Models.Services
                 )
             {
                 performance.Overall = (performance.Commitment + performance.Efficiency +
-                    performance.Communication + performance.TimeManagement + performance.QualityOfWork) / 5 *100/100;
+                performance.Communication + performance.TimeManagement + performance.QualityOfWork) / 5 *100/100;
                 _context.Entry(performance).State = EntityState.Added;
                 await _context.SaveChangesAsync();
             }
@@ -197,7 +197,7 @@ namespace HR_Management_System.Models.Services
 
             if (performance == null)
             {
-                throw new Exception("Attendance was not found");
+                throw new Exception("Report was not found");
             }
             _context.Entry(performance).State = EntityState.Deleted;
             await _context.SaveChangesAsync();
