@@ -120,7 +120,7 @@ namespace HR_Management_System.Controllers
 
 
         //Date stuff
-
+        #region DATE (ATTENDANCE, SALARY SLIPS, TICKETS)
 
         /// <summary>
         /// Return attendances of all employees in a specific date
@@ -164,12 +164,91 @@ namespace HR_Management_System.Controllers
 
 
 
+        /// <summary>
+        /// Return Salary Slips of all employees in a specific date
+        /// </summary>
+        /// <param name="year"></param>
+        /// <param name="month"></param>
+        /// <returns></returns>
+        [HttpGet("Salary-Slips/year/{year}/month/{month}")]
+        public async Task<ActionResult<List<SalarySlipDTO>>> GetAllSalarySlipsInADate(int year, int month)
+        {
+            try
+            {
+                return await _employee.GetAllSalarySlipsInADate(year, month);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+        /// <summary>
+        /// Return salary slips of a specific employee during a specific month of a specific year
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("Salary-Slips/employee/{id}/year/{year}/month/{month}")]
+        public async Task<ActionResult<List<SalarySlipDTO>>> GetAllSalarySlipsInADateForEmployee(int id, int year, int month)
+        {
+            try
+            {
+                return await _employee.GetAllSalarySlipsInADateForEmployee(id, year, month);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+
+        /// <summary>
+        /// Return Salary Slips of all employees in a specific date
+        /// </summary>
+        /// <param name="year"></param>
+        /// <param name="month"></param>
+        /// <returns></returns>
+        [HttpGet("Tickets/year/{year}/month/{month}")]
+        public async Task<ActionResult<List<TicketDTO>>> GetAllTicketsInADate(int year, int month)
+        {
+            try
+            {
+                return await _employee.GetAllTicketsInADate(year, month);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+        /// <summary>
+        /// Return attendances of a specific employee during a specific month of a specific year
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("Tickets/employee/{id}/year/{year}/month/{month}")]
+        public async Task<ActionResult<List<TicketDTO>>> GetAllTicketsInADateForEmployee(int id, int year, int month)
+        {
+            try
+            {
+                return await _employee.GetAllTicketsInADateForEmployee(id, year, month);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
 
 
 
 
 
 
+        #endregion
 
 
 

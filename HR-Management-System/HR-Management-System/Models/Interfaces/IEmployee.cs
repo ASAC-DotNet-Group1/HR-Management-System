@@ -20,5 +20,38 @@ namespace HR_Management_System.Models.Interfaces
         public Task<List<AttendanceDTO>> GetAllAttendancesInADate(int year, int month);
 
 
+
+
+
+
+        // Salary Slips Date part
+        #region Salary Slips!!!
+        // X
+        public Task<List<SalarySlipDTO>> GetAllSalarySlipsInADateForEmployee(int id, int year, int month);
+
+        // X
+        public Task<List<SalarySlipDTO>> GetAllSalarySlipsInADate(int year, int month);
+
+        #endregion
+
+
+
+        // Tickets Date part
+        #region Tickets!!
+
+        // X
+        public Task<List<TicketDTO>> GetAllTicketsInADateForEmployee(int id, int year, int month);
+
+        // X
+        public Task<List<TicketDTO>> GetAllTicketsInADate(int year, int month);
+
+
+        #endregion
+
+
+
+
+
+
     }
 }

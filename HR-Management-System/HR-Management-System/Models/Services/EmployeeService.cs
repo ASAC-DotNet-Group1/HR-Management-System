@@ -191,6 +191,23 @@ namespace HR_Management_System.Models.Services
             }).ToListAsync();
         }
 
+
+
+
+
+
+
+
+        // *****************************************************************
+
+
+        // Date related functions
+
+        #region DATE SERVICES
+
+
+
+
         public async Task<List<AttendanceDTO>> GetAllAttendancesInADateForEmployee(int id, int year, int month)
         {
             //if month is inputted as 0, then give me the whole year
@@ -256,6 +273,158 @@ namespace HR_Management_System.Models.Services
                 }).Where(x => x.StartShift.Year == year & x.StartShift.Month == month).ToListAsync();
             }
         }
+
+
+
+        public async Task<List<SalarySlipDTO>> GetAllSalarySlipsInADateForEmployee(int id, int year, int month)
+        {
+
+            if (month == 0)
+            {
+                return await _context.SalarySlips.Select(x => new SalarySlipDTO()
+                {
+                    EmployeeID = x.EmployeeID,
+                    Date = x.Date,
+                    Total = x.Total
+                }).Where(x => x.EmployeeID == id & x.Date.Year == year).ToListAsync();
+            }
+            else if (month > 12 || month < 0)
+            {
+                throw new Exception("wrong input, only months between 1-12 are accepted!");
+            }
+            else
+            {
+                return await _context.SalarySlips.Select(x => new SalarySlipDTO()
+                {
+                    EmployeeID = x.EmployeeID,
+                    Date = x.Date,
+                    Total = x.Total
+                }).Where(x => x.EmployeeID == id & x.Date.Year == year & x.Date.Month == month).ToListAsync();
+            }
+
+
+
+
+        }
+
+
+        public async Task<List<SalarySlipDTO>> GetAllSalarySlipsInADate(int year, int month)
+        {
+
+            if (month == 0)
+            {
+                return await _context.SalarySlips.Select(x => new SalarySlipDTO()
+                {
+                    EmployeeID = x.EmployeeID,
+                    Date = x.Date,
+                    Total = x.Total
+                }).Where(x => x.Date.Year == year).ToListAsync();
+            }
+            else if (month > 12 || month < 0)
+            {
+                throw new Exception("wrong input, only months between 1-12 are accepted!");
+            }
+            else
+            {
+                return await _context.SalarySlips.Select(x => new SalarySlipDTO()
+                {
+                    EmployeeID = x.EmployeeID,
+                    Date = x.Date,
+                    Total = x.Total
+                }).Where(x => x.Date.Year == year & x.Date.Month == month).ToListAsync();
+            }
+
+        }
+
+
+
+
+        public async Task<List<TicketDTO>> GetAllTicketsInADateForEmployee(int id, int year, int month)
+        {
+
+            if (month == 0)
+            {
+                return await _context.Tickets.Where(x => x.Employee.ID == id & x.Date.Year == year)
+                    .Select(x => new TicketDTO()
+                    {
+                        ID = x.ID,
+                        EmployeeName = x.Employee.Name,
+                        Type = x.Type.ToString(),
+                        Date = x.Date,
+                        Status = x.Status.ToString(),
+                        Comment = x.Comment
+
+                    }).ToListAsync();
+            }
+            else if (month > 12 || month < 0)
+            {
+                throw new Exception("wrong input, only months between 1-12 are accepted!");
+            }
+            else
+            {
+
+                return await _context.Tickets.Where(x => x.Employee.ID == id & x.Date.Year == year & x.Date.Month == month)
+                    .Select(x => new TicketDTO()
+                {
+                    ID = x.ID,
+                    EmployeeName = x.Employee.Name,
+                    Type = x.Type.ToString(),
+                    Date = x.Date,
+                    Status = x.Status.ToString(),
+                    Comment = x.Comment
+
+                    }).ToListAsync();
+            }
+
+
+        }
+
+
+        public async Task<List<TicketDTO>> GetAllTicketsInADate(int year, int month)
+        {
+
+            if (month == 0)
+            {
+                return await _context.Tickets.Where(x => x.Date.Year == year & x.Date.Month == month)
+                    .Select(x => new TicketDTO()
+                {
+                    ID = x.ID,
+                    EmployeeName = x.Employee.Name,
+                    Type = x.Type.ToString(),
+                    Date = x.Date,
+                    Status = x.Status.ToString(),
+                    Comment = x.Comment
+
+                    }).ToListAsync();
+            }
+            else if (month > 12 || month < 0)
+            {
+                throw new Exception("wrong input, only months between 1-12 are accepted!");
+            }
+            else
+            {
+                return await _context.Tickets.Where(x => x.Date.Year == year & x.Date.Month == month)
+                    .Select(x => new TicketDTO()
+                {
+                    ID = x.ID,
+                    EmployeeName = x.Employee.Name,
+                    Type = x.Type.ToString(),
+                    Date = x.Date,
+                    Status = x.Status.ToString(),
+                    Comment = x.Comment
+                }).ToListAsync();
+            }
+
+        }
+
+
+        #endregion
+
+
+
+
+
+
 
 
 
