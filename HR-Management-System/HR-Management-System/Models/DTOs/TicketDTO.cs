@@ -11,5 +11,6 @@ namespace HR_Management_System.Models.DTOs
         public DateTime Date { get; set; }
         public string Status { get; set; }
 
+        public Employee Employee { get; set; }
     }
 }
