@@ -14,6 +14,6 @@ namespace HR_Management_System.Models.DTOs
         public string Level { get; set; }
         public int LeaveCredit { get; set; }
         public int VacationCredit { get; set; }
-        public Department Department { get; set; }
+        public string DepartmentName { get; set; }
     }
 }

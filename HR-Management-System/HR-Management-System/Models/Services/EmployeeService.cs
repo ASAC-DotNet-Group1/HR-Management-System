@@ -50,7 +50,7 @@ namespace HR_Management_System.Models.Services
                 Name = employee.Name,
                 Phone = employee.Phone,
                 VacationCredit = employee.VacationCredit,
-                Department = employee.Department,
+                DepartmentName = employee.Department.Name,
             };
         }
 
@@ -80,7 +80,7 @@ namespace HR_Management_System.Models.Services
                     Gender = x.Gender,
                     LeaveCredit = x.LeaveCredit,
                     VacationCredit = x.VacationCredit,
-                    Department = x.Department,
+                    DepartmentName = x.Department.Name
                 }).FirstAsync();
         }
 
@@ -100,7 +100,7 @@ namespace HR_Management_System.Models.Services
                     Gender = x.Gender,
                     LeaveCredit = x.LeaveCredit,
                     VacationCredit = x.VacationCredit,
-                    Department = x.Department
+                    DepartmentName = x.Department.Name
                 }).ToListAsync();
         }
 

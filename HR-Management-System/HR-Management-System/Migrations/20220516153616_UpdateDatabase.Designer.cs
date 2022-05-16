@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HR_Management_System.Migrations
 {
     [DbContext(typeof(HR_DbContext))]
-    [Migration("20220515211257_initial")]
-    partial class initial
+    [Migration("20220516153616_UpdateDatabase")]
+    partial class UpdateDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -209,13 +209,13 @@ namespace HR_Management_System.Migrations
                             DepartmentID = 1,
                             Email = "Employee1@LTUC.com",
                             Gender = "Male",
-                            LeaveCredit = 0,
+                            LeaveCredit = 14,
                             Level = 1,
                             Name = "Laith",
                             Password = "1234",
                             Phone = "079",
                             Salary = 300.0,
-                            VacationCredit = 0
+                            VacationCredit = 14
                         },
                         new
                         {
@@ -224,13 +224,13 @@ namespace HR_Management_System.Migrations
                             DepartmentID = 2,
                             Email = "Employee2@LTUC.com",
                             Gender = "Other",
-                            LeaveCredit = 0,
+                            LeaveCredit = 14,
                             Level = 2,
                             Name = "Osama",
                             Password = "1234",
                             Phone = "079",
                             Salary = 400.0,
-                            VacationCredit = 0
+                            VacationCredit = 14
                         },
                         new
                         {
@@ -239,13 +239,13 @@ namespace HR_Management_System.Migrations
                             DepartmentID = 3,
                             Email = "Employee3@LTUC.com",
                             Gender = "Male",
-                            LeaveCredit = 0,
+                            LeaveCredit = 14,
                             Level = 3,
                             Name = "Shadi",
                             Password = "1234",
                             Phone = "079",
                             Salary = 500.0,
-                            VacationCredit = 0
+                            VacationCredit = 14
                         });
                 });
 
