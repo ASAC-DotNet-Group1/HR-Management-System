@@ -18,30 +18,57 @@ namespace HR_Management_System.Models.Services
             _context = context;
         }
 
-        public async Task AddPerformance(Performance performance)
+        public async Task/*<PerformanceDTO>*/ AddPerformance(AddPerformanceDTO addPerformanceDTO)
         {
-            if(performance.Commitment >= 0 && performance.Commitment<=10
-                && performance.Efficiency >=0 && performance.Efficiency<=10
-                && performance.Communication >=0 && performance.Communication<=10
-                && performance.TimeManagement >=0 && performance.TimeManagement<=10
-                && performance.QualityOfWork >=0 && performance.QualityOfWork<=10
+            
+            if(addPerformanceDTO.Commitment >= 0 && addPerformanceDTO.Commitment<=10
+                && addPerformanceDTO.Efficiency >=0 && addPerformanceDTO.Efficiency<=10
+                && addPerformanceDTO.Communication >=0 && addPerformanceDTO.Communication<=10
+                && addPerformanceDTO.TimeManagement >=0 && addPerformanceDTO.TimeManagement<=10
+                && addPerformanceDTO.QualityOfWork >=0 && addPerformanceDTO.QualityOfWork<=10
                 )
             {
-                performance.Overall = (performance.Commitment + performance.Efficiency +
-                performance.Communication + performance.TimeManagement + performance.QualityOfWork) / 5 *100/100;
+                DateTime dateTime = DateTime.Now.ToLocalTime();
+                Performance performance = new Performance
+                {
+                    PerformanceDate = dateTime,
+                    EmployeeID = addPerformanceDTO.EmployeeID,
+                    Commitment = addPerformanceDTO.Commitment,
+                    Communication = addPerformanceDTO.Communication,
+                    Efficiency = addPerformanceDTO.Efficiency,
+                    QualityOfWork = addPerformanceDTO.QualityOfWork,
+                    TimeManagement = addPerformanceDTO.TimeManagement,
+                };
+                performance.Overall = (addPerformanceDTO.Commitment + addPerformanceDTO.Efficiency +
+                addPerformanceDTO.Communication + addPerformanceDTO.TimeManagement + addPerformanceDTO.QualityOfWork) / 5 *10;
                 _context.Entry(performance).State = EntityState.Added;
                 await _context.SaveChangesAsync();
+
+                // Needs fix. 
+
+                //performance = await _context.Performances.FirstOrDefaultAsync(x => x.EmployeeID == addPerformanceDTO.EmployeeID && x.PerformanceDate == dateTime);
+                //return new PerformanceDTO
+                //{
+                //    EmployeeID = performance.EmployeeID,
+                //    Commitment = performance.Commitment,
+                //    TimeManagement = performance.TimeManagement,
+                //    QualityOfWork = performance.QualityOfWork,
+                //    Communication = performance.Communication,
+                //    Efficiency = performance.Efficiency,
+                //    Overall = performance.Overall,
+                //    PerformanceDate = performance.PerformanceDate
+                //};
             }
             else
             {
                 throw new Exception("Please enter values between 0-10");
             }
-
         }
         public async Task<PerformanceDTO> GetPerformanceReport(int id)
         {
-            return await _context.Performances.Select(x => new PerformanceDTO
+            return await _context.Performances.Where(x => x.ID == id).Select(x => new PerformanceDTO
             {
+                EmployeeID = x.EmployeeID,
                 EmployeeName = x.Employee.Name,
                 PerformanceDate = x.PerformanceDate,
                 Commitment = x.Commitment,
@@ -49,13 +76,15 @@ namespace HR_Management_System.Models.Services
                 Efficiency = x.Efficiency,
                 QualityOfWork = x.QualityOfWork,
                 TimeManagement = x.TimeManagement,
-                Overall = x.Overall
-            }).FirstOrDefaultAsync(x => x.ID == id);
+                Overall = x.Overall,
+                
+            }).FirstOrDefaultAsync();
         }
         public async Task<List<PerformanceDTO>> GetAllPerformanceReports()
         {
             return await _context.Performances.Select(x => new PerformanceDTO()
             {
+                EmployeeID = x.EmployeeID,
                 EmployeeName = x.Employee.Name,
                 PerformanceDate = x.PerformanceDate,
                 Commitment = x.Commitment,
@@ -69,8 +98,9 @@ namespace HR_Management_System.Models.Services
 
         public async Task<List<PerformanceDTO>> EmployeePerformanceReports(int id)
         {
-            return await _context.Performances.Select(x => new PerformanceDTO()
+            return await _context.Performances.Where(x => x.EmployeeID == id).Select(x => new PerformanceDTO()
             {
+                EmployeeID = x.EmployeeID,
                 EmployeeName = x.Employee.Name,
                 PerformanceDate = x.PerformanceDate,
                 Commitment = x.Commitment,
@@ -79,13 +109,14 @@ namespace HR_Management_System.Models.Services
                 QualityOfWork = x.QualityOfWork,
                 TimeManagement = x.TimeManagement,
                 Overall = x.Overall
-            }).Where(x => x.Employee.ID == id).ToListAsync();
+            }).ToListAsync();
         }
 
         public async Task<List<PerformanceDTO>> PerformanceReportsForDepartment(int id)
         {
             return await _context.Performances.Where(x => x.Employee.DepartmentID == id).Select(x => new PerformanceDTO()
             {
+                EmployeeID = x.EmployeeID,
                 EmployeeName = x.Employee.Name,
                 PerformanceDate = x.PerformanceDate,
                 Commitment = x.Commitment,
@@ -101,8 +132,9 @@ namespace HR_Management_System.Models.Services
         {
             if (month == 0)
             {
-                return await _context.Performances.Select(x => new PerformanceDTO()
+                return await _context.Performances.Where(x => x.PerformanceDate.Year == year).Select(x => new PerformanceDTO()
                 {
+                    EmployeeID = x.EmployeeID,
                     EmployeeName = x.Employee.Name,
                     PerformanceDate = x.PerformanceDate,
                     Commitment = x.Commitment,
@@ -111,7 +143,7 @@ namespace HR_Management_System.Models.Services
                     QualityOfWork = x.QualityOfWork,
                     TimeManagement = x.TimeManagement,
                     Overall = x.Overall
-                }).Where(x => x.PerformanceDate.Year == year).ToListAsync();
+                }).ToListAsync();
             }
             else if (month > 12 || month < 0)
             {
@@ -119,8 +151,9 @@ namespace HR_Management_System.Models.Services
             }
             else
             {
-                return await _context.Performances.Select(x => new PerformanceDTO()
+                return await _context.Performances.Where(x => x.PerformanceDate.Year == year && x.PerformanceDate.Month == month).Select(x => new PerformanceDTO()
                 {
+                    EmployeeID = x.EmployeeID,
                     EmployeeName = x.Employee.Name,
                     PerformanceDate = x.PerformanceDate,
                     Commitment = x.Commitment,
@@ -129,15 +162,16 @@ namespace HR_Management_System.Models.Services
                     QualityOfWork = x.QualityOfWork,
                     TimeManagement = x.TimeManagement,
                     Overall = x.Overall
-                }).Where(x => x.PerformanceDate.Year == year && x.PerformanceDate.Month == month).ToListAsync();
+                }).ToListAsync();
             }
         }
         public async Task<List<PerformanceDTO>> PerformanceReportsForEmployeeInSpecificMonth(int id, int year, int month)
         {
             if (month == 0)
             {
-                return await _context.Performances.Select(x => new PerformanceDTO()
+                return await _context.Performances.Where(x => x.EmployeeID == id && x.PerformanceDate.Year == year).Select(x => new PerformanceDTO()
                 {
+                    EmployeeID = x.EmployeeID,
                     EmployeeName = x.Employee.Name,
                     PerformanceDate = x.PerformanceDate,
                     Commitment = x.Commitment,
@@ -146,7 +180,7 @@ namespace HR_Management_System.Models.Services
                     QualityOfWork = x.QualityOfWork,
                     TimeManagement = x.TimeManagement,
                     Overall = x.Overall
-                }).Where(x => x.Employee.ID == id && x.PerformanceDate.Year == year).ToListAsync();
+                }).ToListAsync();
             }
             else if (month > 12 || month < 0)
             {
@@ -154,8 +188,9 @@ namespace HR_Management_System.Models.Services
             }
             else
             {
-                return await _context.Performances.Select(x => new PerformanceDTO()
+                return await _context.Performances.Where(x => x.Employee.ID == id && x.PerformanceDate.Year == year && x.PerformanceDate.Month == month).Select(x => new PerformanceDTO()
                 {
+                    EmployeeID = x.EmployeeID,
                     EmployeeName = x.Employee.Name,
                     PerformanceDate = x.PerformanceDate,
                     Commitment = x.Commitment,
@@ -164,12 +199,12 @@ namespace HR_Management_System.Models.Services
                     QualityOfWork = x.QualityOfWork,
                     TimeManagement = x.TimeManagement,
                     Overall = x.Overall
-                }).Where(x => x.Employee.ID == id && x.PerformanceDate.Year == year && x.PerformanceDate.Month == month).ToListAsync();
+                }).ToListAsync();
             }
         }
 
 
-        public async Task UpdatePerformance(int id, Performance performance)
+        public async Task UpdatePerformance(int id, UpdatePerformanceDTO performance)
         {
             var oldPerformance = await _context.Performances.FindAsync(id);
 

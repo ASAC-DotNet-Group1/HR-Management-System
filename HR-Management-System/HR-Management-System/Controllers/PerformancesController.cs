@@ -59,11 +59,11 @@ namespace HR_Management_System.Controllers
         // POST: api/Performances
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Performance>> AddPerformance(Performance performance)
+        public async Task/*<ActionResult<PerformanceDTO>>*/ AddPerformance(AddPerformanceDTO performance)
         {
             // Note.
-            await _performance.AddPerformance(performance);
-            return CreatedAtAction("GetPerformance", new { id = performance.ID }, performance);
+            /*return*/ await _performance.AddPerformance(performance);
+            
         }
 
         // GET: api/Performances/5
@@ -149,7 +149,7 @@ namespace HR_Management_System.Controllers
         // PUT: api/Performances/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutPerformance(int id, Performance performance)
+        public async Task<IActionResult> PutPerformance(int id, UpdatePerformanceDTO performance)
         {
             if (id != performance.ID)
             {
