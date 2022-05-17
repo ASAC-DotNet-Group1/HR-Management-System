@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System;
 
+
 namespace HR_Management_System.Models.Services
 {
     public class SalarySlipService : ISalarySlip
@@ -16,6 +17,18 @@ namespace HR_Management_System.Models.Services
         public SalarySlipService(HR_DbContext context)
         {
             _context = context;
+        }
+        public void Test2()
+        {
+            Console.WriteLine("This run month");
+        }
+        public async Task generateSlary()
+        {
+            List<int> employees = await _context.Employees.Select(x => x.ID).ToListAsync();
+            foreach (int id in employees)
+            {
+                await AddSalarySlip(id);
+            }
         }
         public async Task<double> CalculateSalary(int id,DateTime dateTime)
         {
@@ -30,7 +43,7 @@ namespace HR_Management_System.Models.Services
 
         public async Task AddSalarySlip(int id )
         {
-            DateTime dateTime = DateTime.Now;
+            DateTime dateTime = DateTime.Now.ToLocalTime();
             
 
             SalarySlip salarySlip = new SalarySlip()

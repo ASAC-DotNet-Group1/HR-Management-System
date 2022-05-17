@@ -11,6 +11,8 @@ using Microsoft.Extensions.Hosting;
 using System.Timers;
 using System;
 using Microsoft.OpenApi.Models;
+using Hangfire;
+using Cron;
 
 namespace HR_Management_System
 {
@@ -31,7 +33,16 @@ namespace HR_Management_System
                 string connectionString = Configuration.GetConnectionString("DefaultConnection");
                 options.UseSqlServer(connectionString);
             });
+            services.AddHangfire(x => 
+            {
+                string connectionString = Configuration.GetConnectionString("DefaultConnection");
+                x.UseSqlServerStorage(connectionString);
+            });
+            services.AddHangfireServer();
+
             services.AddControllers();
+
+
 
             services.AddTransient<ITicket, TicketService>();
             services.AddTransient<IDepartment, DepartmentService>();
@@ -55,15 +66,19 @@ namespace HR_Management_System
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env,IRecurringJobManager recurringJobManager,IServiceProvider serviceProvider)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseHangfireDashboard();
+            
+
+            recurringJobManager.AddOrUpdate("Take Attendance",() => serviceProvider.GetService<IAttendance>().Test1(),"30 5 * * *", TimeZoneInfo.Local);
+            recurringJobManager.AddOrUpdate("Generate Slary", () => serviceProvider.GetService<ISalarySlip>().Test2(), "0 0 1 * *", TimeZoneInfo.Local);
 
             app.UseRouting();
-
             // Also for swagger.
             app.UseSwagger(opt =>
             {

@@ -169,6 +169,7 @@ namespace HR_Management_System.Models.Services
             if (employee == null) throw new Exception("Unvalid Employee ID");
             return await _context.Attendances.Where(x => x.EmployeeID == id).Select(x => new AttendanceDTO()
             {
+                Name = employee.Name,
                 EmployeeID = x.EmployeeID,
                 StartShift = x.StartDate,
                 EndShift = x.EndDate
