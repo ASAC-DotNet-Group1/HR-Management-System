@@ -6,7 +6,6 @@
 + Shadi Aslan.
 + Ahmad Masadeh.
 + Bashar Alrefae.
-+ Yousef Qandeel.
 
 ### Team Description:
 + Osama Alzaghal: Osama has good communication skills and is the best fit to be the team leader, he wants to improve his practical skills.
@@ -14,7 +13,6 @@
 + Shadi Aslan: Shadi pays good attention to details which helps him with error solving, he wants to improve his probelm solving skills.
 + Ahmad Masadeh: Ahmad has a strong probelm solving skills which will help us adding features to the project, he wants to improve his communication skills.
 + Bashar Alrefae: Bashar has a good time management skills which will help us to achive our goals within time, he wants to improve his skills in testing.
-+ Yousef Qandeel: 
 
 #### Approach to the day-to-day work
 We will have meetings on a daily basis on 9:30 am to discuss the tasks for each day and review the updates so that each member understands the goal for everyday. We will have 10-minutes breaks each hour till 1:30 pm, and we will have a meeting at 5:00 pm to review the work of the day.
