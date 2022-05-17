@@ -17,7 +17,32 @@ namespace HR_Management_System.Models.Services
         {
             _context = context;
         }
-
+        public  void Test1() 
+        {
+            Console.WriteLine("This run every day at 9:10");
+        }
+        public async Task TakeAttendance()
+        {
+            DateTime date = DateTime.Now.ToLocalTime();
+            List<int> attendances = await _context.Attendances.Where(x => x.StartDate.ToString("MM-dd-yyyy") == date.ToString("MM-dd-yyyy")).Select(x => x.EmployeeID).ToListAsync();
+            List<int> employees = await _context.Employees.Select(x => x.ID).ToListAsync();
+            foreach(int id in employees)
+            {
+                if(!attendances.Contains(id))
+                {
+                    Attendance attendance = new Attendance()
+                    {
+                        EmployeeID = id,
+                        EndShift = false,
+                        StartShift = false,
+                        StartDate = date,
+                        EndDate = date,
+                    };
+                    _context.Entry(attendance).State = EntityState.Added;
+                    await _context.SaveChangesAsync();
+                }
+            }
+        }
         public async Task<List<AttendanceDTO>> GetAttendances()
         {
             return await _context.Attendances.Select(x => new AttendanceDTO()
@@ -80,6 +105,18 @@ namespace HR_Management_System.Models.Services
             {
                 throw new Exception("Employee was not found");
             }
+        }
+        public async Task  Leave (int id)
+        {
+            DateTime date = DateTime.Now.ToLocalTime();
+            Attendance attendance = await _context.Attendances.FirstOrDefaultAsync(x => x.EmployeeID == id && x.StartDate.ToString("MM-dd-yyyy") == date.ToString("MM-dd-yyyy"));
+            if (attendance == null)
+                throw new Exception("You dont Start Shift for Today");
+            attendance.EndDate = date;
+            attendance.EndShift = true;
+            _context.Entry(attendance).State= EntityState.Modified;
+            await _context.SaveChangesAsync();
+
         }
 
         public async Task DeleteAttendance(int id)

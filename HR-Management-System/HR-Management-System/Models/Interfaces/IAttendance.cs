@@ -11,5 +11,7 @@ namespace HR_Management_System.Models.Interfaces
         public Task Arrival(int id);
         public Task UpdateAttendance(int id, Attendance attendance);
         public Task DeleteAttendance(int id);
+        public void Test1();
+        public Task TakeAttendance();
     }
 }
