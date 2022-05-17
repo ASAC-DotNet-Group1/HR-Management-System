@@ -59,11 +59,10 @@ namespace HR_Management_System.Controllers
         {
 
             return await _performance.AddPerformance(performance);
-
         }
 
         // GET: api/Performances/5
-        [HttpGet("Performance/employee/{id}")]
+        [HttpGet("Employee/{id}")]
         public async Task<ActionResult<List<PerformanceDTO>>> GetEmployeeReports(int id)
         {
             try
@@ -83,7 +82,7 @@ namespace HR_Management_System.Controllers
 
         //GET:
         //Get Reports for department
-        [HttpGet("Performance/Department/{id}")]
+        [HttpGet("Department/{id}")]
 
         public async Task<ActionResult<List<PerformanceDTO>>> DepartmentReports(int id)
         {
@@ -104,7 +103,7 @@ namespace HR_Management_System.Controllers
 
         //GET:
         //Get Reports for specific month
-        [HttpGet("Performance/year/{year}/month/{month}")]
+        [HttpGet("Year/{year}/Month/{month}")]
         public async Task<ActionResult<List<PerformanceDTO>>> ReportsInMonth(int year, int month)
         {
             try
@@ -124,7 +123,7 @@ namespace HR_Management_System.Controllers
 
         //GET:
         //Get Reports for employee in specific month
-        [HttpGet("Performance/employee/{id}/year/{year}/month/{month}")]
+        [HttpGet("Employee/{id}/Year/{year}/Month/{month}")]
         public async Task<ActionResult<List<PerformanceDTO>>> ReportsForEmployeeInMonth(int id, int year, int month)
         {
             try
@@ -147,7 +146,6 @@ namespace HR_Management_System.Controllers
         [HttpPut("{id}")]
         public async Task<PerformanceDTO> PutPerformance(int id, UpdatePerformanceDTO performance)
         {
-
             try
             {
                 return await _performance.UpdatePerformance(id, performance);
@@ -155,10 +153,7 @@ namespace HR_Management_System.Controllers
             catch (DbUpdateConcurrencyException)
             {
                 throw;
-
             }
-
-
         }
 
         // DELETE: api/Performances/5

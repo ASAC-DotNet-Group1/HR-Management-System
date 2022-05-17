@@ -6,9 +6,9 @@ namespace HR_Management_System.Models.Interfaces
 {
     public interface IPerformance
     {
+        public Task<PerformanceDTO> AddPerformance(AddPerformanceDTO performance);
         public Task<List<PerformanceDTO>> GetAllPerformanceReports();
         public Task<PerformanceDTO> GetPerformanceReport(int id);
-        public Task<PerformanceDTO> AddPerformance(AddPerformanceDTO performance);
         public Task<List<PerformanceDTO>> EmployeePerformanceReports(int id);
         public Task<List<PerformanceDTO>> PerformanceReportsForDepartment(int id);
         public Task<List<PerformanceDTO>> PerformanceReportsInSpecificMonth(int year, int month);

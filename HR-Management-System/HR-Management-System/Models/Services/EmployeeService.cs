@@ -44,20 +44,7 @@ namespace HR_Management_System.Models.Services
             };
             _context.Entry(employee).State = EntityState.Added;
             await _context.SaveChangesAsync();
-            return new EmployeeDTO
-            {
-                ID = employee.ID,
-                Age = employee.Age,
-                DepartmentID = employee.DepartmentID,
-                Email = employee.Email,
-                Gender = employee.Gender,
-                LeaveCredit = employee.LeaveCredit,
-                Level = employee.Level.ToString(),
-                Name = employee.Name,
-                Phone = employee.Phone,
-                VacationCredit = employee.VacationCredit,
-                DepartmentName = employee.Department.Name,
-            };
+            return await GetEmployee(employee.ID);
         }
 
         /// <summary>
@@ -84,8 +71,9 @@ namespace HR_Management_System.Models.Services
         public async Task<EmployeeDTO> GetEmployee(int id)
         {
             Employee employee = await _context.Employees.FindAsync(id);
-            if (employee == null) throw new Exception("Unvalid Employee ID");
+            if (employee == null) return null;
             return await _context.Employees
+                .Where(x => x.ID == id)
                 .Select(x => new EmployeeDTO
                 {
                     ID = x.ID,
@@ -99,7 +87,7 @@ namespace HR_Management_System.Models.Services
                     LeaveCredit = x.LeaveCredit,
                     VacationCredit = x.VacationCredit,
                     DepartmentName = x.Department.Name
-                }).FirstAsync();
+                }).FirstOrDefaultAsync();
         }
 
         /// <summary>
@@ -148,11 +136,29 @@ namespace HR_Management_System.Models.Services
         public async Task SetEmployeeToDepartment(int empId, int departmentId)
         {
             Employee employee = await _context.Employees.FindAsync(empId);
+            if(employee == null) { throw new Exception("Employee was not found"); }
             employee.DepartmentID = departmentId;
             _context.Entry(employee).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }
 
+        public async Task<List<EmployeeDTO>> GetEmployeesInSpecificDepartment(int id)
+        {
+            return await _context.Employees.Where(x => x.DepartmentID == id).Select(x => new EmployeeDTO
+            {
+                ID = x.ID,
+                DepartmentID = x.DepartmentID,
+                Name = x.Name,
+                Level = x.Level.ToString(),
+                Age = x.Age,
+                Email = x.Email,
+                Phone = x.Phone,
+                Gender = x.Gender,
+                LeaveCredit = x.LeaveCredit,
+                VacationCredit = x.VacationCredit,
+                DepartmentName = x.Department.Name
+            }).ToListAsync();
+        }
     }
 
 }
