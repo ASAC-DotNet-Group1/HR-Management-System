@@ -30,6 +30,14 @@ namespace HR_Management_System.Models.Services
                 await AddSalarySlip(id);
             }
         }
+
+
+        /// <summary>
+        /// Calculate a salary of a specific employee
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="dateTime"></param>
+        /// <returns></returns>
         public async Task<double> CalculateSalary(int id,DateTime dateTime)
         {
             Employee employee = await _context.Employees.FindAsync(id);
@@ -41,6 +49,11 @@ namespace HR_Management_System.Models.Services
             return attendances.Count + totalTickets;
         }
 
+        /// <summary>
+        /// Create a new salary slip of a specific employee
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task AddSalarySlip(int id )
         {
             DateTime dateTime = DateTime.Now.ToLocalTime();
@@ -57,6 +70,12 @@ namespace HR_Management_System.Models.Services
             await _context.SaveChangesAsync();
         }
 
+
+        /// <summary>
+        /// Delete salary slip using a salary slip ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task DeleteSalarySlip(int id)
         {
             SalarySlip SalarySlips = await _context.SalarySlips.FindAsync(id);
@@ -66,6 +85,8 @@ namespace HR_Management_System.Models.Services
             await _context.SaveChangesAsync();
         }
 
+
+        // DELETE THIS
         public async Task<SalarySlipDTO> GetSalarySlip(int id , int month)
         {
             var attendances = await _context.Attendances.Where(x => x.EmployeeID == id && x.StartDate.Month == month).ToListAsync();
@@ -102,6 +123,11 @@ namespace HR_Management_System.Models.Services
             }).FirstOrDefaultAsync(x => x.EmployeeID == id && x.Date.Month == month);
         }
 
+
+        /// <summary>
+        /// Get all salary slips
+        /// </summary>
+        /// <returns></returns>
         public async Task<List<SalarySlipDTO>> GetSalarySlips()
         {
             List<Attendance> attendances = await _context.Attendances.ToListAsync();
@@ -120,12 +146,20 @@ namespace HR_Management_System.Models.Services
                 Total = slip.Total,
             }).ToListAsync();
         }
+
+        // CHECK THIS
         public async Task UpdateSalarySlip(int id, SalarySlip salarySlip)
         {
             _context.Entry(salarySlip).State = EntityState.Modified;
 
             await _context.SaveChangesAsync();
         }
+
+        /// <summary>
+        /// Find a salary slip using its ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<SalarySlip> Find(int id)
         {
             return await _context.SalarySlips.FindAsync(id);

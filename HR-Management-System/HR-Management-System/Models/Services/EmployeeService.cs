@@ -20,6 +20,12 @@ namespace HR_Management_System.Models.Services
             _salarySlip = salarySlip;
         }
 
+
+        /// <summary>
+        /// Create a new employee inside my Database
+        /// </summary>
+        /// <param name="newEmployee"></param>
+        /// <returns></returns>
         public async Task<EmployeeDTO> AddEmployee(AddEmployeeDTO newEmployee)
         {
             Employee employee = new Employee
@@ -54,6 +60,12 @@ namespace HR_Management_System.Models.Services
             };
         }
 
+        /// <summary>
+        /// Delete an employee from my database by passing the employee ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public async Task DeleteEmployee(int id)
         {
             Employee employee = await _context.Employees.FindAsync(id);
@@ -63,6 +75,12 @@ namespace HR_Management_System.Models.Services
             await _context.SaveChangesAsync();
         }
 
+        /// <summary>
+        /// Get an employee from the database using his ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public async Task<EmployeeDTO> GetEmployee(int id)
         {
             Employee employee = await _context.Employees.FindAsync(id);
@@ -84,6 +102,10 @@ namespace HR_Management_System.Models.Services
                 }).FirstAsync();
         }
 
+        /// <summary>
+        /// Get all employees in my database
+        /// </summary>
+        /// <returns></returns>
         public async Task<List<EmployeeDTO>> GetEmployees()
         {
 
@@ -104,12 +126,25 @@ namespace HR_Management_System.Models.Services
                 }).ToListAsync();
         }
 
+        /// <summary>
+        /// Update a specific employee in my database using the employee's ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="employee"></param>
+        /// <returns></returns>
         public async Task UpdateEmployee(int id, Employee employee)
         {
             _context.Entry(employee).State = EntityState.Modified;
 
             await _context.SaveChangesAsync();
         }
+
+        /// <summary>
+        /// Set or Transfer an employee to a department
+        /// </summary>
+        /// <param name="empId"></param>
+        /// <param name="departmentId"></param>
+        /// <returns></returns>
         public async Task SetEmployeeToDepartment(int empId, int departmentId)
         {
             Employee employee = await _context.Employees.FindAsync(empId);
@@ -117,6 +152,12 @@ namespace HR_Management_System.Models.Services
             _context.Entry(employee).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }
+
+        /// <summary>
+        /// Get a salary slip of an employee, using the employee's ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<SalarySlipDTO> GetSalarySlip(int id)
         {
             DateTime Date = DateTime.Now.ToLocalTime();
@@ -159,7 +200,7 @@ namespace HR_Management_System.Models.Services
         }
 
         /// <summary>
-        /// Get all attendances for a specific employee
+        /// Get all attendances for a specific employee using his ID
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -176,6 +217,13 @@ namespace HR_Management_System.Models.Services
 
             }).ToListAsync();
         }
+
+        /// <summary>
+        /// Get all tickets of an employee using his ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public async Task<List<TicketDTO>> GetAllTickets(int id)
         {
             Employee employee = await _context.Employees.FindAsync(id);
@@ -208,7 +256,14 @@ namespace HR_Management_System.Models.Services
 
 
 
-
+        /// <summary>
+        /// Get all attendances of a specific employee in a specific year/month
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="year"></param>
+        /// <param name="month"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public async Task<List<AttendanceDTO>> GetAllAttendancesInADateForEmployee(int id, int year, int month)
         {
             //if month is inputted as 0, then give me the whole year
@@ -242,6 +297,13 @@ namespace HR_Management_System.Models.Services
             }
         }
 
+        /// <summary>
+        /// Get all attendances of all employees in a specific Date
+        /// </summary>
+        /// <param name="year"></param>
+        /// <param name="month"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public async Task<List<AttendanceDTO>> GetAllAttendancesInADate(int year, int month)
         {
             //if month is inputted as 0, then give me the whole year
@@ -276,7 +338,14 @@ namespace HR_Management_System.Models.Services
         }
 
 
-
+        /// <summary>
+        /// Get all salary slips of a specific employee in a specific Date
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="year"></param>
+        /// <param name="month"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public async Task<List<SalarySlipDTO>> GetAllSalarySlipsInADateForEmployee(int id, int year, int month)
         {
 
@@ -309,6 +378,13 @@ namespace HR_Management_System.Models.Services
         }
 
 
+        /// <summary>
+        /// Get all salary slips of all employees in a specific Date
+        /// </summary>
+        /// <param name="year"></param>
+        /// <param name="month"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public async Task<List<SalarySlipDTO>> GetAllSalarySlipsInADate(int year, int month)
         {
 
@@ -339,7 +415,14 @@ namespace HR_Management_System.Models.Services
 
 
 
-
+        /// <summary>
+        /// Get all tickets of a specific employee in a specific date
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="year"></param>
+        /// <param name="month"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public async Task<List<TicketDTO>> GetAllTicketsInADateForEmployee(int id, int year, int month)
         {
 
@@ -381,6 +464,13 @@ namespace HR_Management_System.Models.Services
         }
 
 
+        /// <summary>
+        /// Get all tickets of all employees in a specific date
+        /// </summary>
+        /// <param name="year"></param>
+        /// <param name="month"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public async Task<List<TicketDTO>> GetAllTicketsInADate(int year, int month)
         {
 

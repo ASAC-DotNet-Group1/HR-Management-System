@@ -21,6 +21,11 @@ namespace HR_Management_System.Models.Services
         {
             Console.WriteLine("This run every day at 9:10");
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public async Task TakeAttendance()
         {
             DateTime date = DateTime.Now.ToLocalTime();
@@ -43,6 +48,11 @@ namespace HR_Management_System.Models.Services
                 }
             }
         }
+
+        /// <summary>
+        /// Retrun all attendances from database
+        /// </summary>
+        /// <returns></returns>
         public async Task<List<AttendanceDTO>> GetAttendances()
         {
             return await _context.Attendances.Select(x => new AttendanceDTO()
@@ -54,6 +64,13 @@ namespace HR_Management_System.Models.Services
             }).ToListAsync();
         }
 
+
+        /// <summary>
+        /// Return a specific attendance by attendance ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public async Task<AttendanceDTO> GetAttendance(int id)
         {
             var attendance = await _context.Attendances.FindAsync(id);
@@ -68,6 +85,14 @@ namespace HR_Management_System.Models.Services
             }).FirstOrDefaultAsync();
         }
 
+
+        /// <summary>
+        /// Update a specific attendance by attendance ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="attendance"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public async Task UpdateAttendance(int id, Attendance attendance)
         {
             var oldAttendance = await _context.Attendances.FindAsync(id);
@@ -85,6 +110,12 @@ namespace HR_Management_System.Models.Services
             }
         }
 
+        /// <summary>
+        /// Take attendance of an employee by employee ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public async Task Arrival(int id)
         {
             Employee employee = await _context.Employees.FindAsync(id);
@@ -106,7 +137,15 @@ namespace HR_Management_System.Models.Services
                 throw new Exception("Employee was not found");
             }
         }
-        public async Task  Leave (int id)
+
+
+        /// <summary>
+        /// Record a leave for an employee using an employee ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public async Task Leave (int id)
         {
             DateTime date = DateTime.Now.ToLocalTime();
             Attendance attendance = await _context.Attendances.FirstOrDefaultAsync(x => x.EmployeeID == id && x.StartDate.ToString("MM-dd-yyyy") == date.ToString("MM-dd-yyyy"));
@@ -119,6 +158,13 @@ namespace HR_Management_System.Models.Services
 
         }
 
+
+        /// <summary>
+        /// Delete attendance from the database using an attendance ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public async Task DeleteAttendance(int id)
         {
             Attendance attendance = await _context.Attendances.FindAsync(id);
