@@ -18,6 +18,16 @@ namespace HR_Management_System.Controllers
             _ticket = ticket;
         }
 
+
+        // GET: api/Tickets
+        [HttpGet]
+        public async Task<ActionResult<List<TicketDTO>>> GetTickets()
+        {
+            var tickets = await _ticket.GetTickets();
+            if (tickets == null) return NoContent();
+            return Ok(tickets);
+        }
+
         // GET: api/Tickets/5
         [HttpGet("{id}")]
         public async Task<ActionResult<TicketDTO>> GetTicket(int id)
@@ -32,65 +42,6 @@ namespace HR_Management_System.Controllers
             return ticket;
         }
 
-        // GET: api/Tickets
-        [HttpGet]
-        public async Task<ActionResult<List<TicketDTO>>> GetTickets()
-        {
-            var tickets = await _ticket.GetTickets();
-            if (tickets == null) return NoContent();
-            return Ok(tickets);
-        }
-
-        // PUT: api/Tickets/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("Accept/{id}")]
-        public async Task<ActionResult<TicketDTO>> Accept(int id)
-        {
-            try
-            {
-                return await _ticket.Accept(id);
-            }
-            catch (Exception e)
-            {
-                return NotFound(e.Message);
-            }
-        }
-
-        [HttpPut("Deny/{id}")]
-        public async Task<ActionResult<TicketDTO>> Deny(int id)
-        {
-            try
-            {
-                return await _ticket.Deny(id);
-            }
-            catch (Exception e)
-            {
-                return NotFound(e.Message);
-            }
-        }
-
-        [HttpPost]
-        public async Task<ActionResult<TicketDTO>> PostTicket(AddTicketDTO ticket)
-        {
-            TicketDTO newTicket = await _ticket.CreateTicket(ticket);
-            return Ok(newTicket);
-        }
-
-        // DELETE: api/Tickets/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTicket(int id)
-        {
-            try
-            {
-                await _ticket.DeleteTicket(id);
-                return NoContent();
-            }
-
-            catch (Exception e)
-            {
-                return NotFound(e.Message);
-            }
-        }
 
         // GET: api/Tickets/Employee/8
         [HttpGet("Employee/{id}")]
@@ -141,6 +92,57 @@ namespace HR_Management_System.Controllers
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
+            }
+        }
+
+        // PUT: api/Tickets/5
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPut("Accept/{id}")]
+        public async Task<ActionResult<TicketDTO>> Accept(int id)
+        {
+            try
+            {
+                return await _ticket.Accept(id);
+            }
+            catch (Exception e)
+            {
+                return NotFound(e.Message);
+            }
+        }
+
+        [HttpPut("Deny/{id}")]
+        public async Task<ActionResult<TicketDTO>> Deny(int id)
+        {
+            try
+            {
+                return await _ticket.Deny(id);
+            }
+            catch (Exception e)
+            {
+                return NotFound(e.Message);
+            }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<TicketDTO>> PostTicket(AddTicketDTO ticket)
+        {
+            TicketDTO newTicket = await _ticket.CreateTicket(ticket);
+            return Ok(newTicket);
+        }
+
+        // DELETE: api/Tickets/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteTicket(int id)
+        {
+            try
+            {
+                await _ticket.DeleteTicket(id);
+                return NoContent();
+            }
+
+            catch (Exception e)
+            {
+                return NotFound(e.Message);
             }
         }
     }

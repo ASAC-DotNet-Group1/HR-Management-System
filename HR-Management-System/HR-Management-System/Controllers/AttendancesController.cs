@@ -47,57 +47,6 @@ namespace HR_Management_System.Controllers
             }
         }
 
-        // PUT: api/Attendances/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutAttendance(int id, Attendance attendance)
-        {
-            if (id != attendance.ID)
-            {
-                return BadRequest();
-            }
-            try
-            {
-                await _attendance.UpdateAttendance(id, attendance);
-            }
-            catch (Exception e)
-            {
-                return NotFound(e.Message);
-            }
-
-            return Content("Updated");
-        }
-
-        // POST: api/Attendances
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost("Arrival/{id}")]
-        public async Task<ActionResult<Attendance>> Arrival(int id)
-        {
-            try
-            {
-                await _attendance.Arrival(id);
-                return Ok();
-            }
-            catch (Exception e)
-            {
-                return NotFound(e.Message);
-            }
-        }
-
-        // DELETE: api/Attendances/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAttendance(int id)
-        {
-            try
-            {
-                await _attendance.DeleteAttendance(id);
-                return Ok("Deleted");
-            }
-            catch (Exception e)
-            {
-                return NotFound(e);
-            }
-        }
 
         /// <summary>
         /// Return attendances of all employees in a specific date
@@ -136,5 +85,59 @@ namespace HR_Management_System.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        // POST: api/Attendances
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost("Arrival/{id}")]
+        public async Task<ActionResult<Attendance>> Arrival(int id)
+        {
+            try
+            {
+                await _attendance.Arrival(id);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return NotFound(e.Message);
+            }
+        }
+
+
+        // PUT: api/Attendances/5
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutAttendance(int id, Attendance attendance)
+        {
+            if (id != attendance.ID)
+            {
+                return BadRequest();
+            }
+            try
+            {
+                await _attendance.UpdateAttendance(id, attendance);
+            }
+            catch (Exception e)
+            {
+                return NotFound(e.Message);
+            }
+
+            return Content("Updated");
+        }
+
+        // DELETE: api/Attendances/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteAttendance(int id)
+        {
+            try
+            {
+                await _attendance.DeleteAttendance(id);
+                return Ok("Deleted");
+            }
+            catch (Exception e)
+            {
+                return NotFound(e);
+            }
+        }
+        
     }
 }

@@ -52,14 +52,6 @@ namespace HR_Management_System.Controllers
             }
         }
 
-        // POST: api/Performances
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<PerformanceDTO> AddPerformance(AddPerformanceDTO performance)
-        {
-
-            return await _performance.AddPerformance(performance);
-        }
 
         // GET: api/Performances/5
         [HttpGet("Employee/{id}")]
@@ -139,6 +131,15 @@ namespace HR_Management_System.Controllers
             {
                 return NotFound(e.Message);
             }
+        }
+
+        // POST: api/Performances
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost]
+        public async Task<PerformanceDTO> AddPerformance(AddPerformanceDTO performance)
+        {
+
+            return await _performance.AddPerformance(performance);
         }
 
         // PUT: api/Performances/5

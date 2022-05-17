@@ -27,6 +27,44 @@ namespace HR_Management_System.Controllers
             return await _salarySlip.GetSalarySlips();
         }
 
+
+        /// <summary>
+        /// Return Salary Slips of all employees in a specific date
+        /// </summary>
+        /// <param name="year"></param>
+        /// <param name="month"></param>
+        /// <returns></returns>
+        [HttpGet("Year/{year}/Month/{month}")]
+        public async Task<ActionResult<List<ShortenedSalarySlipDTO>>> GetAllSalarySlipsInADate(int year, int month)
+        {
+            try
+            {
+                return await _salarySlip.GetAllSalarySlipsInADate(year, month);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Return salary slips of a specific employee during a specific month of a specific year
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("Employee/{id}/Year/{year}/Month/{month}")]
+        public async Task<ActionResult<List<SalarySlipDTO>>> GetAllSalarySlipsInADateForEmployee(int id, int year, int month)
+        {
+            try
+            {
+                return await _salarySlip.GetAllSalarySlipsInADateForEmployee(id, year, month);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         // PUT: api/SalarySlips/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
@@ -87,41 +125,5 @@ namespace HR_Management_System.Controllers
             return NoContent();
         }
 
-        /// <summary>
-        /// Return Salary Slips of all employees in a specific date
-        /// </summary>
-        /// <param name="year"></param>
-        /// <param name="month"></param>
-        /// <returns></returns>
-        [HttpGet("Salary-Slips/year/{year}/month/{month}")]
-        public async Task<ActionResult<List<ShortenedSalarySlipDTO>>> GetAllSalarySlipsInADate(int year, int month)
-        {
-            try
-            {
-                return await _salarySlip.GetAllSalarySlipsInADate(year, month);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        /// <summary>
-        /// Return salary slips of a specific employee during a specific month of a specific year
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        [HttpGet("Salary-Slips/employee/{id}/year/{year}/month/{month}")]
-        public async Task<ActionResult<List<SalarySlipDTO>>> GetAllSalarySlipsInADateForEmployee(int id, int year, int month)
-        {
-            try
-            {
-                return await _salarySlip.GetAllSalarySlipsInADateForEmployee(id, year, month);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
     }
 }
