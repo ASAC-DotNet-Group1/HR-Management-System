@@ -38,7 +38,7 @@ namespace HR_Management_System.Models.Services
         public async Task DeleteDepartment(int id)
         {
             Department department = await _context.Departments.FindAsync(id);
-            if(department == null)
+            if (department == null)
             {
                 throw new Exception("Department was not found");
             }
@@ -52,7 +52,7 @@ namespace HR_Management_System.Models.Services
         {
             Department department = await _context.Departments.FindAsync(id);
 
-            if(department == null)
+            if (department == null)
             {
                 throw new Exception("Department was not found");
             }
@@ -104,7 +104,7 @@ namespace HR_Management_System.Models.Services
                 }).ToList()
             }).ToListAsync();
 
-            if(departments == null)
+            if (departments == null)
             {
                 throw new Exception("No departments found");
             }

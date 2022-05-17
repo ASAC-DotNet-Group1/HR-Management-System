@@ -1,7 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace HR_Management_System.Models
 {
@@ -16,6 +13,6 @@ namespace HR_Management_System.Models
         public int QualityOfWork { get; set; }
         public double Overall { get; set; }
         public DateTime PerformanceDate { get; set; }
-        public Employee Employee { get; set; } 
+        public Employee Employee { get; set; }
     }
-} 
+}

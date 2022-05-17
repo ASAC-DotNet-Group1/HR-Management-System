@@ -34,7 +34,7 @@ namespace HR_Management_System.Models.Services
             };
             _context.Entry(ticket).State = EntityState.Added;
             await _context.SaveChangesAsync();
-            return new TicketDTO() 
+            return new TicketDTO()
             {
                 Comment = ticket.Comment,
                 Date = ticket.Date,
@@ -44,7 +44,7 @@ namespace HR_Management_System.Models.Services
                 Type = ticket.Type.ToString(),
             };
         }
-       
+
 
         /// <summary>
         /// Calculate total tickets & it's effect on salary????!?!??!?!?!?!!?!?!?!?
@@ -53,7 +53,7 @@ namespace HR_Management_System.Models.Services
         /// <param name="ticket"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public async Task CalculateTotal (Employee employee, Ticket ticket )
+        public async Task CalculateTotal(Employee employee, Ticket ticket)
         {
             if (ticket.Type == Type.Leave)
             {
@@ -94,8 +94,8 @@ namespace HR_Management_System.Models.Services
             await CalculateTotal(employee, ticket);
             if (ticket.Type == Type.Leave) employee.LeaveCredit -= ticket.Amount;
             else if (ticket.Type == Type.Vacation) employee.VacationCredit -= ticket.Amount;
-            if (employee.LeaveCredit <0) employee.LeaveCredit = 0;
-            if(employee.VacationCredit <0) employee.VacationCredit = 0;
+            if (employee.LeaveCredit < 0) employee.LeaveCredit = 0;
+            if (employee.VacationCredit < 0) employee.VacationCredit = 0;
             _context.Entry(employee).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             return await GetTicket(id);
@@ -125,7 +125,7 @@ namespace HR_Management_System.Models.Services
         /// <returns></returns>
         public async Task<TicketDTO> GetTicket(int id)
         {
-            
+
             Ticket ticket = await _context.Tickets.FindAsync(id);
             return new TicketDTO
             {
@@ -149,7 +149,7 @@ namespace HR_Management_System.Models.Services
         {
             var tickets = await _context.Tickets.ToListAsync();
             if (tickets == null) throw new Exception("There are no tickets available");
-            return await _context.Tickets.Select(x => new TicketDTO 
+            return await _context.Tickets.Select(x => new TicketDTO
             {
                 Comment = x.Comment,
                 Date = x.Date,
@@ -160,12 +160,12 @@ namespace HR_Management_System.Models.Services
             }).ToListAsync();
         }
 
-       /// <summary>
-       /// Delete a specific ticket from the database using its ID
-       /// </summary>
-       /// <param name="id"></param>
-       /// <returns></returns>
-       /// <exception cref="Exception"></exception>
+        /// <summary>
+        /// Delete a specific ticket from the database using its ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public async Task DeleteTicket(int id)
         {
             Ticket ticket = await Find(id);
@@ -195,9 +195,31 @@ namespace HR_Management_System.Models.Services
                 Date = x.Date,
                 Comment = x.Comment,
                 Status = x.Status.ToString(),
-                
+
             }).ToListAsync();
-            
+
+        }
+
+        /// <summary>
+        /// Get all tickets of an employee using his ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public async Task<List<TicketDTO>> GetAllTickets(int id)
+        {
+            Employee employee = await _context.Employees.FindAsync(id);
+            if (employee == null) throw new Exception("Unvalid Employee ID");
+            return await _context.Tickets.Where(x => x.EmployeeID == id).Select(x => new TicketDTO()
+            {
+                Comment = x.Comment,
+                Date = x.Date,
+                EmployeeName = employee.Name,
+                ID = x.ID,
+                Status = x.Status.ToString(),
+                Type = x.Type.ToString(),
+
+            }).ToListAsync();
         }
 
         /// <summary>
@@ -209,5 +231,106 @@ namespace HR_Management_System.Models.Services
         {
             return await _context.Tickets.FindAsync(id);
         }
+
+        // *****************************************************************
+
+        // Date related functions
+        #region DATE SERVICES
+
+        /// <summary>
+        /// Get all tickets of a specific employee in a specific date
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="year"></param>
+        /// <param name="month"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public async Task<List<TicketDTO>> GetAllTicketsInADateForEmployee(int id, int year, int month)
+        {
+
+            if (month == 0)
+            {
+                return await _context.Tickets.Where(x => x.Employee.ID == id & x.Date.Year == year)
+                    .Select(x => new TicketDTO()
+                    {
+                        ID = x.ID,
+                        EmployeeName = x.Employee.Name,
+                        Type = x.Type.ToString(),
+                        Date = x.Date,
+                        Status = x.Status.ToString(),
+                        Comment = x.Comment
+
+                    }).ToListAsync();
+            }
+            else if (month > 12 || month < 0)
+            {
+                throw new Exception("wrong input, only months between 1-12 are accepted!");
+            }
+            else
+            {
+
+                return await _context.Tickets.Where(x => x.Employee.ID == id & x.Date.Year == year & x.Date.Month == month)
+                    .Select(x => new TicketDTO()
+                    {
+                        ID = x.ID,
+                        EmployeeName = x.Employee.Name,
+                        Type = x.Type.ToString(),
+                        Date = x.Date,
+                        Status = x.Status.ToString(),
+                        Comment = x.Comment
+
+                    }).ToListAsync();
+            }
+
+
+        }
+
+
+        /// <summary>
+        /// Get all tickets of all employees in a specific date
+        /// </summary>
+        /// <param name="year"></param>
+        /// <param name="month"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public async Task<List<TicketDTO>> GetAllTicketsInADate(int year, int month)
+        {
+
+            if (month == 0)
+            {
+                return await _context.Tickets.Where(x => x.Date.Year == year & x.Date.Month == month)
+                    .Select(x => new TicketDTO()
+                    {
+                        ID = x.ID,
+                        EmployeeName = x.Employee.Name,
+                        Type = x.Type.ToString(),
+                        Date = x.Date,
+                        Status = x.Status.ToString(),
+                        Comment = x.Comment
+
+                    }).ToListAsync();
+            }
+            else if (month > 12 || month < 0)
+            {
+                throw new Exception("wrong input, only months between 1-12 are accepted!");
+            }
+            else
+            {
+                return await _context.Tickets.Where(x => x.Date.Year == year & x.Date.Month == month)
+                    .Select(x => new TicketDTO()
+                    {
+                        ID = x.ID,
+                        EmployeeName = x.Employee.Name,
+                        Type = x.Type.ToString(),
+                        Date = x.Date,
+                        Status = x.Status.ToString(),
+                        Comment = x.Comment
+                    }).ToListAsync();
+            }
+
+        }
+
+        #endregion
+
     }
 }

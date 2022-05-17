@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using HR_Management_System.Data;
-using HR_Management_System.Models;
+﻿using HR_Management_System.Models.DTOs;
 using HR_Management_System.Models.Interfaces;
-using HR_Management_System.Models.DTOs;
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace HR_Management_System.Controllers
 {
@@ -84,13 +79,51 @@ namespace HR_Management_System.Controllers
         {
             try
             {
-                List <TicketDTO> employeetickets = await _ticket.GetEmployeeTickets(id);
+                List<TicketDTO> employeetickets = await _ticket.GetEmployeeTickets(id);
                 return Ok(employeetickets);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return BadRequest(e);
             }
+        }
+        /// <summary>
+        /// Return Salary Slips of all employees in a specific date
+        /// </summary>
+        /// <param name="year"></param>
+        /// <param name="month"></param>
+        /// <returns></returns>
+        [HttpGet("Tickets/year/{year}/month/{month}")]
+        public async Task<ActionResult<List<TicketDTO>>> GetAllTicketsInADate(int year, int month)
+        {
+            try
+            {
+                return await _ticket.GetAllTicketsInADate(year, month);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+        /// <summary>
+        /// Return attendances of a specific employee during a specific month of a specific year
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("Tickets/employee/{id}/year/{year}/month/{month}")]
+        public async Task<ActionResult<List<TicketDTO>>> GetAllTicketsInADateForEmployee(int id, int year, int month)
+        {
+            try
+            {
+                return await _ticket.GetAllTicketsInADateForEmployee(id, year, month);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
         }
     }
 }

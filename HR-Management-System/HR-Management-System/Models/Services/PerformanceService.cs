@@ -17,7 +17,7 @@ namespace HR_Management_System.Models.Services
         {
             _context = context;
         }
-        double CalculatePerformance(Performance performance) 
+        double CalculatePerformance(Performance performance)
         {
             return (performance.Commitment + performance.Efficiency +
                     performance.Communication + performance.TimeManagement + performance.QualityOfWork) / 5 * 100 / 100;
@@ -81,7 +81,7 @@ namespace HR_Management_System.Models.Services
                 QualityOfWork = x.QualityOfWork,
                 TimeManagement = x.TimeManagement,
                 Overall = x.Overall,
-                
+
             }).FirstOrDefaultAsync();
         }
 
@@ -271,7 +271,7 @@ namespace HR_Management_System.Models.Services
                     oldPerformance.Communication = performance.Communication;
                     oldPerformance.Overall = CalculatePerformance(oldPerformance);
 
-                    
+
 
                     _context.Entry(oldPerformance).State = EntityState.Modified;
 

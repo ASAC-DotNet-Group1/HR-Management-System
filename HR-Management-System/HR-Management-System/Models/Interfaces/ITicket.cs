@@ -13,6 +13,17 @@ namespace HR_Management_System.Models.Interfaces
         Task<TicketDTO> Deny(int id);
         Task DeleteTicket(int id);
         Task<List<TicketDTO>> GetEmployeeTickets(int id);
-        
+        // Tickets Date part
+        #region Tickets!!
+
+        // X
+        public Task<List<TicketDTO>> GetAllTicketsInADateForEmployee(int id, int year, int month);
+
+        // X
+        public Task<List<TicketDTO>> GetAllTicketsInADate(int year, int month);
+
+
+        #endregion
+
     }
 }

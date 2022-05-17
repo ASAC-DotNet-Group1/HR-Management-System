@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using HR_Management_System.Models;
+using HR_Management_System.Models.DTOs;
+using HR_Management_System.Models.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using HR_Management_System.Data;
-using HR_Management_System.Models;
-using HR_Management_System.Models.Interfaces;
-using HR_Management_System.Models.DTOs;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace HR_Management_System.Controllers
 {
@@ -25,24 +22,11 @@ namespace HR_Management_System.Controllers
 
         // GET: api/SalarySlips
         [HttpGet]
-        public async Task<ActionResult<List<SalarySlipDTO>>> GetSalarySlips()
+        public async Task<ActionResult<List<ShortenedSalarySlipDTO>>> GetSalarySlips()
         {
             return await _salarySlip.GetSalarySlips();
         }
 
-        // GET: api/SalarySlips/5
-        [HttpGet("{id}/Month/{month}")]
-        public async Task<ActionResult<SalarySlipDTO>> GetSalarySlip(int id, int month)
-        {
-            var salarySlip = await _salarySlip.GetSalarySlip(id, month);
-
-            if (salarySlip == null)
-            {
-                return NotFound();
-            }
-
-            return salarySlip;
-        }
 
         // PUT: api/SalarySlips/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -56,11 +40,11 @@ namespace HR_Management_System.Controllers
 
             try
             {
-                await _salarySlip.UpdateSalarySlip(id,salarySlip);
+                await _salarySlip.UpdateSalarySlip(id, salarySlip);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (await _salarySlip.Find(id)==null)
+                if (await _salarySlip.Find(id) == null)
                 {
                     return NotFound();
                 }
@@ -75,7 +59,7 @@ namespace HR_Management_System.Controllers
 
         // POST: api/SalarySlips
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost ("{id}")]
+        [HttpPost("{id}")]
         public async Task<ActionResult<SalarySlip>> PostSalarySlip(int id)
         {
 
@@ -85,8 +69,8 @@ namespace HR_Management_System.Controllers
             }
             catch (DbUpdateException)
             {
-                
-                    throw;
+
+                throw;
 
             }
 
@@ -107,6 +91,44 @@ namespace HR_Management_System.Controllers
             await _salarySlip.DeleteSalarySlip(id);
 
             return NoContent();
+        }
+        /// <summary>
+        /// Return Salary Slips of all employees in a specific date
+        /// </summary>
+        /// <param name="year"></param>
+        /// <param name="month"></param>
+        /// <returns></returns>
+        [HttpGet("Salary-Slips/year/{year}/month/{month}")]
+        public async Task<ActionResult<List<ShortenedSalarySlipDTO>>> GetAllSalarySlipsInADate(int year, int month)
+        {
+            try
+            {
+                return await _salarySlip.GetAllSalarySlipsInADate(year, month);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+        /// <summary>
+        /// Return salary slips of a specific employee during a specific month of a specific year
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("Salary-Slips/employee/{id}/year/{year}/month/{month}")]
+        public async Task<ActionResult<List<SalarySlipDTO>>> GetAllSalarySlipsInADateForEmployee(int id, int year, int month)
+        {
+            try
+            {
+                return await _salarySlip.GetAllSalarySlipsInADateForEmployee(id, year, month);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
         }
 
     }

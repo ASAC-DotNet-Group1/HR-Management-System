@@ -2,10 +2,10 @@
 using HR_Management_System.Models.DTOs;
 using HR_Management_System.Models.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System;
 
 
 namespace HR_Management_System.Models.Services
@@ -22,7 +22,7 @@ namespace HR_Management_System.Models.Services
         {
             Console.WriteLine("This run month");
         }
-        public async Task generateSlary()
+        public async Task GenerateSlary()
         {
             List<int> employees = await _context.Employees.Select(x => x.ID).ToListAsync();
             foreach (int id in employees)
@@ -38,11 +38,12 @@ namespace HR_Management_System.Models.Services
         /// <param name="id"></param>
         /// <param name="dateTime"></param>
         /// <returns></returns>
-        public async Task<double> CalculateSalary(int id,DateTime dateTime)
+        public async Task<double> CalculateSalary(int id, int month, int year)
         {
             Employee employee = await _context.Employees.FindAsync(id);
-            List<Attendance> attendances = await _context.Attendances.Where(x => x.EmployeeID == id && x.StartShift == false && x.StartDate.Month == dateTime.Month).ToListAsync();
-            List<Ticket> tickets = await _context.Tickets.Where(x => x.EmployeeID == id && x.Status == Status.Approved && x.Date.Month == dateTime.Month).ToListAsync();
+            List<Attendance> attendances = await _context.Attendances.Where(x => x.EmployeeID == id && x.StartShift == false
+            && x.StartDate.Month == month && x.StartDate.Year == year).ToListAsync();
+            List<Ticket> tickets = await _context.Tickets.Where(x => x.EmployeeID == id && x.Status == Status.Approved && x.Date.Month == month && x.Date.Year == year).ToListAsync();
 
             double totalTickets = 0;
             foreach (Ticket ticket in tickets) totalTickets += ticket.Total;
@@ -54,16 +55,24 @@ namespace HR_Management_System.Models.Services
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task AddSalarySlip(int id )
+        public async Task AddSalarySlip(int id)
         {
             DateTime dateTime = DateTime.Now.ToLocalTime();
-            
+            int month = dateTime.Month;
+            int year = dateTime.Year;
+
+            month--;
+            if (month == 0)
+            {
+                month = 12;
+                year--;
+            }
 
             SalarySlip salarySlip = new SalarySlip()
             {
                 EmployeeID = id,
                 Date = dateTime,
-                Total = await CalculateSalary(id,dateTime)
+                Total = await CalculateSalary(id, month, year)
             };
             _context.Entry(salarySlip).State = EntityState.Added;
 
@@ -86,69 +95,27 @@ namespace HR_Management_System.Models.Services
         }
 
 
-        // DELETE THIS
-        public async Task<SalarySlipDTO> GetSalarySlip(int id , int month)
-        {
-            var attendances = await _context.Attendances.Where(x => x.EmployeeID == id && x.StartDate.Month == month).ToListAsync();
-            var tickets = await _context.Tickets.Where(x => x.EmployeeID == id && x.Date.Month == month).ToListAsync();
-            Employee employee = await _context.Employees.FindAsync(id);
-            if (employee == null) throw new Exception("Unvalid Employee ID");
-            return await _context.SalarySlips.Select(x => new SalarySlipDTO()
-            {
-                Date = x.Date,
-                EmployeeID = x.EmployeeID,
-                Employee = new EmployeeDTO()
-                {
-                    ID = id,
-                    Level = x.Employee.Level.ToString(),
-                    Name = x.Employee.Name,
-                    DepartmentID = employee.DepartmentID,
-                },
-                Attendances = attendances.Select(x => new AttendanceDTO()
-                {
-                    EndShift = x.EndDate,
-                    EmployeeID = x.EmployeeID,
-                    StartShift = x.StartDate,
-                    Name = x.EmpName,
-                }).ToList(),
-                Ticket = tickets.Select(x => new TicketDTO()
-                {
-                    ID = x.ID,
-                    Status = x.Status.ToString(),
-                    Comment = x.Comment,
-                    Date = x.Date,
-                    Type = x.Type.ToString(),
-                }).ToList(),
-                Total = x.Total,
-            }).FirstOrDefaultAsync(x => x.EmployeeID == id && x.Date.Month == month);
-        }
-
+       
 
         /// <summary>
         /// Get all salary slips
         /// </summary>
         /// <returns></returns>
-        public async Task<List<SalarySlipDTO>> GetSalarySlips()
+        public async Task<List<ShortenedSalarySlipDTO>> GetSalarySlips()
         {
             List<Attendance> attendances = await _context.Attendances.ToListAsync();
             List<Ticket> tickets = await _context.Tickets.ToListAsync();
-            return await _context.SalarySlips.Select(slip => new SalarySlipDTO()
+            return await _context.SalarySlips.Select(slip => new ShortenedSalarySlipDTO()
             {
                 Date = slip.Date,
                 EmployeeID = slip.EmployeeID,
-                Employee = new EmployeeDTO()
-                {
-                    ID = slip.Employee.ID,
-                    Level = slip.Employee.Level.ToString(),
-                    Name = slip.Employee.Name,
-                   DepartmentID = _context.Employees.FirstOrDefault(x => x.ID == slip.EmployeeID).DepartmentID
-                },
+                EmpName = slip.Employee.Name,
                 Total = slip.Total,
             }).ToListAsync();
         }
 
         // CHECK THIS
-        public async Task UpdateSalarySlip(int id, SalarySlip salarySlip)
+        public async Task UpdateSalarySlip(int id, SalarySlip salarySlip) //////////////
         {
             _context.Entry(salarySlip).State = EntityState.Modified;
 
@@ -164,5 +131,109 @@ namespace HR_Management_System.Models.Services
         {
             return await _context.SalarySlips.FindAsync(id);
         }
+
+        /// <summary>
+        /// Get all salary slips of a specific employee in a specific Date
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="year"></param>
+        /// <param name="month"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public async Task<List<SalarySlipDTO>> GetAllSalarySlipsInADateForEmployee(int id, int year, int month)
+        {
+
+            if (month == 0)
+            {
+                return await _context.SalarySlips.Where(x => x.EmployeeID == id & x.Date.Year == year).Select(x => new SalarySlipDTO()
+                {
+                    EmployeeID = x.EmployeeID,
+                    Date = x.Date,
+                    Total = x.Total,
+                }).ToListAsync();
+            }
+            else if (month > 12 || month < 0)
+            {
+                throw new Exception("wrong input, only months between 1-12 are accepted!");
+            }
+            else
+            {
+                return await _context.SalarySlips.Where(x => x.EmployeeID == id & x.Date.Year == year & x.Date.Month == month).Select(x => new SalarySlipDTO()
+                {
+                    Date = x.Date,
+                    EmployeeID = x.EmployeeID,
+                    Employee = new EmployeeDTO()
+                    {
+                        ID = id,
+                        Level = x.Employee.Level.ToString(),
+                        Name = x.Employee.Name,
+                        DepartmentID = x.Employee.DepartmentID,
+                    },
+                    Attendances = x.Attendances.Select(x => new AttendanceDTO()
+                    {
+                        EndShift = x.EndDate,
+                        EmployeeID = x.EmployeeID,
+                        StartShift = x.StartDate,
+                        Name = x.EmpName,
+                    }).ToList(),
+                    Ticket = x.Ticket.Select(x => new TicketDTO()
+                    {
+                        ID = x.ID,
+                        Status = x.Status.ToString(),
+                        Comment = x.Comment,
+                        Date = x.Date,
+                        Type = x.Type.ToString(),
+                    }).ToList(),
+                    Total = x.Total,
+                }).ToListAsync();
+            }
+
+
+
+
+        }
+
+
+        /// <summary>
+        /// Get all salary slips of all employees in a specific Date
+        /// </summary>
+        /// <param name="year"></param>
+        /// <param name="month"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public async Task<List<ShortenedSalarySlipDTO>> GetAllSalarySlipsInADate(int year, int month)
+        {
+
+            if (month == 0)
+            {
+                return await _context.SalarySlips.Where(x => x.Date.Year == year).Select(x => new ShortenedSalarySlipDTO()
+                {
+                    EmployeeID = x.EmployeeID,
+                    EmpName = x.Employee.Name,
+                    Date = x.Date,
+                    Total = x.Total
+                }).ToListAsync();
+            }
+            else if (month > 12 || month < 0)
+            {
+                throw new Exception("wrong input, only months between 1-12 are accepted!");
+            }
+            else
+            {
+                return await _context.SalarySlips.Where(x => x.Date.Year == year & x.Date.Month == month).Select(x => new ShortenedSalarySlipDTO()
+                {
+                    EmployeeID = x.EmployeeID,
+                    EmpName = x.Employee.Name,
+                    Date = x.Date,
+                    Total = x.Total
+                }).ToListAsync();
+            }
+
+        }
+
+
     }
+
+
+
 }
