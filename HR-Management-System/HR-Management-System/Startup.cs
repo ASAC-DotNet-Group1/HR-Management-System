@@ -1,3 +1,4 @@
+using Hangfire;
 using HR_Management_System.Data;
 using HR_Management_System.Models.Interfaces;
 using HR_Management_System.Models.Services;
@@ -8,11 +9,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.Timers;
-using System;
 using Microsoft.OpenApi.Models;
-using Hangfire;
-using Cron;
+using System;
 
 namespace HR_Management_System
 {
@@ -33,7 +31,7 @@ namespace HR_Management_System
                 string connectionString = Configuration.GetConnectionString("DefaultConnection");
                 options.UseSqlServer(connectionString);
             });
-            services.AddHangfire(x => 
+            services.AddHangfire(x =>
             {
                 string connectionString = Configuration.GetConnectionString("DefaultConnection");
                 x.UseSqlServerStorage(connectionString);
@@ -66,16 +64,16 @@ namespace HR_Management_System
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env,IRecurringJobManager recurringJobManager,IServiceProvider serviceProvider)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IRecurringJobManager recurringJobManager, IServiceProvider serviceProvider)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
             app.UseHangfireDashboard();
-            
 
-            recurringJobManager.AddOrUpdate("Take Attendance",() => serviceProvider.GetService<IAttendance>().Test1(),"30 5 * * *", TimeZoneInfo.Local);
+
+            recurringJobManager.AddOrUpdate("Take Attendance", () => serviceProvider.GetService<IAttendance>().Test1(), "18 11 * * *", TimeZoneInfo.Local);
             recurringJobManager.AddOrUpdate("Generate Slary", () => serviceProvider.GetService<ISalarySlip>().Test2(), "0 0 1 * *", TimeZoneInfo.Local);
 
             app.UseRouting();

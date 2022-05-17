@@ -1,9 +1,6 @@
 ﻿using HR_Management_System.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace HR_Management_System.Data
 {
@@ -37,10 +34,10 @@ namespace HR_Management_System.Data
                 );
 
             modelBuilder.Entity<Ticket>().HasData(
-                new Ticket { ID = 1, EmployeeID = 2,  Status = Models.Status.Approved, Comment = "Vacation",Amount = 2, Total = -40, Date = new DateTime(2022, 5, 12), Type = Models.Type.Vacation },
-                new Ticket { ID = 2, EmployeeID = 2,  Status = Models.Status.Denied, Comment = "Car Loan", Amount = 2, Total = 0 ,Date = new DateTime(2022, 5, 9), Type = Models.Type.Leave },
-                new Ticket { ID = 3, EmployeeID = 2,  Status = Models.Status.Approved, Comment = "Need more money", Amount = 2, Total = 400, Date = new DateTime(2022, 5, 23), Type = Models.Type.Overtime },
-                new Ticket { ID = 4, EmployeeID = 1,  Status = Models.Status.Approved, Comment = "Need more and more money", Amount = 2,Total = 400, Date = new DateTime(2022, 5, 23), Type = Models.Type.Overtime }
+                new Ticket { ID = 1, EmployeeID = 2, Status = Models.Status.Approved, Comment = "Vacation", Amount = 2, Total = -40, Date = new DateTime(2022, 5, 12), Type = Models.Type.Vacation },
+                new Ticket { ID = 2, EmployeeID = 2, Status = Models.Status.Denied, Comment = "Car Loan", Amount = 2, Total = 0, Date = new DateTime(2022, 5, 9), Type = Models.Type.Leave },
+                new Ticket { ID = 3, EmployeeID = 2, Status = Models.Status.Approved, Comment = "Need more money", Amount = 2, Total = 400, Date = new DateTime(2022, 5, 23), Type = Models.Type.Overtime },
+                new Ticket { ID = 4, EmployeeID = 1, Status = Models.Status.Approved, Comment = "Need more and more money", Amount = 2, Total = 400, Date = new DateTime(2022, 5, 23), Type = Models.Type.Overtime }
                 );
 
             modelBuilder.Entity<Attendance>().HasData(

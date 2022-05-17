@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace HR_Management_System.Models.DTOs
+﻿namespace HR_Management_System.Models.DTOs
 {
     public class EmployeeDTO
     {
