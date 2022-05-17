@@ -18,12 +18,23 @@ namespace HR_Management_System.Models.Services
             _context = context;
         }
 
+        /// <summary>
+        /// Create a new deparment in the database
+        /// </summary>
+        /// <param name="department"></param>
+        /// <returns></returns>
         public async Task AddDepartment(Department department)
         {
             _context.Entry(department).State = EntityState.Added;
             await _context.SaveChangesAsync();
         }
 
+        /// <summary>
+        /// Delete a deparment from the database using the department ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public async Task DeleteDepartment(int id)
         {
             Department department = await _context.Departments.FindAsync(id);
@@ -35,6 +46,8 @@ namespace HR_Management_System.Models.Services
             await _context.SaveChangesAsync();
         }
 
+
+        // Get a department from the database using the department's ID
         public async Task<DepartmentDTO> GetDepartment(int id)
         {
             Department department = await _context.Departments.FindAsync(id);
@@ -64,6 +77,12 @@ namespace HR_Management_System.Models.Services
             };
         }
 
+
+        /// <summary>
+        /// Get all departments in my database
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public async Task<List<DepartmentDTO>> GetDepartments()
         {
             var departments = await _context.Departments.Select(x => new DepartmentDTO
@@ -93,6 +112,13 @@ namespace HR_Management_System.Models.Services
             return departments;
         }
 
+
+        /// <summary>
+        /// Update a department in the databse by using the department ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="department"></param>
+        /// <returns></returns>
         public async Task UpdateDepartment(int id, Department department)
         {
             _context.Entry(department).State = EntityState.Modified;

@@ -23,6 +23,12 @@ namespace HR_Management_System.Models.Services
                     performance.Communication + performance.TimeManagement + performance.QualityOfWork) / 5 * 100 / 100;
         }
 
+        /// <summary>
+        /// Add performance
+        /// </summary>
+        /// <param name="addPerformanceDTO"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public async Task<PerformanceDTO> AddPerformance(AddPerformanceDTO addPerformanceDTO)
         {
 
@@ -56,6 +62,12 @@ namespace HR_Management_System.Models.Services
                 throw new Exception("Please enter values between 0-10");
             }
         }
+
+        /// <summary>
+        /// Get performance repot using performance ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<PerformanceDTO> GetPerformanceReport(int id)
         {
             return await _context.Performances.Where(x => x.ID == id).Select(x => new PerformanceDTO
@@ -72,6 +84,12 @@ namespace HR_Management_System.Models.Services
                 
             }).FirstOrDefaultAsync();
         }
+
+
+        /// <summary>
+        /// Get all performance reports of all employees
+        /// </summary>
+        /// <returns></returns>
         public async Task<List<PerformanceDTO>> GetAllPerformanceReports()
         {
             return await _context.Performances.Select(x => new PerformanceDTO()
@@ -88,6 +106,12 @@ namespace HR_Management_System.Models.Services
             }).ToListAsync();
         }
 
+
+        /// <summary>
+        /// Get all performance reports of a specific employee using the employee iD
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<List<PerformanceDTO>> EmployeePerformanceReports(int id)
         {
             return await _context.Performances.Where(x => x.EmployeeID == id).Select(x => new PerformanceDTO()
@@ -104,6 +128,12 @@ namespace HR_Management_System.Models.Services
             }).ToListAsync();
         }
 
+
+        /// <summary>
+        /// Get all performance reports of all employees in a specific department
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<List<PerformanceDTO>> PerformanceReportsForDepartment(int id)
         {
             return await _context.Performances.Where(x => x.Employee.DepartmentID == id).Select(x => new PerformanceDTO()
@@ -120,6 +150,14 @@ namespace HR_Management_System.Models.Services
             }).ToListAsync();
         }
 
+
+        /// <summary>
+        /// Get all performance reports in a specific Date
+        /// </summary>
+        /// <param name="year"></param>
+        /// <param name="month"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public async Task<List<PerformanceDTO>> PerformanceReportsInSpecificMonth(int year, int month)
         {
             if (month == 0)
@@ -157,6 +195,16 @@ namespace HR_Management_System.Models.Services
                 }).ToListAsync();
             }
         }
+
+
+        /// <summary>
+        /// Get performance reports of a specific employee in a specific date
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="year"></param>
+        /// <param name="month"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public async Task<List<PerformanceDTO>> PerformanceReportsForEmployeeInSpecificMonth(int id, int year, int month)
         {
             if (month == 0)
@@ -196,6 +244,13 @@ namespace HR_Management_System.Models.Services
         }
 
 
+        /// <summary>
+        /// Update a specific performance report using the performance ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="performance"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public async Task<PerformanceDTO> UpdatePerformance(int id, UpdatePerformanceDTO performance)
         {
             var oldPerformance = await _context.Performances.FindAsync(id);
@@ -235,6 +290,13 @@ namespace HR_Management_System.Models.Services
             }
         }
 
+
+        /// <summary>
+        /// Delete a specific performance using the performance ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public async Task DeletePerformance(int id)
         {
             Performance performance = await _context.Performances.FindAsync(id);

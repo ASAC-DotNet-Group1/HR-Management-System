@@ -45,6 +45,14 @@ namespace HR_Management_System.Models.Services
             };
         }
        
+
+        /// <summary>
+        /// Calculate total tickets & it's effect on salary????!?!??!?!?!?!!?!?!?!?
+        /// </summary>
+        /// <param name="employee"></param>
+        /// <param name="ticket"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public async Task CalculateTotal (Employee employee, Ticket ticket )
         {
             if (ticket.Type == Type.Leave)
@@ -70,6 +78,13 @@ namespace HR_Management_System.Models.Services
             await _context.SaveChangesAsync();
 
         }
+
+
+        /// <summary>
+        ///  Accept a pending ticket
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<TicketDTO> Accept(int id)
         {
             Employee employee = await _context.Employees.FindAsync(id);
@@ -85,6 +100,13 @@ namespace HR_Management_System.Models.Services
             await _context.SaveChangesAsync();
             return await GetTicket(id);
         }
+
+
+        /// <summary>
+        /// Deny a pending Ticket
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<TicketDTO> Deny(int id)
         {
             Ticket ticket = await _context.Tickets.FindAsync(id);
@@ -95,6 +117,12 @@ namespace HR_Management_System.Models.Services
 
         }
 
+
+        /// <summary>
+        /// Get ticket from database using the ticked ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<TicketDTO> GetTicket(int id)
         {
             
@@ -110,6 +138,13 @@ namespace HR_Management_System.Models.Services
             };
         }
 
+
+
+        /// <summary>
+        /// Get all tickets from Database
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public async Task<List<TicketDTO>> GetTickets()
         {
             var tickets = await _context.Tickets.ToListAsync();
@@ -125,7 +160,12 @@ namespace HR_Management_System.Models.Services
             }).ToListAsync();
         }
 
-       
+       /// <summary>
+       /// Delete a specific ticket from the database using its ID
+       /// </summary>
+       /// <param name="id"></param>
+       /// <returns></returns>
+       /// <exception cref="Exception"></exception>
         public async Task DeleteTicket(int id)
         {
             Ticket ticket = await Find(id);
@@ -134,6 +174,14 @@ namespace HR_Management_System.Models.Services
 
             await _context.SaveChangesAsync();
         }
+
+
+        /// <summary>
+        /// Get tickets of a specific employee using employee ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public async Task<List<TicketDTO>> GetEmployeeTickets(int id)
         {
 
@@ -151,6 +199,12 @@ namespace HR_Management_System.Models.Services
             }).ToListAsync();
             
         }
+
+        /// <summary>
+        /// Find a specific ticket in database using its ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<Ticket> Find(int id)
         {
             return await _context.Tickets.FindAsync(id);
