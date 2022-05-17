@@ -3,6 +3,7 @@ using HR_Management_System.Models.DTOs;
 using HR_Management_System.Models.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -24,6 +25,14 @@ namespace HR_Management_System.Controllers
         public async Task<ActionResult<List<EmployeeDTO>>> GetEmployees()
         {
             return await _employee.GetEmployees();
+        }
+
+
+        // GET: api/Employees/Department/1   ********NEW*********
+        [HttpGet("Department/{id}")]
+        public async Task<ActionResult<List<EmployeeDTO>>> GetEmployeesInSpecificDepartment(int id)
+        {
+            return await _employee.GetEmployeesInSpecificDepartment(id);
         }
 
         // GET: api/Employees/5
@@ -94,13 +103,18 @@ namespace HR_Management_System.Controllers
             return NoContent();
         }
 
-        [HttpPut("{empId}/{depId}")]
-        public async Task<IActionResult> SetEmployeeToDepartment(int empId, int depId)
+        [HttpPut("ID/{empID}/Department/{depID}")]
+        public async Task<IActionResult> SetEmployeeToDepartment(int empID, int depID) // ********Updated*********
         {
-            await _employee.SetEmployeeToDepartment(empId, depId);
-
+            try
+            {
+                await _employee.SetEmployeeToDepartment(empID, depID);
+            }
+            catch(Exception e)
+            {
+                return NotFound(e.Message);
+            }
             return Ok();
         }
-
     }
 }

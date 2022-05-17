@@ -61,7 +61,56 @@ namespace HR_Management_System.Models.Services
                 EmployeeID = x.EmployeeID,
                 Name = x.Employee.Name,
                 StartShift = x.StartDate,
-                EndShift = x.EndDate
+                EndShift = x.EndDate,
+                Employee = new EmployeeDTO
+                {
+                    ID = x.Employee.ID,
+                    DepartmentID = x.Employee.DepartmentID,
+                    Name = x.Employee.Name,
+                    Level = x.Employee.Level.ToString(),
+                    Age = x.Employee.Age,
+                    Email = x.Employee.Email,
+                    Phone = x.Employee.Phone,
+                    Gender = x.Employee.Gender,
+                    LeaveCredit = x.Employee.LeaveCredit,
+                    VacationCredit = x.Employee.VacationCredit,
+                    DepartmentName = x.Employee.Department.Name
+                }
+                
+            }).ToListAsync();
+        }
+
+
+        /// <summary>
+        /// Get all attendances for a specific employee using his ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<List<AttendanceDTO>> GetAllAttendance(int id)
+        {
+            Employee employee = await _context.Employees.FindAsync(id);
+            if (employee == null) throw new Exception("Unvalid Employee ID");
+            return await _context.Attendances.Where(x => x.EmployeeID == id).Select(x => new AttendanceDTO()
+            {
+                Name = employee.Name,
+                EmployeeID = x.EmployeeID,
+                StartShift = x.StartDate,
+                EndShift = x.EndDate,
+                Employee = new EmployeeDTO
+                {
+                    ID = x.Employee.ID,
+                    DepartmentID = x.Employee.DepartmentID,
+                    Name = x.Employee.Name,
+                    Level = x.Employee.Level.ToString(),
+                    Age = x.Employee.Age,
+                    Email = x.Employee.Email,
+                    Phone = x.Employee.Phone,
+                    Gender = x.Employee.Gender,
+                    LeaveCredit = x.Employee.LeaveCredit,
+                    VacationCredit = x.Employee.VacationCredit,
+                    DepartmentName = x.Employee.Department.Name
+                }
+
             }).ToListAsync();
         }
 
@@ -81,7 +130,21 @@ namespace HR_Management_System.Models.Services
                 EmployeeID = x.EmployeeID,
                 Name = x.Employee.Name,
                 StartShift = x.StartDate,
-                EndShift = x.EndDate
+                EndShift = x.EndDate,
+                Employee = new EmployeeDTO
+                {
+                    ID = x.Employee.ID,
+                    DepartmentID = x.Employee.DepartmentID,
+                    Name = x.Employee.Name,
+                    Level = x.Employee.Level.ToString(),
+                    Age = x.Employee.Age,
+                    Email = x.Employee.Email,
+                    Phone = x.Employee.Phone,
+                    Gender = x.Employee.Gender,
+                    LeaveCredit = x.Employee.LeaveCredit,
+                    VacationCredit = x.Employee.VacationCredit,
+                    DepartmentName = x.Employee.Department.Name
+                }
 
             }).FirstOrDefaultAsync();
         }
@@ -178,24 +241,6 @@ namespace HR_Management_System.Models.Services
             await _context.SaveChangesAsync();
         }
 
-        /// <summary>
-        /// Get all attendances for a specific employee using his ID
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public async Task<List<AttendanceDTO>> GetAllAttendance(int id)
-        {
-            Employee employee = await _context.Employees.FindAsync(id);
-            if (employee == null) throw new Exception("Unvalid Employee ID");
-            return await _context.Attendances.Where(x => x.EmployeeID == id).Select(x => new AttendanceDTO()
-            {
-                Name = employee.Name,
-                EmployeeID = x.EmployeeID,
-                StartShift = x.StartDate,
-                EndShift = x.EndDate
-
-            }).ToListAsync();
-        }
 
         /// <summary>
         /// Get all attendances of a specific employee in a specific year/month
@@ -218,6 +263,20 @@ namespace HR_Management_System.Models.Services
                     EmployeeID = x.EmployeeID,
                     StartShift = x.StartDate,
                     EndShift = x.EndDate,
+                    Employee = new EmployeeDTO
+                    {
+                        ID = x.Employee.ID,
+                        DepartmentID = x.Employee.DepartmentID,
+                        Name = x.Employee.Name,
+                        Level = x.Employee.Level.ToString(),
+                        Age = x.Employee.Age,
+                        Email = x.Employee.Email,
+                        Phone = x.Employee.Phone,
+                        Gender = x.Employee.Gender,
+                        LeaveCredit = x.Employee.LeaveCredit,
+                        VacationCredit = x.Employee.VacationCredit,
+                        DepartmentName = x.Employee.Department.Name
+                    }
                 }).Where(x => x.EmployeeID == id & x.StartShift.Year == year).ToListAsync();
             }
 
@@ -233,7 +292,21 @@ namespace HR_Management_System.Models.Services
                     Name = x.EmpName,
                     EmployeeID = x.EmployeeID,
                     StartShift = x.StartDate,
-                    EndShift = x.EndDate
+                    EndShift = x.EndDate,
+                    Employee = new EmployeeDTO
+                    {
+                        ID = x.Employee.ID,
+                        DepartmentID = x.Employee.DepartmentID,
+                        Name = x.Employee.Name,
+                        Level = x.Employee.Level.ToString(),
+                        Age = x.Employee.Age,
+                        Email = x.Employee.Email,
+                        Phone = x.Employee.Phone,
+                        Gender = x.Employee.Gender,
+                        LeaveCredit = x.Employee.LeaveCredit,
+                        VacationCredit = x.Employee.VacationCredit,
+                        DepartmentName = x.Employee.Department.Name
+                    }
                 }).Where(x => x.EmployeeID == id & x.StartShift.Year == year & x.StartShift.Month == month).ToListAsync();
             }
         }
@@ -256,7 +329,20 @@ namespace HR_Management_System.Models.Services
                     EmployeeID = x.EmployeeID,
                     StartShift = x.StartDate,
                     EndShift = x.EndDate,
-                    Employee = x.Employee
+                    Employee = new EmployeeDTO
+                    {
+                        ID = x.Employee.ID,
+                        DepartmentID = x.Employee.DepartmentID,
+                        Name = x.Employee.Name,
+                        Level = x.Employee.Level.ToString(),
+                        Age = x.Employee.Age,
+                        Email = x.Employee.Email,
+                        Phone = x.Employee.Phone,
+                        Gender = x.Employee.Gender,
+                        LeaveCredit = x.Employee.LeaveCredit,
+                        VacationCredit = x.Employee.VacationCredit,
+                        DepartmentName = x.Employee.Department.Name
+                    }
                 }).Where(x => x.StartShift.Year == year).ToListAsync();
             }
 
@@ -273,7 +359,20 @@ namespace HR_Management_System.Models.Services
                     EmployeeID = x.EmployeeID,
                     StartShift = x.StartDate,
                     EndShift = x.EndDate,
-                    Employee = x.Employee
+                    Employee = new EmployeeDTO
+                    {
+                        ID = x.Employee.ID,
+                        DepartmentID = x.Employee.DepartmentID,
+                        Name = x.Employee.Name,
+                        Level = x.Employee.Level.ToString(),
+                        Age = x.Employee.Age,
+                        Email = x.Employee.Email,
+                        Phone = x.Employee.Phone,
+                        Gender = x.Employee.Gender,
+                        LeaveCredit = x.Employee.LeaveCredit,
+                        VacationCredit = x.Employee.VacationCredit,
+                        DepartmentName = x.Employee.Department.Name
+                    }
                 }).Where(x => x.StartShift.Year == year & x.StartShift.Month == month).ToListAsync();
             }
         }

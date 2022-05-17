@@ -18,15 +18,6 @@ namespace HR_Management_System.Controllers
             _ticket = ticket;
         }
 
-        // GET: api/Tickets
-        [HttpGet]
-        public async Task<ActionResult<List<TicketDTO>>> GetTickets()
-        {
-            var tickets = await _ticket.GetTickets();
-            if (tickets == null) return NoContent();
-            return Ok(tickets);
-        }
-
         // GET: api/Tickets/5
         [HttpGet("{id}")]
         public async Task<ActionResult<TicketDTO>> GetTicket(int id)
@@ -41,17 +32,41 @@ namespace HR_Management_System.Controllers
             return ticket;
         }
 
+        // GET: api/Tickets
+        [HttpGet]
+        public async Task<ActionResult<List<TicketDTO>>> GetTickets()
+        {
+            var tickets = await _ticket.GetTickets();
+            if (tickets == null) return NoContent();
+            return Ok(tickets);
+        }
+
         // PUT: api/Tickets/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("Accept/{id}")]
-        public async Task<TicketDTO> Accept(int id)
+        public async Task<ActionResult<TicketDTO>> Accept(int id)
         {
-            return await _ticket.Accept(id);
+            try
+            {
+                return await _ticket.Accept(id);
+            }
+            catch (Exception e)
+            {
+                return NotFound(e.Message);
+            }
         }
+
         [HttpPut("Deny/{id}")]
-        public async Task<TicketDTO> Deny(int id)
+        public async Task<ActionResult<TicketDTO>> Deny(int id)
         {
-            return await _ticket.Deny(id);
+            try
+            {
+                return await _ticket.Deny(id);
+            }
+            catch (Exception e)
+            {
+                return NotFound(e.Message);
+            }
         }
 
         [HttpPost]
@@ -71,8 +86,12 @@ namespace HR_Management_System.Controllers
                 return NoContent();
             }
 
-            catch (Exception) { return NotFound(); }
+            catch (Exception e)
+            {
+                return NotFound(e.Message);
+            }
         }
+
         // GET: api/Tickets/Employee/8
         [HttpGet("Employee/{id}")]
         public async Task<ActionResult<List<TicketDTO>>> GetEmployeeTickets(int id)
@@ -87,13 +106,14 @@ namespace HR_Management_System.Controllers
                 return BadRequest(e);
             }
         }
+
         /// <summary>
         /// Return Salary Slips of all employees in a specific date
         /// </summary>
         /// <param name="year"></param>
         /// <param name="month"></param>
         /// <returns></returns>
-        [HttpGet("Tickets/year/{year}/month/{month}")]
+        [HttpGet("Year/{year}/Month/{month}")]
         public async Task<ActionResult<List<TicketDTO>>> GetAllTicketsInADate(int year, int month)
         {
             try
@@ -106,13 +126,12 @@ namespace HR_Management_System.Controllers
             }
         }
 
-
         /// <summary>
         /// Return attendances of a specific employee during a specific month of a specific year
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpGet("Tickets/employee/{id}/year/{year}/month/{month}")]
+        [HttpGet("Employee/{id}/Year/{year}/Month/{month}")]
         public async Task<ActionResult<List<TicketDTO>>> GetAllTicketsInADateForEmployee(int id, int year, int month)
         {
             try
@@ -123,7 +142,6 @@ namespace HR_Management_System.Controllers
             {
                 return BadRequest(ex.Message);
             }
-
         }
     }
 }

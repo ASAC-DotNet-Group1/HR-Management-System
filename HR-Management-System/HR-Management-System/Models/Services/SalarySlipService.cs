@@ -87,15 +87,11 @@ namespace HR_Management_System.Models.Services
         /// <returns></returns>
         public async Task DeleteSalarySlip(int id)
         {
-            SalarySlip SalarySlips = await _context.SalarySlips.FindAsync(id);
-
-            _context.Entry(SalarySlips).State = EntityState.Deleted;
-
+            SalarySlip SalarySlip = await _context.SalarySlips.FindAsync(id);
+            if(SalarySlip == null) { throw new Exception("SalarySlip was not found"); }
+            _context.Entry(SalarySlip).State = EntityState.Deleted;
             await _context.SaveChangesAsync();
         }
-
-
-       
 
         /// <summary>
         /// Get all salary slips
@@ -142,7 +138,6 @@ namespace HR_Management_System.Models.Services
         /// <exception cref="Exception"></exception>
         public async Task<List<SalarySlipDTO>> GetAllSalarySlipsInADateForEmployee(int id, int year, int month)
         {
-
             if (month == 0)
             {
                 return await _context.SalarySlips.Where(x => x.EmployeeID == id & x.Date.Year == year).Select(x => new SalarySlipDTO()
@@ -187,10 +182,6 @@ namespace HR_Management_System.Models.Services
                     Total = x.Total,
                 }).ToListAsync();
             }
-
-
-
-
         }
 
 
@@ -203,7 +194,6 @@ namespace HR_Management_System.Models.Services
         /// <exception cref="Exception"></exception>
         public async Task<List<ShortenedSalarySlipDTO>> GetAllSalarySlipsInADate(int year, int month)
         {
-
             if (month == 0)
             {
                 return await _context.SalarySlips.Where(x => x.Date.Year == year).Select(x => new ShortenedSalarySlipDTO()
@@ -228,12 +218,6 @@ namespace HR_Management_System.Models.Services
                     Total = x.Total
                 }).ToListAsync();
             }
-
         }
-
-
     }
-
-
-
 }

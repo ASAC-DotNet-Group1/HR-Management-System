@@ -18,11 +18,34 @@ namespace HR_Management_System.Models.Services
         {
             _context = context;
         }
+
+
+        /// <summary>
+        /// Get ticket from database using the ticked ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<TicketDTO> GetTicket(int id)
+        {
+
+            Ticket ticket = await _context.Tickets.FindAsync(id);
+            if(ticket == null) { return null; }
+            return new TicketDTO
+            {
+                Comment = ticket.Comment,
+                Date = ticket.Date,
+                ID = ticket.ID,
+                EmployeeName = ticket.Employee.Name,
+                Status = ticket.Status.ToString(),
+                Type = ticket.Type.ToString()
+            };
+        }
+
         public async Task<TicketDTO> CreateTicket(AddTicketDTO newticket)
         {
             DateTime date = DateTime.Now.ToLocalTime();
             Employee employee = await _context.Employees.FindAsync(newticket.EmployeeID);
-            if (employee == null) throw new Exception("Unvalid Employee ID");
+            if (employee == null) throw new Exception("Employee was not found");
             Ticket ticket = new Ticket()
             {
                 Amount = newticket.Amount,
@@ -88,7 +111,9 @@ namespace HR_Management_System.Models.Services
         public async Task<TicketDTO> Accept(int id)
         {
             Employee employee = await _context.Employees.FindAsync(id);
+            if (employee == null) { throw new Exception("Employee was not found"); }
             Ticket ticket = await _context.Tickets.FindAsync(id);
+            if (ticket == null) { throw new Exception("Ticket was not found"); }
             ticket.Status = Status.Approved;
             _context.Entry(ticket).State = EntityState.Modified;
             await CalculateTotal(employee, ticket);
@@ -110,34 +135,12 @@ namespace HR_Management_System.Models.Services
         public async Task<TicketDTO> Deny(int id)
         {
             Ticket ticket = await _context.Tickets.FindAsync(id);
+            if(ticket == null) { throw new Exception("Ticket was not found"); }
             ticket.Status = Status.Denied;
             _context.Entry(ticket).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             return await GetTicket(id);
-
         }
-
-
-        /// <summary>
-        /// Get ticket from database using the ticked ID
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public async Task<TicketDTO> GetTicket(int id)
-        {
-
-            Ticket ticket = await _context.Tickets.FindAsync(id);
-            return new TicketDTO
-            {
-                Comment = ticket.Comment,
-                Date = ticket.Date,
-                ID = ticket.ID,
-                EmployeeName = ticket.Employee.Name,
-                Status = ticket.Status.ToString(),
-                Type = ticket.Type.ToString()
-            };
-        }
-
 
 
         /// <summary>
@@ -160,6 +163,7 @@ namespace HR_Management_System.Models.Services
             }).ToListAsync();
         }
 
+
         /// <summary>
         /// Delete a specific ticket from the database using its ID
         /// </summary>
@@ -169,7 +173,7 @@ namespace HR_Management_System.Models.Services
         public async Task DeleteTicket(int id)
         {
             Ticket ticket = await Find(id);
-            if (ticket == null) { throw new Exception($" There is no Ticket with id : {id} ! "); }
+            if (ticket == null) { throw new Exception($" There is no Ticket with id : {id}."); }
             _context.Entry(ticket).State = EntityState.Deleted;
 
             await _context.SaveChangesAsync();

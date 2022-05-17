@@ -26,6 +26,12 @@ namespace HR_Management_System.Controllers
             return await _attendance.GetAttendances();
         }
 
+        [HttpGet("Employee/{id}")]
+        public async Task<List<AttendanceDTO>> GetAllAttendance(int id)
+        {
+            return await _attendance.GetAllAttendance(id);
+        }
+
         // GET: api/Attendances/5
         [HttpGet("{id}")]
         public async Task<ActionResult<AttendanceDTO>> GetAttendance(int id)
@@ -92,18 +98,14 @@ namespace HR_Management_System.Controllers
                 return NotFound(e);
             }
         }
-        [HttpGet("attendances/{id}")]
-        public async Task<List<AttendanceDTO>> GetAllAttendance(int id)
-        {
-            return await _attendance.GetAllAttendance(id);
-        }
+
         /// <summary>
         /// Return attendances of all employees in a specific date
         /// </summary>
         /// <param name="year"></param>
         /// <param name="month"></param>
         /// <returns></returns>
-        [HttpGet("attendances/year/{year}/month/{month}")]
+        [HttpGet("Year/{year}/Month/{month}")]
         public async Task<ActionResult<List<AttendanceDTO>>> GetAllAttendancesInADate(int year, int month)
         {
             try
@@ -122,7 +124,7 @@ namespace HR_Management_System.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpGet("attendances/employee/{id}/year/{year}/month/{month}")]
+        [HttpGet("Employee/{id}/Year/{year}/Month/{month}")]
         public async Task<ActionResult<List<AttendanceDTO>>> GetAllAttendancesInADateForEmployee(int id, int year, int month)
         {
             try
@@ -133,7 +135,6 @@ namespace HR_Management_System.Controllers
             {
                 return BadRequest(ex.Message);
             }
-
         }
     }
 }

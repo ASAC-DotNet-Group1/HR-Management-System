@@ -27,7 +27,6 @@ namespace HR_Management_System.Controllers
             return await _salarySlip.GetSalarySlips();
         }
 
-
         // PUT: api/SalarySlips/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
@@ -37,7 +36,6 @@ namespace HR_Management_System.Controllers
             {
                 return BadRequest();
             }
-
             try
             {
                 await _salarySlip.UpdateSalarySlip(id, salarySlip);
@@ -62,7 +60,6 @@ namespace HR_Management_System.Controllers
         [HttpPost("{id}")]
         public async Task<ActionResult<SalarySlip>> PostSalarySlip(int id)
         {
-
             try
             {
                 await _salarySlip.AddSalarySlip(id);
@@ -73,9 +70,7 @@ namespace HR_Management_System.Controllers
                 throw;
 
             }
-
             return Ok();
-
         }
 
         // DELETE: api/SalarySlips/5
@@ -89,9 +84,9 @@ namespace HR_Management_System.Controllers
             }
 
             await _salarySlip.DeleteSalarySlip(id);
-
             return NoContent();
         }
+
         /// <summary>
         /// Return Salary Slips of all employees in a specific date
         /// </summary>
@@ -111,7 +106,6 @@ namespace HR_Management_System.Controllers
             }
         }
 
-
         /// <summary>
         /// Return salary slips of a specific employee during a specific month of a specific year
         /// </summary>
@@ -128,8 +122,6 @@ namespace HR_Management_System.Controllers
             {
                 return BadRequest(ex.Message);
             }
-
         }
-
     }
 }
