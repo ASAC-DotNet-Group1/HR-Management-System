@@ -102,7 +102,7 @@ namespace HR_Management_System.Models.Services
                 Efficiency = x.Efficiency,
                 QualityOfWork = x.QualityOfWork,
                 TimeManagement = x.TimeManagement,
-                Overall = x.Overall
+                Overall = x.Overall,
             }).ToListAsync();
         }
 

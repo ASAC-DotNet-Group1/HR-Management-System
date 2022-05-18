@@ -27,7 +27,6 @@ namespace HR_Management_System.Models.Services
         /// <returns></returns>
         public async Task<TicketDTO> GetTicket(int id)
         {
-
             Ticket ticket = await _context.Tickets.FindAsync(id);
             if(ticket == null) { return null; }
             return new TicketDTO
@@ -37,7 +36,21 @@ namespace HR_Management_System.Models.Services
                 ID = ticket.ID,
                 EmployeeName = ticket.Employee.Name,
                 Status = ticket.Status.ToString(),
-                Type = ticket.Type.ToString()
+                Type = ticket.Type.ToString(),
+                Employee = new EmployeeDTO
+                {
+                    ID = ticket.Employee.ID,
+                    DepartmentID = ticket.Employee.DepartmentID,
+                    Name = ticket.Employee.Name,
+                    Level = ticket.Employee.Level.ToString(),
+                    Age = ticket.Employee.Age,
+                    Email = ticket.Employee.Email,
+                    Phone = ticket.Employee.Phone,
+                    Gender = ticket.Employee.Gender,
+                    LeaveCredit = ticket.Employee.LeaveCredit,
+                    VacationCredit = ticket.Employee.VacationCredit,
+                    DepartmentName = ticket.Employee.Department.Name
+                }
             };
         }
 
@@ -65,6 +78,20 @@ namespace HR_Management_System.Models.Services
                 ID = ticket.ID,
                 Status = ticket.Status.ToString(),
                 Type = ticket.Type.ToString(),
+                Employee = new EmployeeDTO
+                {
+                    ID = ticket.Employee.ID,
+                    DepartmentID = ticket.Employee.DepartmentID,
+                    Name = ticket.Employee.Name,
+                    Level = ticket.Employee.Level.ToString(),
+                    Age = ticket.Employee.Age,
+                    Email = ticket.Employee.Email,
+                    Phone = ticket.Employee.Phone,
+                    Gender = ticket.Employee.Gender,
+                    LeaveCredit = ticket.Employee.LeaveCredit,
+                    VacationCredit = ticket.Employee.VacationCredit,
+                    DepartmentName = ticket.Employee.Department.Name
+                }
             };
         }
 
@@ -159,7 +186,21 @@ namespace HR_Management_System.Models.Services
                 ID = x.ID,
                 EmployeeName = x.Employee.Name,
                 Status = x.Status.ToString(),
-                Type = x.Type.ToString()
+                Type = x.Type.ToString(),
+                Employee = new EmployeeDTO
+                {
+                    ID = x.Employee.ID,
+                    DepartmentID = x.Employee.DepartmentID,
+                    Name = x.Employee.Name,
+                    Level = x.Employee.Level.ToString(),
+                    Age = x.Employee.Age,
+                    Email = x.Employee.Email,
+                    Phone = x.Employee.Phone,
+                    Gender = x.Employee.Gender,
+                    LeaveCredit = x.Employee.LeaveCredit,
+                    VacationCredit = x.Employee.VacationCredit,
+                    DepartmentName = x.Employee.Department.Name
+                }
             }).ToListAsync();
         }
 
@@ -188,7 +229,6 @@ namespace HR_Management_System.Models.Services
         /// <exception cref="Exception"></exception>
         public async Task<List<TicketDTO>> GetEmployeeTickets(int id)
         {
-
             Employee employee = _context.Employees.Find(id);
             if (employee == null) throw new Exception("Unvalid Employee ID");
             return await _context.Tickets.Where(x => x.EmployeeID == id).Select(x => new TicketDTO
@@ -199,6 +239,20 @@ namespace HR_Management_System.Models.Services
                 Date = x.Date,
                 Comment = x.Comment,
                 Status = x.Status.ToString(),
+                Employee = new EmployeeDTO
+                {
+                    ID = x.Employee.ID,
+                    DepartmentID = x.Employee.DepartmentID,
+                    Name = x.Employee.Name,
+                    Level = x.Employee.Level.ToString(),
+                    Age = x.Employee.Age,
+                    Email = x.Employee.Email,
+                    Phone = x.Employee.Phone,
+                    Gender = x.Employee.Gender,
+                    LeaveCredit = x.Employee.LeaveCredit,
+                    VacationCredit = x.Employee.VacationCredit,
+                    DepartmentName = x.Employee.Department.Name
+                }
 
             }).ToListAsync();
 
@@ -222,6 +276,20 @@ namespace HR_Management_System.Models.Services
                 ID = x.ID,
                 Status = x.Status.ToString(),
                 Type = x.Type.ToString(),
+                Employee = new EmployeeDTO
+                {
+                    ID = x.Employee.ID,
+                    DepartmentID = x.Employee.DepartmentID,
+                    Name = x.Employee.Name,
+                    Level = x.Employee.Level.ToString(),
+                    Age = x.Employee.Age,
+                    Email = x.Employee.Email,
+                    Phone = x.Employee.Phone,
+                    Gender = x.Employee.Gender,
+                    LeaveCredit = x.Employee.LeaveCredit,
+                    VacationCredit = x.Employee.VacationCredit,
+                    DepartmentName = x.Employee.Department.Name
+                }
 
             }).ToListAsync();
         }
@@ -251,7 +319,6 @@ namespace HR_Management_System.Models.Services
         /// <exception cref="Exception"></exception>
         public async Task<List<TicketDTO>> GetAllTicketsInADateForEmployee(int id, int year, int month)
         {
-
             if (month == 0)
             {
                 return await _context.Tickets.Where(x => x.Employee.ID == id & x.Date.Year == year)
@@ -262,7 +329,21 @@ namespace HR_Management_System.Models.Services
                         Type = x.Type.ToString(),
                         Date = x.Date,
                         Status = x.Status.ToString(),
-                        Comment = x.Comment
+                        Comment = x.Comment,
+                        Employee = new EmployeeDTO
+                        {
+                            ID = x.Employee.ID,
+                            DepartmentID = x.Employee.DepartmentID,
+                            Name = x.Employee.Name,
+                            Level = x.Employee.Level.ToString(),
+                            Age = x.Employee.Age,
+                            Email = x.Employee.Email,
+                            Phone = x.Employee.Phone,
+                            Gender = x.Employee.Gender,
+                            LeaveCredit = x.Employee.LeaveCredit,
+                            VacationCredit = x.Employee.VacationCredit,
+                            DepartmentName = x.Employee.Department.Name
+                        }
 
                     }).ToListAsync();
             }
@@ -272,7 +353,6 @@ namespace HR_Management_System.Models.Services
             }
             else
             {
-
                 return await _context.Tickets.Where(x => x.Employee.ID == id & x.Date.Year == year & x.Date.Month == month)
                     .Select(x => new TicketDTO()
                     {
@@ -281,12 +361,23 @@ namespace HR_Management_System.Models.Services
                         Type = x.Type.ToString(),
                         Date = x.Date,
                         Status = x.Status.ToString(),
-                        Comment = x.Comment
-
+                        Comment = x.Comment,
+                        Employee = new EmployeeDTO
+                        {
+                            ID = x.Employee.ID,
+                            DepartmentID = x.Employee.DepartmentID,
+                            Name = x.Employee.Name,
+                            Level = x.Employee.Level.ToString(),
+                            Age = x.Employee.Age,
+                            Email = x.Employee.Email,
+                            Phone = x.Employee.Phone,
+                            Gender = x.Employee.Gender,
+                            LeaveCredit = x.Employee.LeaveCredit,
+                            VacationCredit = x.Employee.VacationCredit,
+                            DepartmentName = x.Employee.Department.Name
+                        }
                     }).ToListAsync();
             }
-
-
         }
 
 
@@ -299,7 +390,6 @@ namespace HR_Management_System.Models.Services
         /// <exception cref="Exception"></exception>
         public async Task<List<TicketDTO>> GetAllTicketsInADate(int year, int month)
         {
-
             if (month == 0)
             {
                 return await _context.Tickets.Where(x => x.Date.Year == year & x.Date.Month == month)
@@ -310,8 +400,21 @@ namespace HR_Management_System.Models.Services
                         Type = x.Type.ToString(),
                         Date = x.Date,
                         Status = x.Status.ToString(),
-                        Comment = x.Comment
-
+                        Comment = x.Comment,
+                        Employee = new EmployeeDTO
+                        {
+                            ID = x.Employee.ID,
+                            DepartmentID = x.Employee.DepartmentID,
+                            Name = x.Employee.Name,
+                            Level = x.Employee.Level.ToString(),
+                            Age = x.Employee.Age,
+                            Email = x.Employee.Email,
+                            Phone = x.Employee.Phone,
+                            Gender = x.Employee.Gender,
+                            LeaveCredit = x.Employee.LeaveCredit,
+                            VacationCredit = x.Employee.VacationCredit,
+                            DepartmentName = x.Employee.Department.Name
+                        }
                     }).ToListAsync();
             }
             else if (month > 12 || month < 0)
@@ -331,10 +434,7 @@ namespace HR_Management_System.Models.Services
                         Comment = x.Comment
                     }).ToListAsync();
             }
-
         }
-
         #endregion
-
     }
 }
