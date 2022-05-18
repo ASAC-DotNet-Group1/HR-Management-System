@@ -60,22 +60,26 @@ We will create an HR System that has the basic functionality of any HR System wh
 
 ## Domain Model
 
-<br>
+Shows the basic relationship and effects of entities on each other.
 
-![](./assets/domain-model.jpg)
+![](./assets/new-domain-model.png)
 
 <br><hr><br>
 
 ## Database Schema Diagram
 
-<br>
-
-![](./assets/schema.png)
-
-
+Shows what each entity depends on in another entity.
 
 <br>
 
-## ERD
+![](./assets/new-database-schema.png)
+
+
+<br><hr><br>
+
+
+## Entity Relationship Diagram
+
+Full diagram that shows the whole relationships between entities & their nature (one-many, many-many).
 
 ![](./assets/new-erd.png)
