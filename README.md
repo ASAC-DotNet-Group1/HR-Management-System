@@ -71,3 +71,11 @@ We will create an HR System that has the basic functionality of any HR System wh
 <br>
 
 ![](./assets/schema.png)
+
+
+
+<br>
+
+## ERD
+
+![](./assets/new-erd.png)
