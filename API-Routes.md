@@ -11,11 +11,15 @@ This file shows all of the routes that this project provides with a brief descri
 
 The Attendance controller has the following routes in it:
 
-![Attendance-API](./assets/Attendances-API.png)
+![Attendance-API](./assets/Attendances-new.png)
 ```
 + GET: /api/Attendaces
     
     This route allows the user to get all of the attendances that is registered and entered in the database.
+
++ GET: /api/Attendaces/Employee/{id}
+
+    This route allows the user to get all of the attendances for a specific employee using that employee ID.
 
 + GET: /api/Attendaces/{id}
 
@@ -29,6 +33,14 @@ The Attendance controller has the following routes in it:
 
     This route allows the user to delete a specific attendance report by using the id for that specific ID for that report.
 
++ GET: /api/Attendaces/Year/{year}/Month/{month}
+
+    This route allows the user to get all of the attendances that is registered and entered in the database in a specific month and year.
+
++ GET: /api/Attendaces/Employee/{id}/Year/{year}/Month/{month}
+
+    This route allows the user to get all of the attendances for a specific employee that is registered and entered in the database in a specific month and year.
+
 + POST: /api/Attendaces/Arrival/{id}
 
     This route allows the user to take his attendance when he arrives to the company by using his ID and it will be saved in the database.
@@ -39,7 +51,7 @@ The Attendance controller has the following routes in it:
 
 The Department controller has the following routes in it:
 
-![Departments-API](./assets/Departments-API.png)
+![Departments-API](./assets/Department-new.png)
 ```
 + GET: /api/Depatments
 
@@ -67,7 +79,7 @@ The Department controller has the following routes in it:
 
 The Employee controller has the following routes in it:
 
-![Employee-Api](./assets/Employee-API.png)
+![Employee-Api](./assets/Employee-new.png)
 ```
 + GET: /api/Employees
 
@@ -76,6 +88,10 @@ The Employee controller has the following routes in it:
 + POST: /api/Employees
 
     This route allows the user to add a new employee to the database.
+
++ GET: /api/Employees/Department/{id}
+
+    This route allows the user to view all employees that are in a specific department and view basic information about them.
 
 + GET: /api/Employees/{id}
 
@@ -89,41 +105,10 @@ The Employee controller has the following routes in it:
 
     This route allows the user to delete a certain employee along with their information from the database by using that employee ID.
 
-+ GET: /api/Employees/salarySlip/{id}
-
-    This route allows the user to get all salary slips for a certain employee by using their ID.
-
-+ PUT: /api/Employees/{empId}/{depId}
++ PUT: /api/Employees/ID/{empId}/Department/{depId}
 
     This route allows the user to update the department that the employee belongs to by using both of the employee ID and the department ID that they are going to be moved to.
 
-+ GET: /api/Employees/attendances/{id}
-
-    This route allows the user to view a certain attendance report by using the report ID.
-
-+ GET: /api/Employees/attendances/year/{year}/month/{month}
-
-    This route allows the user to view all the attendance reports in a certain month in a certain year.
-
-+ GET: /api/Employees/attendances/employee/{id}/year/{year}/month/{month}
-
-    This route allows the user to view all the attendance reports for a certain employee in a certain month in a certain year.
-
-+ GET: /api/Employees/Salary-Slips/year/{year}/month/{month}
-
-    This route allows the user to view all the salary slips for all employees in a certain month and year.
-
-+ GET: /api/Employees/Salary-Slips/employee/{id}/year/{year}/month/{month}
-
-    This route allows the user to view all the salary slips for a certain employee in a certain month and year.
-
-+ GET: /api/Employees/Tickets/{year}/month/{month}
-
-    This route allows the user to view all tickets the were requested by all employees in a certain month and year.
-
-+ GET: /api/Employees/Tickets/employee/{id}/year/{year}/month/{month}
-
-    This route allows the user to view all tickets the were requested by a certain employee in a certain month and year.
 ```
 <br><hr><br>
 
@@ -131,7 +116,7 @@ The Employee controller has the following routes in it:
 
 The Performance controller has the following routes in it:
 
-![Performance-API](./assets/Performance-API.png)
+![Performance-API](./assets/Performance-new.png)
 ```
 + GET: /api/Performances/{id}
 
@@ -153,19 +138,19 @@ The Performance controller has the following routes in it:
 
     This route allows the user to add a new performance report to the database.
 
-+ GET: /api/Performances/Performance/employee/{id}
++ GET: /api/Performances/Performance/Employee/{id}
 
     This route allows the user to view all performance reports for a certain employee by using the ID for that employee.
 
-+ GET: /api/Performances/Performance/Department/{id}
++ GET: /api/Performances/Department/{id}
 
 This route allows the user to view all performance reports for a certain department by using the ID for that department.
 
-+ GET: /api/Performances/Performance/year/{year}/month/{month}
++ GET: /api/Performances/year/{year}/month/{month}
 
     This route allows the user to view all performance reports in a certain month and year.
 
-+ GET: /api/Performances/Performance/employee/{id}/year/{year}/month/{month}
++ GET: /api/Performances/employee/{id}/year/{year}/month/{month}
 
     This route allows the user to view all performance reports for a certain employee in a certain month and year.
 
@@ -177,15 +162,19 @@ This route allows the user to view all performance reports for a certain departm
 
 The SalarySlip controller has the following routes in it:
 
-![SalarySlips-API](./assets/SalarySlips-API.png)
+![SalarySlips-API](./assets/Salary-new.png)
 ```
 + GET: /api/SalarySlips
 
     This route allows the user to get all salary slips and view their information.
 
-+ GET: /api/SalarySlips/{id}/Month/{month}
++ GET: /api/SalarySlips/Year/{year}/Month/{month}
 
-    This route allows the user to view all salary slips in a certain month for a certain employe using the employee ID.
+    This route allows the user to view all salary slips in a certain month and year.
+
++ GET: /api/SalarySlips/Employee/{id}/Year{id}/Month/{month}
+
+    This route allows the user to view all salary slips in a certain month and year for a specific employee using that employee ID.
 
 + PUT: /api/SalarySlips/{id}
 
@@ -205,7 +194,7 @@ The SalarySlip controller has the following routes in it:
 
 The Tickets controller has the following routes in it:
 
-![Tickets-API](./assets/Tickets-API.png)
+![Tickets-API](./assets/Ticket-new.png)
 ```
 + GET: /api/Tickets
 
@@ -219,6 +208,18 @@ The Tickets controller has the following routes in it:
 
     This route allows the user to view a certain ticket and its information by using the ticket ID.
 
++ GET: /api/Tickets/Employee/{id}
+
+    This route allows the user to view all tickets requested by a specific employee using that employee ID.
+
++ GET: /api/Tickets/Year/{year}/Month/{month}
+
+    This route allows the user to view all tickets requested in a specific month and year.
+
++ GET: /api/Tickets/Employee/{id}/Year/{year}/Month/{month}
+
+    This route allows the user to view all tickets requested by a specific employee using that employee ID in a specific month and year.
+
 + DELETE: /api/Tickets/{id}
 
     This route allows the user to delete a certain ticket and its information by using the ticket ID.
@@ -231,9 +232,7 @@ The Tickets controller has the following routes in it:
 
     This route allows the user to update the status of a certain ticket from "Pending" to "Denied" by using the ticket ID.
 
-+ GET: /api/Tickets/Employee/{id}
 
-    This router allows the user to view all tickets that were requested by a certain employee by using that employee ID.
 ```
 
 
