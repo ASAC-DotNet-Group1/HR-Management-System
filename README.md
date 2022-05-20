@@ -166,7 +166,7 @@ Full diagram that shows the whole relationships between entities & their nature 
 
 ## Team Agreement:   <a name="TA"></a>  
 
-[Link](./Documents/TeamAgreement.md)  
+[Link](./Documents/Team-Agreement.md)  
 
 ## Requirements:   <a name="RQ"></a>  
 
